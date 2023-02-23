@@ -6,9 +6,8 @@
     <string name="hello_first_fragment">Hello first fragment</string>
     <string name="hello_second_fragment">Hello second fragment. Arg: %1$s</string>
 
-    <string name="question_text">Question</string>
-    <string name="true_button">True</string>
-    <string name="false_button">False</string>
+    <string name="shop_list_text">Coffee Shop List Screen</string>
+    <string name="shop_list_button_label">Visit Shop</string>
 
     <string name="create_post_title">Document Your Visit</string>
     <string name="create_post_back_button">Home</string>
