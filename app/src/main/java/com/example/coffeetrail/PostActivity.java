@@ -7,25 +7,24 @@ import androidx.fragment.app.FragmentManager;
 import android.os.Bundle;
 import android.util.Log;
 
-public class AccountActivity extends AppCompatActivity {
+public class PostActivity extends AppCompatActivity {
 
-    private static final String TAG = "AccountActivity";
+    private static final String TAG = "PostActivity";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_account);
-
+        setContentView(R.layout.activity_post);
         FragmentManager fm = getSupportFragmentManager();
-        Fragment fragment = fm.findFragmentById(R.id.fragment_container);
-
-        if (fragment == null) {
-            fragment = new AccountFragment();
+        Fragment fragment = fm.findFragmentById(R.id.fragment_container_view);
+        if(fragment == null){
+            fragment = new PostFragment();
             fm.beginTransaction()
-                    .add(R.id.fragment_container, fragment)
+                    .add(R.id.fragment_container_view, fragment)
                     .commit();
-        }
-    }
 
+        }
+        Log.d(TAG, "onCreate() called");
+    }
     @Override
     public void onStart() {
         super.onStart();
