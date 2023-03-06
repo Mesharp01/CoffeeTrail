@@ -13,14 +13,12 @@ import java.util.List;
 @Dao
 public interface CoffeeShopDao {
     @Query("SELECT * FROM coffeeshop")
-    public LiveData<List<CoffeeShopViewModel>> getAllCoffeeShops();
+    public LiveData<List<CoffeeShop>> getAllCoffeeShops();
 
-    @Query("SELECT * FROM coffeeshop WHERE name = ")
-    public CoffeeShopViewModel findByName(String mName);
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    public void insert(CoffeeShopViewModel coffeeShop);
+    public void insert(CoffeeShop coffeeShop);
     @Update
-    public void update(CoffeeShopViewModel coffeeShop);
+    public void update(CoffeeShop coffeeShop);
     @Delete
-    public void delete(CoffeeShopViewModel coffeeShop);
+    public void delete(CoffeeShop coffeeShop);
 }

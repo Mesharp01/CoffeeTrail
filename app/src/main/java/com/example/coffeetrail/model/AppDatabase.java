@@ -14,6 +14,7 @@ import java.util.concurrent.Executors;
 public abstract class AppDatabase extends
         RoomDatabase {
     public abstract UserAccountDao getUserAccountDao();
+    public abstract CoffeeShopDao getCoffeeShopDao();
     private static volatile AppDatabase sInstance;
     private static final int sNumberOfThreads = 2;
     static final ExecutorService databaseWriteExecutor =

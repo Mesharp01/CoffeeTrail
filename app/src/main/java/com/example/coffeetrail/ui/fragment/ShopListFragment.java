@@ -10,6 +10,7 @@ import androidx.fragment.app.Fragment;
 
 import com.example.coffeetrail.R;
 import com.example.coffeetrail.databinding.FragmentShopListBinding;
+import com.example.coffeetrail.model.CoffeeShop;
 import com.example.coffeetrail.model.CoffeeShopViewModel;
 
 public class ShopListFragment extends Fragment {
@@ -30,5 +31,11 @@ public class ShopListFragment extends Fragment {
     public void onDestroyView(){
         super.onDestroyView();
         binding = null;
+    }
+
+    private void fillCoffeeShopTable(){
+        CoffeeShop c1 = new CoffeeShop("The Bexley Coffee Shop", "https://www.facebook.com/BexleyCoffeeShop/", "492 N Cassady Ave Bexley, OH 43209" );
+
+
     }
 }

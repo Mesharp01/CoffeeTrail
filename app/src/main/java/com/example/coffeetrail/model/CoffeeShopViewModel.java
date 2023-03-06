@@ -1,40 +1,23 @@
 package com.example.coffeetrail.model;
 
-import androidx.annotation.NonNull;
-import androidx.lifecycle.ViewModel;
-import androidx.room.ColumnInfo;
-import androidx.room.Entity;
-import androidx.room.Fts4;
-import androidx.room.PrimaryKey;
+        import android.app.Application;
 
-import java.util.UUID;
+        import androidx.annotation.NonNull;
+        import androidx.lifecycle.LiveData;
+        import androidx.lifecycle.ViewModel;
 
+        import java.io.Closeable;
+        import java.util.List;
 
-@Fts4 /* Supports full-text search */
-@Entity(tableName = "coffeeshop")
 public class CoffeeShopViewModel extends ViewModel {
-    @PrimaryKey(autoGenerate = true)
-    @ColumnInfo(name = "sid")
-    public int mSid;
-    @NonNull
-    @ColumnInfo(name = "name")
-    public String mName;
-    @NonNull
-    @ColumnInfo(name = "url")
-    public String mUrl;
-
-    @NonNull
-    @ColumnInfo(name = "location")
-    public String mLocation;
-
-    public CoffeeShopViewModel(@NonNull String name,
-                       @NonNull String url, @NonNull String location) {
-        mName = name;
-        mUrl = url;
-        mLocation = location;
+    private CoffeeShopRepository mRepository;
+    private final LiveData<List<CoffeeShop>> mAllCoffeeShops;
+    public CoffeeShopViewModel(@NonNull Application application) {
+        super((Closeable) application);
+        //mRepository = new UserAccountRepository(application);
+        mAllCoffeeShops = mRepository.getAllCoffeeShops();
     }
-    public String getName() { return mName; }
-    public String getUrl() { return mUrl; }
-    public String getLocation() { return mLocation; }
-    /* equals(), hashCode(), and toString() methods */
+    // Methods for fetching a UserAccount, checking if UserAccount exists
+    public LiveData<List<CoffeeShop>> getAllCoffeeShops() { return mAllCoffeeShops; }
+    public void insert(CoffeeShop coffeeShop) { mRepository.insert(coffeeShop); }
 }
