@@ -12,10 +12,9 @@ import java.util.List;
 @Dao
 public interface ShopOrderDao {
     @Query("SELECT description, date FROM shoporder")
-    public LiveData<List<ShopOrder>> getAllOrders();
+    public LiveData<List<ShopOrder>> getAllShopOrders();
     @Query("SELECT oid, description, date FROM shoporder WHERE user_id LIKE :uid AND shop_id LIKE :sid LIMIT 1")
-    public LiveData<ShopOrder> findByUserIdAndShopId(int uid,
-                                                     int sid);
+    public LiveData<ShopOrder> findByUserIdAndShopId(int uid, int sid);
     @Query("SELECT description, date FROM shoporder WHERE shop_id LIKE :sid")
     public LiveData<ShopOrder> getAllByShopId(int sid);
 

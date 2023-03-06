@@ -20,11 +20,11 @@ import java.util.Date;
 public class ShopOrder {
     @PrimaryKey(autoGenerate = true)
     @ColumnInfo(name = "oid")
-    public int mUid;
+    public int oid;
 
     @NonNull
     @ColumnInfo(name = "description")
-    public String mDesc;
+    public String desc;
 
     @NonNull
     @ColumnInfo(name = "date")
@@ -38,7 +38,17 @@ public class ShopOrder {
     @ColumnInfo(name = "shop_id")
     public int sid;
 
+    public ShopOrder(@NonNull String postContent, @NonNull int userId, @NonNull int shopId){
+        desc = postContent;
+        uid = userId;
+        sid = shopId;
+        date = new Date();
+    }
     public int getShopId(){return sid;}
 
     public int getUserId(){return uid;}
+
+    public int getOrderId(){return oid;}
+
+    public String getDesc(){return desc;}
 }

@@ -11,22 +11,22 @@ public class ShopOrderRepository {
         AppDatabase db =
                 AppDatabase.getDatabase(application);
         mShopOrderDao = db.getOrderDao();
-        mAllOrders = mShopOrderDao.getAllOrders();
+        mAllOrders = mShopOrderDao.getAllShopOrders();
     }
     // Room executes all queries on a separate thread.
 // Observed LiveData notify observer upon data change.
-    LiveData<List<ShopOrder>> getOrders() {
+    LiveData<List<ShopOrder>> getAllShopOrders() {
         return mAllOrders; }
-    LiveData<ShopOrder> findOrderByUidAndSid(
+    LiveData<ShopOrder> findShopOrderByUidAndSid(
             ShopOrder o) {
         return mShopOrderDao.findByUserIdAndShopId(
                 o.getUserId(), o.getShopId());
     }
-    LiveData<ShopOrder> findOrderByUid(
+    LiveData<ShopOrder> findShopOrderByUid(
             ShopOrder o) {
         return mShopOrderDao.getAllByUserId(o.getUserId());
     }
-    LiveData<ShopOrder> findOrderBySid(
+    LiveData<ShopOrder> findShopOrderBySid(
             ShopOrder o) {
         return mShopOrderDao.getAllByShopId(o.getShopId());
     }
