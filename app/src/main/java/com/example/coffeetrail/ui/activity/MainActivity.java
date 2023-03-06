@@ -1,9 +1,11 @@
-package com.example.coffeetrail;
+package com.example.coffeetrail.ui.activity;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
 import android.util.Log;
+
+import com.example.coffeetrail.R;
 
 public class MainActivity extends AppCompatActivity {
     private static final String TAG = "MainActivity";

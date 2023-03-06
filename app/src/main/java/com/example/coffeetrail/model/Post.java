@@ -1,4 +1,4 @@
-package com.example.coffeetrail;
+package com.example.coffeetrail.model;
 
 import java.util.UUID;
 

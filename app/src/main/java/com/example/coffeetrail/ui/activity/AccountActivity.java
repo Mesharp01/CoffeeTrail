@@ -1,4 +1,4 @@
-package com.example.coffeetrail;
+package com.example.coffeetrail.ui.activity;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
@@ -6,6 +6,9 @@ import androidx.fragment.app.FragmentManager;
 
 import android.os.Bundle;
 import android.util.Log;
+
+import com.example.coffeetrail.ui.fragment.AccountFragment;
+import com.example.coffeetrail.R;
 
 public class AccountActivity extends AppCompatActivity {
 

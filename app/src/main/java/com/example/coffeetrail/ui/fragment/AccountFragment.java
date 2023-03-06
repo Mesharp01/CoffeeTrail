@@ -1,4 +1,4 @@
-package com.example.coffeetrail;
+package com.example.coffeetrail.ui.fragment;
 
 import android.os.Bundle;
 
@@ -8,6 +8,8 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
+import com.example.coffeetrail.R;
 
 /**
  * A simple {@link Fragment} subclass.
