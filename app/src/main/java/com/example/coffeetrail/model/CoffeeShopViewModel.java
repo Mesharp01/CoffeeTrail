@@ -14,7 +14,7 @@ public class CoffeeShopViewModel extends ViewModel {
     private final LiveData<List<CoffeeShop>> mAllCoffeeShops;
     public CoffeeShopViewModel(@NonNull Application application) {
         super((Closeable) application);
-        //mRepository = new UserAccountRepository(application);
+        mRepository = new CoffeeShopRepository(application);
         mAllCoffeeShops = mRepository.getAllCoffeeShops();
     }
     // Methods for fetching a UserAccount, checking if UserAccount exists

@@ -9,7 +9,7 @@ import androidx.room.RoomDatabase;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-@Database(entities = {UserAccount.class}, version = 1,
+@Database(entities = {UserAccount.class, CoffeeShop.class}, version = 1,
         exportSchema = false)
 public abstract class AppDatabase extends
         RoomDatabase {
