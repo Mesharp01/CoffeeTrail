@@ -12,7 +12,7 @@
     <string name="create_post_title">Document Your Visit</string>
     <string name="create_post_back_button">Home</string>
     <string name="create_post_button">Post</string>
-    <string name="create_post_text_box">Type your order details here!</string>
+    <string name="create_post_text_box">Type your shopOrder details here!</string>
 
     <string name="post_title_label">Make a post</string>
     <string name="post_title_hint">Type your post here!</string>

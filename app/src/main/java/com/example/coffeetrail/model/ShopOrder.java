@@ -1,5 +1,4 @@
 package com.example.coffeetrail.model;
-import static androidx.room.ForeignKey.CASCADE;
 
 import androidx.annotation.NonNull;
 import androidx.room.ColumnInfo;
@@ -10,7 +9,7 @@ import androidx.room.ForeignKey;
 import java.util.Date;
 
 @Fts4
-@Entity(tableName = "order", foreignKeys = {
+@Entity(tableName = "shoporder", foreignKeys = {
                 @ForeignKey(entity = UserAccount.class,
                         parentColumns = "uid",
                         childColumns = "user_id"),
@@ -18,7 +17,7 @@ import java.util.Date;
                         parentColumns = "sid",
                         childColumns = "shop_id")
         })
-public class Order {
+public class ShopOrder {
     @PrimaryKey(autoGenerate = true)
     @ColumnInfo(name = "oid")
     public int mUid;
