@@ -4,11 +4,11 @@ import androidx.lifecycle.ViewModel;
 
 import java.util.UUID;
 
-public class PostViewModel extends ViewModel {
+public class OrderViewModel extends ViewModel {
     private String postContent;
     private UUID pid;
 
-    public PostViewModel(){
+    public OrderViewModel(){
         pid = UUID.randomUUID();
     }
 

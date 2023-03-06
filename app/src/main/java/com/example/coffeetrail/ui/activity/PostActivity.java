@@ -7,7 +7,7 @@ import androidx.fragment.app.FragmentManager;
 import android.os.Bundle;
 import android.util.Log;
 
-import com.example.coffeetrail.ui.fragment.PostFragment;
+import com.example.coffeetrail.ui.fragment.OrdersFragment;
 import com.example.coffeetrail.R;
 
 public class PostActivity extends AppCompatActivity {
@@ -20,7 +20,7 @@ public class PostActivity extends AppCompatActivity {
         FragmentManager fm = getSupportFragmentManager();
         Fragment fragment = fm.findFragmentById(R.id.fragment_container_view);
         if(fragment == null){
-            fragment = new PostFragment();
+            fragment = new OrdersFragment();
             fm.beginTransaction()
                     .add(R.id.fragment_container_view, fragment)
                     .commit();
