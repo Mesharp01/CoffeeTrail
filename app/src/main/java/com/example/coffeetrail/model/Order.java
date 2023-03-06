@@ -10,15 +10,14 @@ import androidx.room.ForeignKey;
 import java.util.Date;
 
 @Fts4
-@Entity(foreignKeys = {
-                @ForeignKey(entity = User.class,
+@Entity(tableName = "order", foreignKeys = {
+                @ForeignKey(entity = UserAccount.class,
                         parentColumns = "uid",
                         childColumns = "user_id"),
                 @ForeignKey(entity = Shop.class,
                         parentColumns = "sid",
                         childColumns = "shop_id")
         })
-
 public class Order {
     @PrimaryKey(autoGenerate = true)
     @ColumnInfo(name = "oid")
@@ -39,4 +38,8 @@ public class Order {
     @NonNull
     @ColumnInfo(name = "shop_id")
     public int sid;
+
+    public int getShopId(){return sid;}
+
+    public int getUserId(){return uid;}
 }

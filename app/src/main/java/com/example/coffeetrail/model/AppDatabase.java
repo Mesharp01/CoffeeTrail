@@ -9,11 +9,12 @@ import androidx.room.RoomDatabase;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-@Database(entities = {UserAccount.class}, version = 1,
+@Database(entities = {UserAccount.class, Order.class}, version = 1,
         exportSchema = false)
 public abstract class AppDatabase extends
         RoomDatabase {
     public abstract UserAccountDao getUserAccountDao();
+    public abstract OrderDao getOrderDao();
     private static volatile AppDatabase sInstance;
     private static final int sNumberOfThreads = 2;
     static final ExecutorService databaseWriteExecutor =
