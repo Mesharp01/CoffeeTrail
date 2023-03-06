@@ -10,7 +10,7 @@ import android.view.ViewGroup;
 
 import com.example.coffeetrail.R;
 
-public class PostFragment extends Fragment {
+public class MakePostFragment extends Fragment {
 
 
     @Override
