@@ -13,6 +13,7 @@
     <string name="create_post_back_button">Home</string>
     <string name="create_post_button">Post</string>
     <string name="create_post_text_box">Type your order details here!</string>
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+
+    <string name="post_title_label">Make a post</string>
+    <string name="post_title_hint">Type your post here!</string>
 </resources>

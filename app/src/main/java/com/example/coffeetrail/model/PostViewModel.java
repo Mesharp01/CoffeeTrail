@@ -1,12 +1,14 @@
 package com.example.coffeetrail.model;
 
+import androidx.lifecycle.ViewModel;
+
 import java.util.UUID;
 
-public class Post {
+public class PostViewModel extends ViewModel {
     private String postContent;
     private UUID pid;
 
-    public Post(){
+    public PostViewModel(){
         pid = UUID.randomUUID();
     }
 
