@@ -1,32 +1,47 @@
 package com.example.coffeetrail.ui.fragment;
 
+import android.app.Activity;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
+import androidx.lifecycle.ViewModelStoreOwner;
 
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.EditText;
 
 import com.example.coffeetrail.R;
+import com.example.coffeetrail.model.UserAccountViewModel;
 
-/**
- * A simple {@link Fragment} subclass.
- */
-public class AccountFragment extends Fragment {
+public class AccountFragment extends Fragment implements View.OnClickListener {
     private static final String TAG = "AccountFragment";
+    private Button mLoginButton, mCreateAccountButton;
+    private EditText mUsername;
+    private EditText mPassword;
+    private UserAccountViewModel mUserAccountViewModel;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Log.d(TAG, "onCreate() called");
+        Activity activity = requireActivity();
+        mUserAccountViewModel = new ViewModelProvider((ViewModelStoreOwner) activity).get(UserAccountViewModel.class);
     }
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         Log.d(TAG, "onCreateView() called");
         View v = inflater.inflate(R.layout.fragment_account, container, false);
+        mUsername = v.findViewById(R.id.username_text);
+        mPassword = v.findViewById(R.id.password_text);
+        mLoginButton = v.findViewById(R.id.login_button);
+        mLoginButton.setOnClickListener(this);
+        mCreateAccountButton = v.findViewById(R.id.create_account_button);
+        mCreateAccountButton.setOnClickListener(this);
         return v;
     }
 
@@ -35,7 +50,22 @@ public class AccountFragment extends Fragment {
         super.onViewStateRestored(savedInstanceState);
         Log.d(TAG, "onViewStateRestored() called");
     }
+    @Override
+    public void onClick(View v) {
+        final int viewId = v.getId();
+        if (viewId == R.id.login_button) {
 
+        }
+    }
+    private void checkLogin(){
+
+    }
+    private void createAccount(){
+
+    }
+    /*
+    LifeCycle Methods
+     */
     @Override
     public void onStart(){
         super.onStart();
@@ -77,4 +107,5 @@ public class AccountFragment extends Fragment {
         super.onDestroy();
         Log.d(TAG, "onDestroy() called");
     }
+
 }
