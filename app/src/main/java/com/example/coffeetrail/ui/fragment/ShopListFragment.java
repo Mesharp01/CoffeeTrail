@@ -9,37 +9,26 @@ import android.widget.Button;
 import androidx.fragment.app.Fragment;
 
 import com.example.coffeetrail.R;
-import com.example.coffeetrail.model.Shop;
+import com.example.coffeetrail.databinding.FragmentShopListBinding;
+import com.example.coffeetrail.model.CoffeeShopViewModel;
 
 public class ShopListFragment extends Fragment {
-    private Shop mShop;
+    private CoffeeShopViewModel mShop;
     private Button mVisitButton;
+    private FragmentShopListBinding binding;
     String[] shopArray = {"Starbucks","Dunkin","Kafe Kerouac","Sweetwaters",
             "WebOS","Ubuntu","Windows7","Max OS X"};
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-    }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View v = inflater.inflate(R.layout.fragment_shop_list, container, false);
-
-
-//        ArrayAdapter adapter = new ArrayAdapter<String>(this,
-//                R.layout.activity_shop_list, shopArray);
-
-//        ListView listView = (ListView) v.findViewById(R.id.shops_list);
-//        listView.setAdapter(adapter);
-
-        mShop = new Shop();
-        mShop.setName("Coffee Shop");
-
-        mVisitButton = (Button) v.findViewById(R.id.visit_button);
-        mVisitButton.setEnabled(true);
-
-
-
+        binding = FragmentShopListBinding.inflate(inflater, container, false);
+        View v = binding.getRoot();
         return v;
+    }
+
+    public void onDestroyView(){
+        super.onDestroyView();
+        binding = null;
     }
 }
