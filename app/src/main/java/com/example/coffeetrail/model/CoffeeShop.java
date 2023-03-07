@@ -9,7 +9,6 @@ import androidx.room.PrimaryKey;
 
 import java.util.UUID;
 
-
 @Fts4 /* Supports full-text search */
 @Entity(tableName = "coffeeshop")
 public class CoffeeShop {
