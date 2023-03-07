@@ -6,6 +6,8 @@ import androidx.room.Entity;
 import androidx.room.Fts4;
 import androidx.room.PrimaryKey;
 import androidx.room.ForeignKey;
+import androidx.room.TypeConverters;
+
 import java.util.Date;
 
 //@Fts4
@@ -13,8 +15,8 @@ import java.util.Date;
                 @ForeignKey(entity = UserAccount.class,
                         parentColumns = "rowid",
                         childColumns = "user_id"),
-                @ForeignKey(entity = Shop.class,
-                        parentColumns = "sid",
+                @ForeignKey(entity = CoffeeShop.class,
+                        parentColumns = "rowid",
                         childColumns = "shop_id")
         })
 public class ShopOrder {
@@ -46,7 +48,6 @@ public class ShopOrder {
     }
 
     public ShopOrder(){
-
     }
     public int getShopId(){return sid;}
 

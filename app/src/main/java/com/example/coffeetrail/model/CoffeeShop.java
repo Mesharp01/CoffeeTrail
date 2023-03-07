@@ -13,7 +13,7 @@ import java.util.UUID;
 @Entity(tableName = "coffeeshop")
 public class CoffeeShop {
     @PrimaryKey(autoGenerate = true)
-    @ColumnInfo(name = "sid")
+    @ColumnInfo(name = "rowid")
     public int mSid;
     @NonNull
     @ColumnInfo(name = "name")

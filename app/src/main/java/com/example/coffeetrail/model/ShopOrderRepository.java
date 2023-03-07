@@ -10,7 +10,7 @@ public class ShopOrderRepository {
     ShopOrderRepository(Application application) {
         AppDatabase db =
                 AppDatabase.getDatabase(application);
-        mShopOrderDao = db.getOrderDao();
+        mShopOrderDao = db.getShopOrderDao();
         mAllOrders = mShopOrderDao.getAllShopOrders();
     }
     // Room executes all queries on a separate thread.
