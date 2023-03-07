@@ -27,6 +27,9 @@ public class MakePostFragment extends Fragment implements View.OnClickListener {
     private TextView mPostContent;
     private ShopOrderViewModel mShopOrderViewModel;
 
+    private int userId;
+    private int shopId;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -39,22 +42,24 @@ public class MakePostFragment extends Fragment implements View.OnClickListener {
         mPostButton = v.findViewById(R.id.post_button);
         mPostContent = v.findViewById(R.id.post_content);
         mPostButton.setOnClickListener(this);
-
+        userId = 1;
+        shopId = 1;
         return v;
-    }
-    @Override
-    public void OnClick(View v){
-        final int viewId = v.getId();
-        if (viewId == R.id.post_button) {
-            createShopOrder();
-        }
     }
     public void createShopOrder(){
         FragmentActivity activity = requireActivity();
         final String post = mPostContent.getText().toString();
         //need to access current shop and user to make a new shopOrder entry in the database...
-        //ShopOrder shopOrder = new ShopOrder(post, );
-        //mShopOrderViewModel.insert(shopOrder);
+        ShopOrder shopOrder = new ShopOrder(post, userId, shopId);
+        mShopOrderViewModel.insert(shopOrder);
         Toast.makeText(activity.getApplicationContext(), "New post added", Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void onClick(View v) {
+        final int viewId = v.getId();
+        if (viewId == R.id.post_button) {
+            createShopOrder();
+        }
     }
 }

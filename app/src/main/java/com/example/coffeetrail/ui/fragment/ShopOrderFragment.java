@@ -3,9 +3,14 @@ package com.example.coffeetrail.ui.fragment;
 import android.app.Activity;
 import android.os.Bundle;
 
+import androidx.activity.result.ActivityResultCallback;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
+import androidx.lifecycle.LiveData;
+import androidx.lifecycle.MutableLiveData;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -26,6 +31,9 @@ public class ShopOrderFragment extends Fragment {
     private RecyclerView mShopOrderRecyclerView;
     private List<ShopOrder> mShopOrderList;
     private ShopOrderAdapter mShopOrderAdapter;
+
+    private LiveData<List<ShopOrder>> mShopOrderLiveData = new MutableLiveData<>();
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
 
@@ -46,14 +54,15 @@ public class ShopOrderFragment extends Fragment {
     public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         Activity activity = requireActivity();
-        mShopOrderRecyclerView = view.findViewById(R.id.shop_order_recycler_view);
+        mShopOrderRecyclerView = view.findViewById(R.id.shopOrder_recycler_view);
         mShopOrderRecyclerView.setLayoutManager(new LinearLayoutManager(activity));
+        showShopOrders();
     }
 
     private void showShopOrders() {
 
-        ShopOrderLiveData allShopOrdersData = mShopOrderViewModel.getAllShopOrders();
-        mShopOrderList = allShopOrdersData.getValue();
+        mShopOrderLiveData = mShopOrderViewModel.getAllShopOrders();
+        mShopOrderList = mShopOrderLiveData.getValue();
         if (mShopOrderList != null) {
             mShopOrderAdapter = new ShopOrderAdapter(mShopOrderList);
             mShopOrderRecyclerView.setAdapter(mShopOrderAdapter);
@@ -64,7 +73,7 @@ public class ShopOrderFragment extends Fragment {
         private final TextView mShopOrderTextView;
 
         ShopOrderHolder(LayoutInflater inflater, ViewGroup parent) {
-            super(inflater.inflate(R.layout.list_item_shop_order, parent, false));
+            super(inflater.inflate(R.layout.list_item_shoporder, parent, false));
 
             mShopOrderTextView = itemView.findViewById(R.id.post_info);
         }

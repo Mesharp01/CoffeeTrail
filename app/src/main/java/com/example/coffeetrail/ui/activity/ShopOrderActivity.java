@@ -10,13 +10,13 @@ import android.util.Log;
 import com.example.coffeetrail.ui.fragment.ShopOrderFragment;
 import com.example.coffeetrail.R;
 
-public class PostActivity extends AppCompatActivity {
+public class ShopOrderActivity extends AppCompatActivity {
 
     private static final String TAG = "PostActivity";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_post);
+        setContentView(R.layout.activity_shoporder);
         FragmentManager fm = getSupportFragmentManager();
         Fragment fragment = fm.findFragmentById(R.id.fragment_container_view);
         if(fragment == null){
