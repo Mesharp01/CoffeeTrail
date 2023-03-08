@@ -16,12 +16,8 @@ public class ShopListActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_shop_list);
-
-
-
         FragmentManager fm = getSupportFragmentManager();
         Fragment fragment = fm.findFragmentById(R.id.fragment_container);
-
         if (fragment == null) {
             fragment = new ShopListFragment();
             fm.beginTransaction()

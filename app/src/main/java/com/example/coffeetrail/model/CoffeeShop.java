@@ -1,36 +1,42 @@
 package com.example.coffeetrail.model;
 
 import androidx.annotation.NonNull;
+import androidx.lifecycle.ViewModel;
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.Fts4;
-import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
 
 import java.util.UUID;
 
-@Fts4  /* Supports full-text search */
-@Entity(tableName = "useraccount")
-public class UserAccount {
-
+@Fts4 /* Supports full-text search */
+@Entity(tableName = "coffeeshop")
+public class CoffeeShop {
     @PrimaryKey(autoGenerate = true)
     @ColumnInfo(name = "rowid")
-    public int mUid;
+    public int mSid;
     @NonNull
     @ColumnInfo(name = "name")
     public String mName;
     @NonNull
-    @ColumnInfo(name = "password")
-    public String mPassword;
-    public UserAccount(@NonNull String name,
-                       @NonNull String password) {
-        mName = name;
-        mPassword = password;
-    }
+    @ColumnInfo(name = "url")
+    public String mUrl;
 
+    @NonNull
+    @ColumnInfo(name = "location")
+    public String mLocation;
+
+    public CoffeeShop(@NonNull String name,
+                               @NonNull String url, @NonNull String location) {
+        mName = name;
+        mUrl = url;
+        mLocation = location;
+    }
     public String getName() { return mName; }
-    public String getPassword() { return mPassword; }
-    /* equals(), hashCode(), and toString() methods */
+    public String getUrl() { return mUrl; }
+    public String getLocation() { return mLocation; }
+
+
     public void equals(){
 
     }
@@ -44,6 +50,6 @@ public class UserAccount {
 
         return "";
     }
-
-
 }
+
+
