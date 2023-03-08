@@ -11,14 +11,14 @@ import androidx.room.Update;
 import java.util.List;
 @Dao
 public interface ShopOrderDao {
-    @Query("SELECT description, date FROM shoporder")
+    @Query("SELECT oid, user_id, shop_id, description, date FROM shoporder")
     public LiveData<List<ShopOrder>> getAllShopOrders();
-    @Query("SELECT oid, description, date FROM shoporder WHERE user_id LIKE :uid AND shop_id LIKE :sid LIMIT 1")
+    @Query("SELECT oid, user_id, shop_id, description, date FROM shoporder WHERE user_id LIKE :uid AND shop_id LIKE :sid LIMIT 1")
     public LiveData<ShopOrder> findByUserIdAndShopId(int uid, int sid);
-    @Query("SELECT description, date FROM shoporder WHERE shop_id LIKE :sid")
+    @Query("SELECT oid, user_id, shop_id, description, date FROM shoporder WHERE shop_id LIKE :sid")
     public LiveData<ShopOrder> getAllByShopId(int sid);
 
-    @Query("SELECT description, date FROM shoporder WHERE user_id LIKE :uid")
+    @Query("SELECT oid, user_id, shop_id, description, date FROM shoporder WHERE user_id LIKE :uid")
     public LiveData<ShopOrder> getAllByUserId(int uid);
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     public void insert(ShopOrder shopOrder);
