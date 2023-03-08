@@ -10,14 +10,14 @@ import java.util.List;
 import java.util.Objects;
 import android.app.Application;
 
-public class ShopOrderViewModel extends ViewModel {
+public class ShopOrderViewModel extends AndroidViewModel {
     private final ShopOrderRepository mRepository;
     private LiveData<List<ShopOrder>> mAllShopOrders;
 
-    public ShopOrderViewModel(@NonNull Application application) {
-        super((Closeable) application);
+    public ShopOrderViewModel(Application application) {
+        super(application);
         mRepository = new ShopOrderRepository(application);
-        //mAllShopOrders = mRepository.getAllShopOrders();
+        mAllShopOrders = mRepository.getAllShopOrders();
     }
 
     public boolean containsShopOrder(ShopOrder shopOrder) {
