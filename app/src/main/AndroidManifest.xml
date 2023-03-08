@@ -12,13 +12,8 @@
         android:theme="@style/Theme.CoffeeTrail"
         tools:targetApi="31">
         <activity
-            android:name=".MakePostActivity"
-            android:exported="false"
-            android:label="@string/title_activity_make_post"
-            android:theme="@style/Theme.CoffeeTrail.NoActionBar" />
-        <activity
-            android:name=".ui.activity.ShopOrderActivity"
-            android:exported="true">
+            android:name=".ui.activity.AccountActivity"
+            android:exported="true" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -26,9 +21,10 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".ui.activity.ShopListActivity"
-            android:parentActivityName=".ui.activity.ShopOrderActivity" />
-        <activity android:name=".ui.activity.AccountActivity" />
+            android:name=".ui.activity.ShopOrderActivity"
+            android:parentActivityName=".ui.activity.ShopListActivity"/>
+        <activity
+            android:name=".ui.activity.ShopListActivity" />
     </application>
 
 </manifest>
