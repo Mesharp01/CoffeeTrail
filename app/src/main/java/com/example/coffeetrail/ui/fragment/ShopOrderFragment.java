@@ -11,6 +11,8 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
+import androidx.lifecycle.ViewModelProvider;
+import androidx.lifecycle.ViewModelStoreOwner;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -39,7 +41,7 @@ public class ShopOrderFragment extends Fragment {
 
         super.onCreate(savedInstanceState);
         Activity activity = requireActivity();
-        mShopOrderViewModel = new ShopOrderViewModel(activity.getApplication());
+        mShopOrderViewModel = new ViewModelProvider((ViewModelStoreOwner)activity).get(ShopOrderViewModel.class);
         mShopOrderViewModel.getAllShopOrders();
     }
 

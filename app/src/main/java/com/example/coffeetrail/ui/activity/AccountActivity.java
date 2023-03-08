@@ -8,6 +8,8 @@ import android.os.Bundle;
 import android.util.Log;
 
 import com.example.coffeetrail.R;
+import com.example.coffeetrail.ui.fragment.AccountFragment;
+import com.example.coffeetrail.ui.fragment.ShopListFragment;
 
 public class AccountActivity extends AppCompatActivity {
 
@@ -19,8 +21,12 @@ public class AccountActivity extends AppCompatActivity {
 
         FragmentManager fm = getSupportFragmentManager();
         Fragment fragment = fm.findFragmentById(R.id.fragment_container);
-
-        fm.beginTransaction().add(R.id.fragment_container, fragment).commit();
+        if (fragment == null) {
+            fragment = new AccountFragment();
+            fm.beginTransaction()
+                    .add(R.id.fragment_container, fragment)
+                    .commit();
+        }
     }
 
     @Override

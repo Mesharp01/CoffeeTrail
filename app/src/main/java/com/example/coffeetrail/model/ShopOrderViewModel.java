@@ -17,7 +17,7 @@ public class ShopOrderViewModel extends ViewModel {
     public ShopOrderViewModel(@NonNull Application application) {
         super((Closeable) application);
         mRepository = new ShopOrderRepository(application);
-        mAllShopOrders = mRepository.getAllShopOrders();
+        //mAllShopOrders = mRepository.getAllShopOrders();
     }
 
     public boolean containsShopOrder(ShopOrder shopOrder) {

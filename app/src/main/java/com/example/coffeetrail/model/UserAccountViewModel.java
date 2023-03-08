@@ -14,7 +14,7 @@ public class UserAccountViewModel extends ViewModel {
     private final LiveData<List<UserAccount>> mAllUserAccounts;
     public UserAccountViewModel(@NonNull Application application) {
         super((Closeable) application);
-        //mRepository = new UserAccountRepository(application);
+        mRepository = new UserAccountRepository(application);
         mAllUserAccounts = mRepository.getAllUserAccounts();
     }
     // Methods for fetching a UserAccount, checking if UserAccount exists
