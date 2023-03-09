@@ -3,26 +3,24 @@ package com.example.coffeetrail.ui.activity;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Bundle;
 import android.util.Log;
 
-import com.example.coffeetrail.ui.fragment.ShopOrderFragment;
 import com.example.coffeetrail.R;
+import com.example.coffeetrail.ui.fragment.MakePostFragment;
+import com.example.coffeetrail.ui.fragment.ShopOrderFragment;
 
-public class ShopOrderActivity extends AppCompatActivity {
-
-    private static final String TAG = "PostActivity";
+public class MakePostActivity extends AppCompatActivity {
+    private static final String TAG = "MakePostActivity";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_shoporder);
+        setContentView(R.layout.activity_make_post);
         FragmentManager fm = getSupportFragmentManager();
         Fragment fragment = fm.findFragmentById(R.id.fragment_container_view);
         if(fragment == null){
-            fragment = new ShopOrderFragment();
+            fragment = new MakePostFragment();
             fm.beginTransaction()
                     .add(R.id.fragment_container_view, fragment)
                     .commit();

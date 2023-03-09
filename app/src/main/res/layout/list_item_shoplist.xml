@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:paddingLeft="16dp"
+    android:paddingRight="16dp"
+    android:orientation="horizontal" >
+    <TextView
+        android:id="@+id/list_item_shoplist"
+        android:text="Coffee Shop"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingRight="16dp"/>
+    <Button
+        android:id="@+id/see_orders_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Past Orders" />
+    <Button
+        android:id="@+id/visit_shop_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Visit" />
+</LinearLayout>

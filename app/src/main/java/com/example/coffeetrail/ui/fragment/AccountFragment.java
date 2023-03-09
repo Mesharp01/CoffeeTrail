@@ -7,7 +7,6 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.lifecycle.ViewModelStoreOwner;
 
-import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,6 +15,7 @@ import android.widget.Button;
 import android.widget.EditText;
 
 import com.example.coffeetrail.R;
+import com.example.coffeetrail.model.CoffeeShop;
 import com.example.coffeetrail.model.UserAccount;
 import com.example.coffeetrail.model.UserAccountViewModel;
 
@@ -32,6 +32,7 @@ public class AccountFragment extends Fragment implements View.OnClickListener {
         Log.d(TAG, "onCreate() called");
         Activity activity = requireActivity();
         mUserAccountViewModel = new ViewModelProvider((ViewModelStoreOwner) activity).get(UserAccountViewModel.class);
+        addAccountToTable();
     }
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -57,20 +58,13 @@ public class AccountFragment extends Fragment implements View.OnClickListener {
         final int viewId = v.getId();
         if (viewId == R.id.login_button) {
 
-        }else if (viewId == R.id.create_account_button){
-            createAccount();
         }
     }
     private void checkLogin(){
 
     }
     private void createAccount(){
-        final String username = mUsername.getText().toString();
-        final String password = mPassword.getText().toString();
-        if(!TextUtils.isEmpty(username) && !TextUtils.isEmpty(password)){
-            UserAccount newUser = new UserAccount(username, password);
-            mUserAccountViewModel.insert(newUser);
-        }
+
     }
     /*
     LifeCycle Methods
@@ -115,6 +109,13 @@ public class AccountFragment extends Fragment implements View.OnClickListener {
     public void onDestroy(){
         super.onDestroy();
         Log.d(TAG, "onDestroy() called");
+    }
+
+    private void addAccountToTable(){
+        UserAccount a1 = new UserAccount("Test", "Test");
+
+        mUserAccountViewModel.insert(a1);
+
     }
 
 }
