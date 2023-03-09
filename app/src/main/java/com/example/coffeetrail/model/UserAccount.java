@@ -31,8 +31,12 @@ public class UserAccount {
     public String getName() { return mName; }
     public String getPassword() { return mPassword; }
     /* equals(), hashCode(), and toString() methods */
-    public void equals(){
-
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        UserAccount that = (UserAccount) o;
+        return mName.equals(that.mName) && mPassword.equals(that.mPassword);
     }
     @Override
     public int hashCode(){
@@ -40,9 +44,13 @@ public class UserAccount {
         return 0;
     }
     @NonNull
-    public String toString(){
-
-        return "";
+    @Override
+    public String toString() {
+        return "UserAccount{" +
+                "uid=" + mUid +
+                "; name='" + mName + '\'' +
+                "; password='" + mPassword + '\'' +
+                '}';
     }
 
 
