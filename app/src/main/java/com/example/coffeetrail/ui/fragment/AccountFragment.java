@@ -1,12 +1,15 @@
 package com.example.coffeetrail.ui.fragment;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.lifecycle.ViewModelStoreOwner;
 
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,6 +21,10 @@ import com.example.coffeetrail.R;
 import com.example.coffeetrail.model.CoffeeShop;
 import com.example.coffeetrail.model.UserAccount;
 import com.example.coffeetrail.model.UserAccountViewModel;
+import com.example.coffeetrail.ui.activity.ShopListActivity;
+
+import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 public class AccountFragment extends Fragment implements View.OnClickListener {
     private static final String TAG = "AccountFragment";
@@ -26,13 +33,18 @@ public class AccountFragment extends Fragment implements View.OnClickListener {
     private EditText mPassword;
     private UserAccountViewModel mUserAccountViewModel;
 
+    private final List<UserAccount> mUserAccountList = new CopyOnWriteArrayList<>();
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Log.d(TAG, "onCreate() called");
         Activity activity = requireActivity();
         mUserAccountViewModel = new ViewModelProvider((ViewModelStoreOwner) activity).get(UserAccountViewModel.class);
-        addAccountToTable();
+        mUserAccountViewModel.getAllUserAccounts().observe((LifecycleOwner) activity, userAccounts -> {
+            mUserAccountList.clear();
+            mUserAccountList.addAll(userAccounts);
+        });
     }
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -57,14 +69,34 @@ public class AccountFragment extends Fragment implements View.OnClickListener {
     public void onClick(View v) {
         final int viewId = v.getId();
         if (viewId == R.id.login_button) {
-
+            checkLogin();
+        } else if(viewId == R.id.create_account_button){
+            createAccount();
         }
     }
     private void checkLogin(){
+        final String username = mUsername.getText().toString();
+        final String password = mPassword.getText().toString();
+        Activity activity = requireActivity();
+        if(!TextUtils.isEmpty(username) && !TextUtils.isEmpty(password)) {
+            UserAccount user = new UserAccount(username, password);
+            boolean loginCheck = mUserAccountList.contains(user);
+            if (loginCheck) {
+                startActivity(new Intent(activity, ShopListActivity.class));
+                activity.finish();
+            }
 
+        }
     }
     private void createAccount(){
-
+        final String username = mUsername.getText().toString();
+        final String password = mPassword.getText().toString();
+        if(!TextUtils.isEmpty(username) && !TextUtils.isEmpty(password)) {
+            UserAccount newUser = new UserAccount(username, password);
+            if(!mUserAccountList.contains(newUser)) {
+                mUserAccountViewModel.insert(newUser);
+            }
+        }
     }
     /*
     LifeCycle Methods
@@ -111,11 +143,5 @@ public class AccountFragment extends Fragment implements View.OnClickListener {
         Log.d(TAG, "onDestroy() called");
     }
 
-    private void addAccountToTable(){
-        UserAccount a1 = new UserAccount("Test", "Test");
-
-        mUserAccountViewModel.insert(a1);
-
-    }
 
 }
