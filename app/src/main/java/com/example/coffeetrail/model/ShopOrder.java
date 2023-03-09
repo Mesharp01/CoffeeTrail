@@ -56,4 +56,5 @@ public class ShopOrder {
     public int getOrderId(){return oid;}
 
     public String getDesc(){return desc;}
+
 }

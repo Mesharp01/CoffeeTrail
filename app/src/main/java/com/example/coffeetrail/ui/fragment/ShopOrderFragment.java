@@ -14,7 +14,9 @@ import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.lifecycle.ViewModelStoreOwner;
 import androidx.recyclerview.widget.DefaultItemAnimator;
+import androidx.recyclerview.widget.DiffUtil;
 import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.ListAdapter;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.LayoutInflater;
@@ -23,6 +25,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.example.coffeetrail.R;
+import com.example.coffeetrail.model.CoffeeShop;
 import com.example.coffeetrail.model.ShopOrder;
 import com.example.coffeetrail.model.ShopOrderViewModel;
 
@@ -30,7 +33,6 @@ import java.util.List;
 
 public class ShopOrderFragment extends Fragment {
     private ShopOrderViewModel mShopOrderViewModel;
-    private RecyclerView mShopOrderRecyclerView;
     private List<ShopOrder> mShopOrderList;
     private ShopOrderAdapter mShopOrderAdapter;
 
@@ -41,14 +43,15 @@ public class ShopOrderFragment extends Fragment {
 
         super.onCreate(savedInstanceState);
         Activity activity = requireActivity();
-        mShopOrderViewModel = new ViewModelProvider((ViewModelStoreOwner)activity).get(ShopOrderViewModel.class);
+        mShopOrderViewModel = new ViewModelProvider(this).get(ShopOrderViewModel.class);
         mShopOrderViewModel.getAllShopOrders();
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View v = inflater.inflate(R.layout.fragment_shoporder, container, false);
+        View v = inflater.inflate(R.layout.shoporder_recycler_view, container, false);
+
         return v;
     }
 
@@ -56,59 +59,20 @@ public class ShopOrderFragment extends Fragment {
     public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         Activity activity = requireActivity();
-        mShopOrderRecyclerView = view.findViewById(R.id.shopOrder_recycler_view);
-        mShopOrderRecyclerView.setLayoutManager(new LinearLayoutManager(activity));
-        showShopOrders();
+        RecyclerView recyclerView = view.findViewById(R.id.recyclerview);
+        final ShopOrderAdapter adapter = new ShopOrderAdapter(new ShopOrderAdapter.ShopOrderDiff());
+        recyclerView.setAdapter(adapter);
+        recyclerView.setLayoutManager(new LinearLayoutManager(activity));
+        fillShopOrderTable();
     }
 
-    private void showShopOrders() {
+    private void fillShopOrderTable(){
+        ShopOrder o1 = new ShopOrder("10/10 coffee", 0, 0);
 
-        mShopOrderLiveData = mShopOrderViewModel.getAllShopOrders();
-        mShopOrderList = mShopOrderLiveData.getValue();
-        if (mShopOrderList != null) {
-            mShopOrderAdapter = new ShopOrderAdapter(mShopOrderList);
-            mShopOrderRecyclerView.setAdapter(mShopOrderAdapter);
-            mShopOrderRecyclerView.setItemAnimator(new DefaultItemAnimator());
-        }
+        mShopOrderViewModel.insert(o1);
+
     }
-    private static class ShopOrderHolder extends RecyclerView.ViewHolder {
-        private final TextView mShopOrderTextView;
-
-        ShopOrderHolder(LayoutInflater inflater, ViewGroup parent) {
-            super(inflater.inflate(R.layout.list_item_shoporder, parent, false));
-
-            mShopOrderTextView = itemView.findViewById(R.id.post_info);
-        }
-
-        void bind(ShopOrder shopOrder) {
-            String post = shopOrder.getDesc();
-            mShopOrderTextView.setText(post);
-        }
-    }
-    private class ShopOrderAdapter extends RecyclerView.Adapter<ShopOrderHolder> {
-
-        private final List<ShopOrder> mShopOrderList;
-
-        ShopOrderAdapter(List<ShopOrder> shopOrderList) {
-            mShopOrderList = shopOrderList;
-        }
-
-        @NonNull
-        @Override
-        public ShopOrderHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-            LayoutInflater inflater = requireActivity().getLayoutInflater();
-            return new ShopOrderHolder(inflater, parent);
-        }
-
-        @Override
-        public void onBindViewHolder(@NonNull ShopOrderHolder holder, int position) {
-            ShopOrder shopOrder = mShopOrderList.get(position);
-            holder.bind(shopOrder);
-        }
-
-        @Override
-        public int getItemCount() {
-            return mShopOrderList.size();
-        }
+    public int getItemCount() {
+        return mShopOrderList.size();
     }
 }
