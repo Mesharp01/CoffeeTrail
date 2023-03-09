@@ -5,17 +5,22 @@ import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentActivity;
+import androidx.fragment.app.FragmentManager;
 import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.lifecycle.ViewModelStoreOwner;
 
+import android.os.Handler;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Surface;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.example.coffeetrail.R;
 import com.example.coffeetrail.model.CoffeeShop;
@@ -32,7 +37,6 @@ public class AccountFragment extends Fragment implements View.OnClickListener {
     private EditText mUsername;
     private EditText mPassword;
     private UserAccountViewModel mUserAccountViewModel;
-
     private final List<UserAccount> mUserAccountList = new CopyOnWriteArrayList<>();
 
     @Override
@@ -88,15 +92,15 @@ public class AccountFragment extends Fragment implements View.OnClickListener {
 
         }
     }
+
     private void createAccount(){
-        final String username = mUsername.getText().toString();
-        final String password = mPassword.getText().toString();
-        if(!TextUtils.isEmpty(username) && !TextUtils.isEmpty(password)) {
-            UserAccount newUser = new UserAccount(username, password);
-            if(!mUserAccountList.contains(newUser)) {
-                mUserAccountViewModel.insert(newUser);
-            }
-        }
+        FragmentManager fm = getParentFragmentManager();
+        Fragment fragment = new CreateAccountFragment();
+        fm.beginTransaction()
+                .replace(R.id.fragment_container, fragment)
+                .addToBackStack("create_account_fragment")
+                .commit();
+
     }
     /*
     LifeCycle Methods

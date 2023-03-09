@@ -7,6 +7,7 @@ import androidx.room.Fts4;
 import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
 
+import java.util.Objects;
 import java.util.UUID;
 
 @Fts4  /* Supports full-text search */
@@ -39,9 +40,8 @@ public class UserAccount {
         return mName.equals(that.mName) && mPassword.equals(that.mPassword);
     }
     @Override
-    public int hashCode(){
-
-        return 0;
+    public int hashCode() {
+        return Objects.hash(mUid, mName, mPassword);
     }
     @NonNull
     @Override
