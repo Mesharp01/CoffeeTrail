@@ -12,7 +12,7 @@
         android:theme="@style/Theme.CoffeeTrail"
         tools:targetApi="31">
         <activity
-            android:name=".ui.activity.ShopOrderActivity"
+            android:name=".ui.activity.ShopListActivity"
             android:exported="true" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -24,7 +24,7 @@
             android:name=".ui.activity.AccountActivity"
             android:parentActivityName=".ui.activity.ShopListActivity"/>
         <activity
-            android:name=".ui.activity.ShopListActivity" />
+            android:name=".ui.activity.ShopOrderActivity" />
     </application>
 
 </manifest>

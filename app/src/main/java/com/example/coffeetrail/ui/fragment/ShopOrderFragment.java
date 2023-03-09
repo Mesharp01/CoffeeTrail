@@ -51,7 +51,6 @@ public class ShopOrderFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.shoporder_recycler_view, container, false);
-
         return v;
     }
 
