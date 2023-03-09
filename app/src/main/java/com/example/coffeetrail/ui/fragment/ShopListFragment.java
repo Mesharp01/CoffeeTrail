@@ -24,7 +24,6 @@ import com.example.coffeetrail.model.UserAccountViewModel;
 
 public class ShopListFragment extends Fragment {
     private CoffeeShopViewModel mShopViewModel;
-    private Button mVisitButton;
     private FragmentShopListBinding binding;
     String[] shopArray = {"Starbucks","Dunkin","Kafe Kerouac","Sweetwaters",
             "WebOS","Ubuntu","Windows7","Max OS X"};
@@ -37,9 +36,6 @@ public class ShopListFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        //binding = FragmentShopListBinding.inflate(inflater, container, false);
-        //View v = binding.getRoot();
-        //return v;
         View v = inflater.inflate(R.layout.shoplist_recycler_view, container, false);
         return v;
     }
@@ -72,3 +68,5 @@ public class ShopListFragment extends Fragment {
 
     }
 }
+
+

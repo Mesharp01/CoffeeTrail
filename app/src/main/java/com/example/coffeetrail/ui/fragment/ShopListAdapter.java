@@ -7,7 +7,6 @@ import androidx.recyclerview.widget.DiffUtil;
 import androidx.recyclerview.widget.ListAdapter;
 
 import com.example.coffeetrail.model.CoffeeShop;
-import com.example.coffeetrail.model.ShopOrder;
 
 public class ShopListAdapter extends ListAdapter<CoffeeShop, ShopListHolder> {
     public ShopListAdapter(@NonNull DiffUtil.ItemCallback<CoffeeShop> diffCallback) {
