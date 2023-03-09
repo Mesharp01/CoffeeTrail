@@ -28,8 +28,6 @@ import com.example.coffeetrail.ui.activity.ShopListActivity;
 public class ShopListFragment extends Fragment{
     private CoffeeShopViewModel mShopViewModel;
     private FragmentShopListBinding binding;
-    String[] shopArray = {"Starbucks","Dunkin","Kafe Kerouac","Sweetwaters",
-            "WebOS","Ubuntu","Windows7","Max OS X"};
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -66,9 +64,9 @@ public class ShopListFragment extends Fragment{
 
     private void fillCoffeeShopTable(){
         CoffeeShop c1 = new CoffeeShop(1, "The Bexley Coffee Shop", "https://www.facebook.com/BexleyCoffeeShop/", "492 N Cassady Ave Bexley, OH 43209" );
-
+        CoffeeShop c2 = new CoffeeShop(2,"Boston Stoker Coffee Co.", "https://bostonstoker.com/", "10855 Engle Rd Vandalia, OH 45377");
         mShopViewModel.insert(c1);
-
+        mShopViewModel.insert(c2);
     }
 }
 
