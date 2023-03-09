@@ -28,6 +28,13 @@ public class UserAccount {
         mPassword = password;
     }
 
+    public UserAccount(int id, @NonNull String name,
+                       @NonNull String password) {
+        mUid = id;
+        mName = name;
+        mPassword = password;
+    }
+
     public String getName() { return mName; }
     public String getPassword() { return mPassword; }
     /* equals(), hashCode(), and toString() methods */

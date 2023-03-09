@@ -21,10 +21,13 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".ui.activity.AccountActivity"
+            android:name=".ui.activity.AccountActivity" />
+        <activity
+            android:name=".ui.activity.ShopOrderActivity"
             android:parentActivityName=".ui.activity.ShopListActivity"/>
         <activity
-            android:name=".ui.activity.ShopOrderActivity" />
+            android:name=".ui.activity.MakePostActivity"
+            android:parentActivityName=".ui.activity.ShopListActivity"/>
     </application>
 
 </manifest>

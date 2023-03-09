@@ -1,6 +1,7 @@
 package com.example.coffeetrail.ui.fragment;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.activity.result.ActivityResultCallback;
@@ -32,7 +33,7 @@ import com.example.coffeetrail.model.ShopOrderViewModel;
 import java.util.List;
 
 public class ShopOrderFragment extends Fragment {
-    private ShopOrderViewModel mShopOrderViewModel;
+    public ShopOrderViewModel mShopOrderViewModel;
     private List<ShopOrder> mShopOrderList;
     private ShopOrderAdapter mShopOrderAdapter;
 
@@ -66,7 +67,7 @@ public class ShopOrderFragment extends Fragment {
     }
 
     private void fillShopOrderTable(){
-        ShopOrder o1 = new ShopOrder("10/10 coffee", 0, 0);
+        ShopOrder o1 = new ShopOrder("10/10 coffee", 1, 1);
 
         mShopOrderViewModel.insert(o1);
 

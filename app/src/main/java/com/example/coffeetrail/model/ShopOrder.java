@@ -8,6 +8,7 @@ import androidx.room.PrimaryKey;
 import androidx.room.ForeignKey;
 import androidx.room.TypeConverters;
 
+import java.io.Serializable;
 import java.util.Date;
 
 //@Fts4
@@ -19,7 +20,7 @@ import java.util.Date;
                         parentColumns = "rowid",
                         childColumns = "shop_id")
         })
-public class ShopOrder {
+public class ShopOrder implements Serializable {
     @PrimaryKey(autoGenerate = true)
     @ColumnInfo(name = "rowid")
     public int oid;

@@ -12,14 +12,16 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.coffeetrail.R;
 import com.example.coffeetrail.ui.activity.MakePostActivity;
+import com.example.coffeetrail.ui.activity.ShopListActivity;
 import com.example.coffeetrail.ui.activity.ShopOrderActivity;
 
-public class ShopListHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+public class ShopListHolder extends RecyclerView.ViewHolder {
     private final TextView mShopListTextView;
     private Button mVisitButton;
     private Button mViewOrdersButton;
     private Context context;
     private Intent intent;
+
 
     private ShopListHolder(View itemView) {
         super(itemView);
@@ -38,17 +40,16 @@ public class ShopListHolder extends RecyclerView.ViewHolder implements View.OnCl
         return new ShopListHolder(view);
     }
 
-    @Override
-    public void onClick(View view) {
+    //@Override
+    /*public void onClick(View view) {
         final int viewId = view.getId();
         if (viewId == R.id.see_orders_button) {
             context = view.getContext();
             intent =  new Intent(context, ShopOrderActivity.class);
-            //intent.putExtra(, SHOP_ID);
         } else if (viewId == R.id.visit_shop_button) {
             context = view.getContext();
             intent =  new Intent(context, MakePostActivity.class);
         }
-        context.startActivity(intent);
-    }
+        view.getContext().startActivity(intent);
+    }*/
 }

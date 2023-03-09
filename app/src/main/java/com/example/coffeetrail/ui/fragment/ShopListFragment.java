@@ -1,6 +1,7 @@
 package com.example.coffeetrail.ui.fragment;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -21,8 +22,10 @@ import com.example.coffeetrail.model.CoffeeShop;
 import com.example.coffeetrail.model.CoffeeShopViewModel;
 import com.example.coffeetrail.model.ShopOrderViewModel;
 import com.example.coffeetrail.model.UserAccountViewModel;
+import com.example.coffeetrail.ui.activity.MakePostActivity;
+import com.example.coffeetrail.ui.activity.ShopListActivity;
 
-public class ShopListFragment extends Fragment {
+public class ShopListFragment extends Fragment{
     private CoffeeShopViewModel mShopViewModel;
     private FragmentShopListBinding binding;
     String[] shopArray = {"Starbucks","Dunkin","Kafe Kerouac","Sweetwaters",
@@ -62,7 +65,7 @@ public class ShopListFragment extends Fragment {
     }
 
     private void fillCoffeeShopTable(){
-        CoffeeShop c1 = new CoffeeShop("The Bexley Coffee Shop", "https://www.facebook.com/BexleyCoffeeShop/", "492 N Cassady Ave Bexley, OH 43209" );
+        CoffeeShop c1 = new CoffeeShop(1, "The Bexley Coffee Shop", "https://www.facebook.com/BexleyCoffeeShop/", "492 N Cassady Ave Bexley, OH 43209" );
 
         mShopViewModel.insert(c1);
 

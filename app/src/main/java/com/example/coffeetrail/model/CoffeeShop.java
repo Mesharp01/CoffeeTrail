@@ -32,6 +32,13 @@ public class CoffeeShop {
         mUrl = url;
         mLocation = location;
     }
+    public CoffeeShop(int id, @NonNull String name,
+                      @NonNull String url, @NonNull String location) {
+        mSid = id;
+        mName = name;
+        mUrl = url;
+        mLocation = location;
+    }
     public String getName() { return mName; }
     public String getUrl() { return mUrl; }
     public String getLocation() { return mLocation; }
