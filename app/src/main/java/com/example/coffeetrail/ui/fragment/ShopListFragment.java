@@ -25,8 +25,6 @@ import com.example.coffeetrail.model.UserAccountViewModel;
 public class ShopListFragment extends Fragment {
     private CoffeeShopViewModel mShopViewModel;
     private FragmentShopListBinding binding;
-    String[] shopArray = {"Starbucks","Dunkin","Kafe Kerouac","Sweetwaters",
-            "WebOS","Ubuntu","Windows7","Max OS X"};
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -68,5 +66,4 @@ public class ShopListFragment extends Fragment {
 
     }
 }
-
 
