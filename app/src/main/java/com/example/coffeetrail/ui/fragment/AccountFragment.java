@@ -32,7 +32,6 @@ public class AccountFragment extends Fragment implements View.OnClickListener {
         Log.d(TAG, "onCreate() called");
         Activity activity = requireActivity();
         mUserAccountViewModel = new ViewModelProvider((ViewModelStoreOwner) activity).get(UserAccountViewModel.class);
-        //addAccountToTable();
     }
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -109,13 +108,6 @@ public class AccountFragment extends Fragment implements View.OnClickListener {
     public void onDestroy(){
         super.onDestroy();
         Log.d(TAG, "onDestroy() called");
-    }
-
-    private void addAccountToTable(){
-        UserAccount a1 = new UserAccount(1, "Test", "Test");
-
-        mUserAccountViewModel.insert(a1);
-
     }
 
 }

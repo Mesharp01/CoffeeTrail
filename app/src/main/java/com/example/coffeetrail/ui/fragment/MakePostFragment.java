@@ -3,6 +3,7 @@ package com.example.coffeetrail.ui.fragment;
 import android.content.Intent;
 import android.os.Bundle;
 
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
 import androidx.fragment.app.FragmentManager;
@@ -71,12 +72,16 @@ public class MakePostFragment extends Fragment implements View.OnClickListener{
         final int viewId = v.getId();
         if (viewId == R.id.post_button) {
             ShopOrder newOrder = createShopOrder();
-            ShopListFragment fragment =new ShopListFragment();
-            FragmentManager fragmentManager=getActivity().getSupportFragmentManager();
-            FragmentTransaction fragmentTransaction=fragmentManager.beginTransaction();
-            fragmentTransaction.replace(R.id.fragment_container,fragment,"postCreated");
-            fragmentTransaction.addToBackStack(null);
-            fragmentTransaction.commit();
+            String postContent = newOrder.getDesc();
+
+            Bundle bundle = new Bundle();
+            bundle.putString("postContent", postContent);
+
+            ShopOrderFragment orderFragment = new ShopOrderFragment();
+            orderFragment.setArguments(bundle);
+
+            AppCompatActivity activity = (AppCompatActivity) v.getContext();
+            activity.getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, orderFragment).addToBackStack(null).commit();
         }
     }
 }

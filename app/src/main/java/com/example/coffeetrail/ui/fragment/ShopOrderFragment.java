@@ -37,6 +37,7 @@ public class ShopOrderFragment extends Fragment {
     private List<ShopOrder> mShopOrderList;
     private ShopOrderAdapter mShopOrderAdapter;
     private String storeName;
+    private String postContent;
 
     private LiveData<List<ShopOrder>> mShopOrderLiveData = new MutableLiveData<>();
 
@@ -55,7 +56,10 @@ public class ShopOrderFragment extends Fragment {
         View v = inflater.inflate(R.layout.shoporder_recycler_view, container, false);
         Bundle bundle = this.getArguments();
         if(bundle != null) {
-            storeName = bundle.get("name").toString();
+            //storeName = bundle.get("name").toString();
+            postContent = bundle.get("postContent").toString();
+            ShopOrder o1 = new ShopOrder(postContent, 1, 1);
+            mShopOrderViewModel.insert(o1);
         }
         return v;
     }
@@ -68,7 +72,7 @@ public class ShopOrderFragment extends Fragment {
         final ShopOrderAdapter adapter = new ShopOrderAdapter(new ShopOrderAdapter.ShopOrderDiff());
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(activity));
-        fillShopOrderTable();
+        //fillShopOrderTable();
     }
 
     private void fillShopOrderTable(){
