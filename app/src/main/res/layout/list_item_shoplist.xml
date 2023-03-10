@@ -15,10 +15,15 @@
         android:id="@+id/see_orders_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Past Orders" />
+        android:layout_gravity="right"
+        android:text="Past Orders"
+        android:textSize="10sp" />
+
     <Button
         android:id="@+id/visit_shop_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Visit" />
+        android:layout_gravity="right"
+        android:text="Visit"
+        android:textSize="10sp" />
 </LinearLayout>

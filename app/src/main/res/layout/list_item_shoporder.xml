@@ -15,4 +15,26 @@
         android:layout_marginLeft="8dp"
         android:layout_marginRight="8dp"
         xmlns:android="http://schemas.android.com/apk/res/android" />
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:paddingLeft="16dp"
+        android:paddingRight="16dp"
+        android:orientation="horizontal" >
+        <Button
+            android:id="@+id/edit_post_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="right"
+            android:text="Edit"
+            android:textSize="10sp" />
+
+        <Button
+            android:id="@+id/delete_post_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="right"
+            android:text="Delete"
+            android:textSize="10sp" />
+    </LinearLayout>
 </LinearLayout>
