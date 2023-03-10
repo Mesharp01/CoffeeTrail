@@ -25,19 +25,18 @@ public class ShopOrder implements Serializable {
     @ColumnInfo(name = "rowid")
     public int oid;
 
-    @NonNull
     @ColumnInfo(name = "description")
     public String desc;
 
-    @NonNull
+
     @ColumnInfo(name = "date")
     public Date date;
 
-    @NonNull
+
     @ColumnInfo(name = "user_id")
     public String uid;
 
-    @NonNull
+
     @ColumnInfo(name = "shop_id")
     public String sid;
 

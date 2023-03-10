@@ -39,6 +39,9 @@ public class ShopOrderViewModel extends AndroidViewModel {
         return mRepository.findShopOrderByUidAndSid(shopOrder);
     }
 
+    public LiveData<List<ShopOrder>> getShopOrdersForUserAndShop(String userName, String shopName)
+    { return mRepository.findShopOrderByUidAndSid(userName, shopName); }
+
     public LiveData<List<ShopOrder>> getAllShopOrders() { return mRepository.getAllShopOrders(); }
 
     public void insert(ShopOrder shopOrder) {

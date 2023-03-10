@@ -17,6 +17,9 @@ public class ShopOrderRepository {
 // Observed LiveData notify observer upon data change.
     LiveData<List<ShopOrder>> getAllShopOrders() {
         return mAllOrders; }
+
+    LiveData<List<ShopOrder>> findShopOrderByUidAndSid(String uid, String sid) {
+        return mShopOrderDao.findAllByUserAndShop(uid, sid); }
     LiveData<ShopOrder> findShopOrderByUidAndSid(
             ShopOrder o) {
         return mShopOrderDao.findByUserIdAndShopId(

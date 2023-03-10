@@ -78,7 +78,7 @@ public class ShopListHolder extends RecyclerView.ViewHolder implements View.OnCl
 
             Bundle bundle = new Bundle();
             bundle.putString("userId", currentUser);
-            bundle.putString("shop", currentStore);
+            bundle.putString("shop", storeName);
             bundle.putString("postContent", newPost);
 
             ShopOrderFragment orderFragment = new ShopOrderFragment();

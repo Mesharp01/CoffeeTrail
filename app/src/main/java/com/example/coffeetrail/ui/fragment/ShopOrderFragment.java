@@ -76,6 +76,11 @@ public class ShopOrderFragment extends Fragment {
         final ShopOrderAdapter adapter = new ShopOrderAdapter(new ShopOrderAdapter.ShopOrderDiff());
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(activity));
+
+        mShopOrderViewModel.getShopOrdersForUserAndShop(userId, storeName).observe(this, orders -> {
+            // Update the cached copy of the words in the adapter.
+            adapter.submitList(orders);
+        });
     }
 
     public int getItemCount() {
