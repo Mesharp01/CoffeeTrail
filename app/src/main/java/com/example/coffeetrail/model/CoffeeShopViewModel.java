@@ -26,6 +26,16 @@ public class CoffeeShopViewModel extends AndroidViewModel {
         }
     }
 
+    public String getStoreName(int shopId){
+        String name = mRepository.findShopById(shopId);
+        return name;
+    }
+
+    public int getStoreId(String name){
+        int id = mRepository.findShopByName(name);
+        return id;
+    }
+
     public void nukeTable(){
         mRepository.nukeTable();
     }

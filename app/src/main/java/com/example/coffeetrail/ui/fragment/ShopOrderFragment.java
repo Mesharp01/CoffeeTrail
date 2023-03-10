@@ -33,6 +33,7 @@ public class ShopOrderFragment extends Fragment {
     private List<ShopOrder> mShopOrderList;
     private ShopOrderAdapter mShopOrderAdapter;
     private String storeName;
+    private String userId;
     private String postContent;
 
     private LiveData<List<ShopOrder>> mShopOrderLiveData = new MutableLiveData<>();
@@ -52,11 +53,17 @@ public class ShopOrderFragment extends Fragment {
         View v = inflater.inflate(R.layout.shoporder_recycler_view, container, false);
         Bundle bundle = this.getArguments();
         if(bundle != null) {
-            //TODO: figure out how to label bundles, shop order might receive bundles from MakePost and ShopList...
-            storeName = bundle.get("name").toString();
-            //postContent = bundle.get("postContent").toString();
-            //ShopOrder o1 = new ShopOrder(postContent, 1, 1);
-            //mShopOrderViewModel.insert(o1);
+            if(bundle.getString("shop") != null){
+                storeName = bundle.get("shop").toString();
+            }
+            if(bundle.getString("userId") != null){
+                userId = bundle.get("userId").toString();
+            }
+            if(bundle.get("postContent") != null){
+                postContent = bundle.get("postContent").toString();
+                ShopOrder o1 = new ShopOrder(postContent, userId, storeName);
+                mShopOrderViewModel.insert(o1);
+            }
         }
         return v;
     }
@@ -65,19 +72,12 @@ public class ShopOrderFragment extends Fragment {
     public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         Activity activity = requireActivity();
-        RecyclerView recyclerView = view.findViewById(R.id.recyclerview);
+        RecyclerView recyclerView = view.findViewById(R.id.recyclerview, storeName, userId, postContent);
         final ShopOrderAdapter adapter = new ShopOrderAdapter(new ShopOrderAdapter.ShopOrderDiff());
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(activity));
-        //fillShopOrderTable();
     }
 
-    private void fillShopOrderTable(){
-        ShopOrder o1 = new ShopOrder(storeName, 1, 1);
-
-        mShopOrderViewModel.insert(o1);
-
-    }
     public int getItemCount() {
         return mShopOrderList.size();
     }

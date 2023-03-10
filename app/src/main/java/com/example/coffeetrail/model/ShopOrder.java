@@ -14,10 +14,10 @@ import java.util.Date;
 //@Fts4
 @Entity(tableName = "shoporder", foreignKeys = {
                 @ForeignKey(entity = UserAccount.class,
-                        parentColumns = "rowid",
+                        parentColumns = "name",
                         childColumns = "user_id"),
                 @ForeignKey(entity = CoffeeShop.class,
-                        parentColumns = "rowid",
+                        parentColumns = "name",
                         childColumns = "shop_id")
         })
 public class ShopOrder implements Serializable {
@@ -35,13 +35,13 @@ public class ShopOrder implements Serializable {
 
     @NonNull
     @ColumnInfo(name = "user_id")
-    public int uid;
+    public String uid;
 
     @NonNull
     @ColumnInfo(name = "shop_id")
-    public int sid;
+    public String sid;
 
-    public ShopOrder(@NonNull String postContent, @NonNull int userId, @NonNull int shopId){
+    public ShopOrder(@NonNull String postContent, @NonNull String userId, @NonNull String shopId){
         desc = postContent;
         uid = userId;
         sid = shopId;
@@ -50,9 +50,9 @@ public class ShopOrder implements Serializable {
 
     public ShopOrder(){
     }
-    public int getShopId(){return sid;}
+    public String getShopId(){return sid;}
 
-    public int getUserId(){return uid;}
+    public String getUserId(){return uid;}
 
     public int getOrderId(){return oid;}
 

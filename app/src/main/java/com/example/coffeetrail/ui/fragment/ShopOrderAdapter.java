@@ -11,8 +11,15 @@ import com.example.coffeetrail.model.FragmentCommunication;
 import com.example.coffeetrail.model.ShopOrder;
 
 public class ShopOrderAdapter extends ListAdapter<ShopOrder, ShopOrderHolder> {
-    public ShopOrderAdapter(@NonNull DiffUtil.ItemCallback<ShopOrder> diffCallback) {
+    private String currentStore;
+    private String currentUser;
+
+    private String currentPost;
+    public ShopOrderAdapter(@NonNull DiffUtil.ItemCallback<ShopOrder> diffCallback, String storeName, String userId, String postContent) {
         super(diffCallback);
+        currentPost = postContent;
+        currentStore = storeName;
+        currentUser = userId;
     }
 
     @Override

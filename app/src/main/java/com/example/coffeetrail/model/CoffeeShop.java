@@ -5,24 +5,27 @@ import androidx.lifecycle.ViewModel;
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.Fts4;
+import androidx.room.Index;
 import androidx.room.PrimaryKey;
 
 import java.util.UUID;
 
 //@Fts4 /* Supports full-text search */
-@Entity(tableName = "coffeeshop")
+@Entity(tableName = "coffeeshop", indices = {@Index(value = {"name"},
+        unique = true)})
 public class CoffeeShop {
     @PrimaryKey(autoGenerate = true)
     @ColumnInfo(name = "rowid")
     public int mSid;
-    @NonNull
+
+    //@NonNull
     @ColumnInfo(name = "name")
     public String mName;
-    @NonNull
+    //@NonNull
     @ColumnInfo(name = "url")
     public String mUrl;
 
-    @NonNull
+    //@NonNull
     @ColumnInfo(name = "location")
     public String mLocation;
 

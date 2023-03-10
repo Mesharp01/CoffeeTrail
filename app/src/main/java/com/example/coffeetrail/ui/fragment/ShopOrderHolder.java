@@ -24,6 +24,5 @@ public class ShopOrderHolder extends RecyclerView.ViewHolder {
     static ShopOrderHolder create(ViewGroup parent) {
         View view = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.list_item_shoporder, parent, false);
-        return new ShopOrderHolder(view);
     }
 }

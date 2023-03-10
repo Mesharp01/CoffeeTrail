@@ -30,6 +30,9 @@ import com.example.coffeetrail.ui.activity.ShopListActivity;
 public class ShopListFragment extends Fragment{
     private CoffeeShopViewModel mShopViewModel;
     private FragmentShopListBinding binding;
+    public String currentUser;
+    public String currentStore;
+    public String currentPost;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -40,6 +43,16 @@ public class ShopListFragment extends Fragment{
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.shoplist_recycler_view, container, false);
+        Bundle bundle = this.getArguments();
+        if(bundle.getString("shop") != null){
+            currentStore = bundle.get("shop").toString();
+        }
+        if(bundle.getString("userId") != null){
+            currentUser = bundle.get("userId").toString();
+        }
+        if(bundle.get("postContent") != null){
+            currentPost = bundle.get("postContent").toString();
+        }
         return v;
     }
 
@@ -47,11 +60,11 @@ public class ShopListFragment extends Fragment{
     public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         Activity activity = requireActivity();
+        mShopViewModel = new ViewModelProvider(this).get(CoffeeShopViewModel.class);
         RecyclerView recyclerView = view.findViewById(R.id.recyclerview);
-        final ShopListAdapter adapter = new ShopListAdapter(new ShopListAdapter.ShopListDiff());
+        final ShopListAdapter adapter = new ShopListAdapter(new ShopListAdapter.ShopListDiff(), currentUser, currentStore, currentPost);
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(activity));
-        mShopViewModel = new ViewModelProvider(this).get(CoffeeShopViewModel.class);
 
         mShopViewModel.getAllCoffeeShops().observe(this, shops -> {
             // Update the cached copy of the words in the adapter.
@@ -67,7 +80,7 @@ public class ShopListFragment extends Fragment{
     }
 
     private void fillCoffeeShopTable(){
-        mShopViewModel.nukeTable();
+        //mShopViewModel.nukeTable();
         CoffeeShop c1 = new CoffeeShop(1, "The Bexley Coffee Shop", "https://www.facebook.com/BexleyCoffeeShop/", "492 N Cassady Ave Bexley, OH 43209" );
         CoffeeShop c2 = new CoffeeShop(2,"Boston Stoker Coffee Co.", "https://bostonstoker.com/", "10855 Engle Rd Vandalia, OH 45377");
         mShopViewModel.insert(c1);

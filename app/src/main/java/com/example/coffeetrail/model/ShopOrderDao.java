@@ -14,12 +14,12 @@ public interface ShopOrderDao {
     @Query("SELECT oid, user_id, shop_id, description, date FROM shoporder")
     public LiveData<List<ShopOrder>> getAllShopOrders();
     @Query("SELECT oid, user_id, shop_id, description, date FROM shoporder WHERE user_id LIKE :uid AND shop_id LIKE :sid LIMIT 1")
-    public LiveData<ShopOrder> findByUserIdAndShopId(int uid, int sid);
+    public LiveData<ShopOrder> findByUserIdAndShopId(String uid, String sid);
     @Query("SELECT oid, user_id, shop_id, description, date FROM shoporder WHERE shop_id LIKE :sid")
-    public LiveData<ShopOrder> getAllByShopId(int sid);
+    public LiveData<ShopOrder> getAllByShopId(String sid);
 
     @Query("SELECT oid, user_id, shop_id, description, date FROM shoporder WHERE user_id LIKE :uid")
-    public LiveData<ShopOrder> getAllByUserId(int uid);
+    public LiveData<ShopOrder> getAllByUserId(String uid);
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     public void insert(ShopOrder shopOrder);
     @Update
