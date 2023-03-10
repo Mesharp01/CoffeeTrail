@@ -72,7 +72,7 @@ public class ShopOrderFragment extends Fragment {
     public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         Activity activity = requireActivity();
-        RecyclerView recyclerView = view.findViewById(R.id.recyclerview, storeName, userId, postContent);
+        RecyclerView recyclerView = view.findViewById(R.id.recyclerview);
         final ShopOrderAdapter adapter = new ShopOrderAdapter(new ShopOrderAdapter.ShopOrderDiff());
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(activity));

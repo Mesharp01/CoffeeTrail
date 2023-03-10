@@ -15,11 +15,8 @@ public class ShopOrderAdapter extends ListAdapter<ShopOrder, ShopOrderHolder> {
     private String currentUser;
 
     private String currentPost;
-    public ShopOrderAdapter(@NonNull DiffUtil.ItemCallback<ShopOrder> diffCallback, String storeName, String userId, String postContent) {
+    public ShopOrderAdapter(@NonNull DiffUtil.ItemCallback<ShopOrder> diffCallback) {
         super(diffCallback);
-        currentPost = postContent;
-        currentStore = storeName;
-        currentUser = userId;
     }
 
     @Override
