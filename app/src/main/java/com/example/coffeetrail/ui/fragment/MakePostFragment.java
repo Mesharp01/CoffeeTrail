@@ -32,6 +32,7 @@ public class MakePostFragment extends Fragment implements View.OnClickListener{
 
     private EditText mPost;
     private CoffeeShopViewModel mShopViewModel;
+    private TextView mTitleTextView;
 
     private String currentUser;
     private String currentStore;
@@ -49,6 +50,8 @@ public class MakePostFragment extends Fragment implements View.OnClickListener{
         Bundle bundle = this.getArguments();
         if(bundle.getString("shop") != null){
             currentStore = bundle.get("shop").toString();
+            mTitleTextView = v.findViewById(R.id.post_text);
+            mTitleTextView.setText("Make a post for " + currentStore);
         }
         if(bundle.getString("userId") != null){
             currentUser = bundle.get("userId").toString();
