@@ -44,7 +44,7 @@ public class ShopOrderFragment extends Fragment {
         super.onCreate(savedInstanceState);
         Activity activity = requireActivity();
         mShopOrderViewModel = new ViewModelProvider(this).get(ShopOrderViewModel.class);
-        mShopOrderViewModel.getAllShopOrders();
+        //mShopOrderViewModel.getAllShopOrders();
     }
 
     @Override
@@ -81,9 +81,5 @@ public class ShopOrderFragment extends Fragment {
             // Update the cached copy of the words in the adapter.
             adapter.submitList(orders);
         });
-    }
-
-    public int getItemCount() {
-        return mShopOrderList.size();
     }
 }

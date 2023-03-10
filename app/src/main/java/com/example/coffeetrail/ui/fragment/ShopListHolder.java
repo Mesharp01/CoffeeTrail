@@ -1,7 +1,5 @@
 package com.example.coffeetrail.ui.fragment;
 
-import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,16 +8,10 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.coffeetrail.R;
 import com.example.coffeetrail.model.CoffeeShopViewModel;
-import com.example.coffeetrail.model.FragmentCommunication;
-import com.example.coffeetrail.ui.activity.MakePostActivity;
-import com.example.coffeetrail.ui.activity.ShopListActivity;
-import com.example.coffeetrail.ui.activity.ShopOrderActivity;
 
 public class ShopListHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
     private final TextView mShopListTextView;

@@ -17,8 +17,8 @@ public class ShopOrderHolder extends RecyclerView.ViewHolder {
         mShopOrderTextView = itemView.findViewById(R.id.list_item_shoporder);
     }
 
-    void bind(String text) {
-        mShopOrderTextView.setText(text);
+    void bind(String textPost) {
+        mShopOrderTextView.setText(textPost);
     }
 
     static ShopOrderHolder create(ViewGroup parent) {

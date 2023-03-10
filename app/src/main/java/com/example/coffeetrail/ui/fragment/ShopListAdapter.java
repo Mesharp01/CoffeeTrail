@@ -1,8 +1,5 @@
 package com.example.coffeetrail.ui.fragment;
 
-import android.content.Intent;
-import android.os.Bundle;
-import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 
@@ -10,14 +7,8 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.DiffUtil;
 import androidx.recyclerview.widget.ListAdapter;
 
-import com.example.coffeetrail.R;
 import com.example.coffeetrail.model.CoffeeShop;
 import com.example.coffeetrail.model.CoffeeShopViewModel;
-import com.example.coffeetrail.model.FragmentCommunication;
-import com.example.coffeetrail.ui.activity.MakePostActivity;
-import com.example.coffeetrail.ui.activity.ShopOrderActivity;
-
-import java.util.List;
 
 public class ShopListAdapter extends ListAdapter<CoffeeShop, ShopListHolder> {
     private Button mPostButton;

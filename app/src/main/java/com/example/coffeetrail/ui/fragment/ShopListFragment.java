@@ -2,18 +2,13 @@ package com.example.coffeetrail.ui.fragment;
 
 import android.app.Activity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.ViewModelProvider;
-import androidx.lifecycle.ViewModelStoreOwner;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -21,11 +16,6 @@ import com.example.coffeetrail.R;
 import com.example.coffeetrail.databinding.FragmentShopListBinding;
 import com.example.coffeetrail.model.CoffeeShop;
 import com.example.coffeetrail.model.CoffeeShopViewModel;
-import com.example.coffeetrail.model.FragmentCommunication;
-import com.example.coffeetrail.model.ShopOrderViewModel;
-import com.example.coffeetrail.model.UserAccountViewModel;
-import com.example.coffeetrail.ui.activity.MakePostActivity;
-import com.example.coffeetrail.ui.activity.ShopListActivity;
 
 public class ShopListFragment extends Fragment{
     private CoffeeShopViewModel mShopViewModel;
