@@ -1,5 +1,6 @@
 package com.example.coffeetrail.ui.fragment;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -19,10 +20,11 @@ import com.example.coffeetrail.R;
 public class ShopOrderHolder extends RecyclerView.ViewHolder {
     private final TextView mShopOrderTextView;
     private Button mEditButton;
-    private Button mDeleteButton;
+    private Context mContext;
 
-    private ShopOrderHolder(View itemView) {
+    private ShopOrderHolder(Context context, View itemView) {
         super(itemView);
+        mContext = context;
         mShopOrderTextView = itemView.findViewById(R.id.list_item_shoporder);
         mEditButton = itemView.findViewById(R.id.edit_post_button);
         mEditButton.setOnClickListener(new View.OnClickListener() {
@@ -51,7 +53,7 @@ public class ShopOrderHolder extends RecyclerView.ViewHolder {
     static ShopOrderHolder create(ViewGroup parent) {
         View view = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.list_item_shoporder, parent, false);
-        return new ShopOrderHolder(view);
+        return new ShopOrderHolder(parent.getContext(), view);
     }
 
 
