@@ -14,7 +14,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.coffeetrail.R;
 
-public class ShopOrderHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+public class ShopOrderHolder extends RecyclerView.ViewHolder {
     private final TextView mShopOrderTextView;
     private Button mEditButton;
     private Button mDeleteButton;
@@ -22,10 +22,23 @@ public class ShopOrderHolder extends RecyclerView.ViewHolder implements View.OnC
     private ShopOrderHolder(View itemView) {
         super(itemView);
         mShopOrderTextView = itemView.findViewById(R.id.list_item_shoporder);
-        mEditButton = itemView.findViewById(R.id.see_orders_button);
-        mDeleteButton = itemView.findViewById(R.id.visit_shop_button);
-        mEditButton.setOnClickListener(this);
-        mDeleteButton.setOnClickListener(this);
+        mEditButton = itemView.findViewById(R.id.edit_post_button);
+        mDeleteButton = itemView.findViewById(R.id.delete_post_button);
+        mEditButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Toast.makeText(view.getContext(), "edit clicked", Toast.LENGTH_SHORT).show();
+
+            }
+        });
+
+        mDeleteButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Toast.makeText(view.getContext(), "delete clicked", Toast.LENGTH_SHORT).show();
+
+            }
+        });
     }
 
     void bind(String textPost) {
@@ -38,14 +51,5 @@ public class ShopOrderHolder extends RecyclerView.ViewHolder implements View.OnC
         return new ShopOrderHolder(view);
     }
 
-    public void onClick(View view) {
-        final int viewId = view.getId();
-        FragmentActivity activity = requireActivity();
-        if (viewId == R.id.edit_post_button) {
 
-        } else if (viewId == R.id.delete_post_button) {
-            Toast.makeText(activity.getApplicationContext(), "Post Deleted", Toast.LENGTH_SHORT).show();
-
-        }
-    }
 }

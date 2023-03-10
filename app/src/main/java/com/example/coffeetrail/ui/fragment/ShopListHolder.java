@@ -77,7 +77,7 @@ public class ShopListHolder extends RecyclerView.ViewHolder implements View.OnCl
             orderFragment.setArguments(bundle);
 
             AppCompatActivity activity = (AppCompatActivity) view.getContext();
-            activity.getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, orderFragment).addToBackStack(null).commit();
+            activity.getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, orderFragment, "SHOP_ORDER_FRAGMENT").addToBackStack(null).commit();
         }
     }
 }
