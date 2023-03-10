@@ -29,4 +29,6 @@ public interface ShopOrderDao {
     public void updateOrder(ShopOrder shopOrder);
     @Delete
     public void delete(ShopOrder shopOrder);
+    @Query("UPDATE shoporder SET description=:description WHERE oid = :oid")
+    public void update(String description, int oid);
 }

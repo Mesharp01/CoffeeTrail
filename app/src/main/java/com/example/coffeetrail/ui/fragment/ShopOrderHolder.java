@@ -2,6 +2,7 @@ package com.example.coffeetrail.ui.fragment;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,11 +17,13 @@ import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.coffeetrail.R;
+import com.example.coffeetrail.model.ShopOrder;
 
 public class ShopOrderHolder extends RecyclerView.ViewHolder {
     private final TextView mShopOrderTextView;
     private Button mEditButton;
     private Context mContext;
+    private ShopOrder mShopOrder;
 
     private ShopOrderHolder(Context context, View itemView) {
         super(itemView);
@@ -30,24 +33,31 @@ public class ShopOrderHolder extends RecyclerView.ViewHolder {
         mEditButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(view.getContext(), "edit clicked", Toast.LENGTH_SHORT).show();
                 modifyPost();
-
             }
         });
 
     }
     public void modifyPost(){
-        FragmentManager fm = getParentFragmentManager();
+        Bundle bundle = new Bundle();
+        bundle.putSerializable("order",  mShopOrder);
+
+//        bundle.putInt("oid", mShopOrder.getOrderId());
+//        bundle.putInt("oid", mShopOrder.getOrderId());
+        ShopOrderFragment shopOrderFragment = (ShopOrderFragment) ((AppCompatActivity)mContext).getSupportFragmentManager().findFragmentByTag("SHOP_ORDER_FRAGMENT");
+
+        FragmentManager fm = shopOrderFragment.getParentFragmentManager();
         Fragment fragment = new ModifyPostFragment();
+        fragment.setArguments(bundle);
         fm.beginTransaction()
                 .replace(R.id.fragment_container, fragment)
                 .addToBackStack("modify_post_fragment")
                 .commit();
     }
 
-    void bind(String textPost) {
-        mShopOrderTextView.setText(textPost);
+    void bind(ShopOrder order) {
+        mShopOrder = order;
+        mShopOrderTextView.setText(mShopOrder.getDesc());
     }
 
     static ShopOrderHolder create(ViewGroup parent) {

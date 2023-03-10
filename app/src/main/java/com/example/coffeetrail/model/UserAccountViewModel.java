@@ -24,4 +24,5 @@ public class UserAccountViewModel extends AndroidViewModel {
 
     public void delete(UserAccount userAccount){ mRepository.delete(userAccount);}
     public void update(UserAccount userAccount){ mRepository.update(userAccount);}
+
 }

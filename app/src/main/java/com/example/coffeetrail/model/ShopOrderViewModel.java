@@ -58,4 +58,11 @@ public class ShopOrderViewModel extends AndroidViewModel {
         mRepository.update(shopOrder);
         mAllShopOrders = mRepository.getAllShopOrders();
     }
+
+
+    public void updatePostDesc(String desc, int oid){
+        mRepository.update(desc, oid);
+        mAllShopOrders = mRepository.getAllShopOrders();
+    }
+
 }

@@ -46,5 +46,9 @@ public class ShopOrderRepository {
     void update(ShopOrder o) {
         AppDatabase.databaseWriteExecutor.execute(() ->
                 mShopOrderDao.updateOrder(o));  }
-// lambda expression
+
+    public void update(String description, int oid){
+        AppDatabase.databaseWriteExecutor.execute(() ->
+                mShopOrderDao.update(description, oid));  }
+
 }

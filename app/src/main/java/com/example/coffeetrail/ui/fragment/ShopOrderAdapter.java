@@ -21,7 +21,7 @@ public class ShopOrderAdapter extends ListAdapter<ShopOrder, ShopOrderHolder> {
     @Override
     public void onBindViewHolder(ShopOrderHolder holder, int position) {
         ShopOrder current = getItem(position);
-        holder.bind(current.getDesc());
+        holder.bind(current);
     }
 
     static class ShopOrderDiff extends DiffUtil.ItemCallback<ShopOrder> {

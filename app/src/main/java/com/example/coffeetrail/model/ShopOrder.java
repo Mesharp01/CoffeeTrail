@@ -57,4 +57,8 @@ public class ShopOrder implements Serializable {
 
     public String getDesc(){return desc;}
 
+    public void setDesc(){
+
+    }
+
 }
