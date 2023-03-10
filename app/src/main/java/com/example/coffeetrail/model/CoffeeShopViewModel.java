@@ -19,7 +19,16 @@ public class CoffeeShopViewModel extends AndroidViewModel {
         mAllCoffeeShops = mRepository.getAllCoffeeShops();
     }
     public LiveData<List<CoffeeShop>> getAllCoffeeShops() { return mAllCoffeeShops; }
-    public void insert(CoffeeShop coffeeShop) { mRepository.insert(coffeeShop); }
+    public void insert(CoffeeShop coffeeShop) {
+        int id = coffeeShop.getId();
+        if (mRepository.getCoffeeShopById(id) == null) {
+            mRepository.insert(coffeeShop);
+        }
+    }
+
+    public void nukeTable(){
+        mRepository.nukeTable();
+    }
 
 
 }

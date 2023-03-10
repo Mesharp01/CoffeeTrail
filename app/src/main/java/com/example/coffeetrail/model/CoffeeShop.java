@@ -39,6 +39,7 @@ public class CoffeeShop {
         mUrl = url;
         mLocation = location;
     }
+    public int getId() { return mSid; }
     public String getName() { return mName; }
     public String getUrl() { return mUrl; }
     public String getLocation() { return mLocation; }

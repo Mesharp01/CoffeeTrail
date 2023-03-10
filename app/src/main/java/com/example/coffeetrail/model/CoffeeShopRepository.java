@@ -27,5 +27,19 @@ public class CoffeeShopRepository {
     void insert(CoffeeShop coffeeShop) {
         AppDatabase.databaseWriteExecutor.execute(() ->
                 mCoffeeShopDao.insert(coffeeShop)); }
+//    }
 // lambda expression
+    CoffeeShop getCoffeeShopById(int id) {
+        final CoffeeShop[] shop = new CoffeeShop[1];
+        AppDatabase.databaseWriteExecutor.execute( () ->
+                shop[0] = mCoffeeShopDao.getCoffeeShopById(id));
+        return shop[0];
+
+    }
+
+    void nukeTable(){
+        AppDatabase.databaseWriteExecutor.execute(() ->
+                mCoffeeShopDao.nukeTable()); }
+
+
 }
