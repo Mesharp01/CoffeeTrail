@@ -29,5 +29,11 @@ public class UserAccountRepository {
     void insert(UserAccount userAccount) {
         AppDatabase.databaseWriteExecutor.execute(() ->
                 mUserAccountDao.insert(userAccount));  }
+    void delete(UserAccount userAccount) {
+        AppDatabase.databaseWriteExecutor.execute(() ->
+                mUserAccountDao.delete(userAccount));  }
+    void update(UserAccount userAccount) {
+        AppDatabase.databaseWriteExecutor.execute(() ->
+                mUserAccountDao.updateUserAccount(userAccount));  }
 // lambda expression
 }

@@ -11,7 +11,6 @@ import androidx.lifecycle.ViewModelStoreOwner;
 
 import android.os.Handler;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -28,30 +27,28 @@ import java.util.concurrent.CopyOnWriteArrayList;
 
 /**
  * A simple {@link Fragment} subclass.
- * Use the {@link CreateAccountFragment#newInstance} factory method to
+ * Use the {@link ModifyAccountFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class CreateAccountFragment extends Fragment implements View.OnClickListener {
+public class ModifyAccountFragment extends Fragment implements View.OnClickListener {
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private Button mCancelButton, mCreateAccountButton;
+    private Button mCancelButton, mChangePasswordButton, mDeleteAccountButton;
     private EditText mUsername;
     private EditText mPassword;
-    private EditText mConfirmP;
+    private EditText mNewPassword;
+    private EditText mNewConfirm;
     private UserAccountViewModel mUserAccountViewModel;
     private final List<UserAccount> mUserAccountList = new CopyOnWriteArrayList<>();
-
-
-    public CreateAccountFragment() {
+    public ModifyAccountFragment() {
         // Required empty public constructor
     }
-
-    public static CreateAccountFragment newInstance(String param1, String param2) {
-        CreateAccountFragment fragment = new CreateAccountFragment();
+    public static ModifyAccountFragment newInstance(String param1, String param2) {
+        ModifyAccountFragment fragment = new ModifyAccountFragment();
         Bundle args = new Bundle();
         fragment.setArguments(args);
         return fragment;
     }
-
+    @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Activity activity = requireActivity();
@@ -65,41 +62,60 @@ public class CreateAccountFragment extends Fragment implements View.OnClickListe
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        View v = inflater.inflate(R.layout.fragment_create_account, container, false);
+        View v = inflater.inflate(R.layout.fragment_modify_account, container, false);
         mUsername = v.findViewById(R.id.username_text);
         mPassword = v.findViewById(R.id.password_text);
-        mConfirmP = v.findViewById(R.id.confirm_text);
+        mNewPassword = v.findViewById(R.id.new_password_text);
+        mNewConfirm = v.findViewById(R.id.confirm_text);
         mCancelButton = v.findViewById(R.id.cancel_button);
         mCancelButton.setOnClickListener(this);
-        mCreateAccountButton = v.findViewById(R.id.create_account_button);
-        mCreateAccountButton.setOnClickListener(this);
+        mChangePasswordButton = v.findViewById(R.id.change_password_button);
+        mChangePasswordButton.setOnClickListener(this);
+        mDeleteAccountButton = v.findViewById(R.id.delete_account_button);
+        mDeleteAccountButton.setOnClickListener(this);
         return v;
     }
     @Override
     public void onClick(View v){
         final int viewId = v.getId();
-        if (viewId == R.id.create_account_button) {
-            createAccount();
+        if (viewId == R.id.change_password_button) {
+            changePassword();
         } else if(viewId == R.id.cancel_button){
             returnToLogin();
+        } else if(viewId == R.id.delete_account_button){
+            deleteAccount();
         }
     }
     private void returnToLogin(){
         FragmentActivity activity = requireActivity();
         activity.getSupportFragmentManager().popBackStack();
     }
-    private void createAccount(){
+    private void changePassword(){
         final String username = mUsername.getText().toString();
         final String password = mPassword.getText().toString();
-        if(!TextUtils.isEmpty(username) && !TextUtils.isEmpty(password)) {
+        final String newPassword = mNewPassword.getText().toString();
+        final String newConfirm = mNewConfirm.getText().toString();
+        if(!TextUtils.isEmpty(username) && !TextUtils.isEmpty(password)
+                && !TextUtils.isEmpty(newPassword) && !TextUtils.isEmpty(newConfirm)
+                    && newPassword.equals(newConfirm)) {
             UserAccount newUser = new UserAccount(username, password);
-            if(!mUserAccountList.contains(newUser)) {
-                mUserAccountViewModel.insert(newUser);
+            if(mUserAccountList.contains(newUser)) {
+                mUserAccountList.remove(newUser);
+                newUser.mPassword = newPassword;
+                mUserAccountList.add(newUser);
             }
         }
-        FragmentActivity activity = requireActivity();
-        Toast.makeText(activity.getApplicationContext(), "New UserAccount added", Toast.LENGTH_SHORT).show();
-        new Handler().postDelayed(() -> returnToLogin(), 5000);
     }
+    private void deleteAccount(){
+        final String username = mUsername.getText().toString();
+        final String password = mPassword.getText().toString();
+        if(!TextUtils.isEmpty(username) && !TextUtils.isEmpty(password)){
+            UserAccount newUser = new UserAccount(username, password);
+            mUserAccountList.remove(newUser);
+        }
+        FragmentActivity activity = requireActivity();
+        Toast.makeText(activity.getApplicationContext(), "User Account deleted", Toast.LENGTH_SHORT).show();
+        new Handler().postDelayed(() -> returnToLogin(), 3000);
+    }
+
 }

@@ -33,7 +33,7 @@ import java.util.concurrent.CopyOnWriteArrayList;
 
 public class AccountFragment extends Fragment implements View.OnClickListener {
     private static final String TAG = "AccountFragment";
-    private Button mLoginButton, mCreateAccountButton;
+    private Button mLoginButton, mCreateAccountButton, mModifyAccountButton;
     private EditText mUsername;
     private EditText mPassword;
     private UserAccountViewModel mUserAccountViewModel;
@@ -61,6 +61,9 @@ public class AccountFragment extends Fragment implements View.OnClickListener {
         mLoginButton.setOnClickListener(this);
         mCreateAccountButton = v.findViewById(R.id.create_account_button);
         mCreateAccountButton.setOnClickListener(this);
+        mModifyAccountButton = v.findViewById(R.id.modify_account_button);
+        mModifyAccountButton.setOnClickListener(this);
+
         return v;
     }
 
@@ -76,6 +79,8 @@ public class AccountFragment extends Fragment implements View.OnClickListener {
             checkLogin();
         } else if(viewId == R.id.create_account_button){
             createAccount();
+        } else if (viewId == R.id.modify_account_button){
+            modifyAccount();
         }
     }
     private void checkLogin(){
@@ -102,6 +107,14 @@ public class AccountFragment extends Fragment implements View.OnClickListener {
                 .commit();
 
     }
+    public void modifyAccount(){
+        FragmentManager fm = getParentFragmentManager();
+        Fragment fragment = new ModifyAccountFragment();
+        fm.beginTransaction()
+                .replace(R.id.fragment_container, fragment)
+                .addToBackStack("modify_account_fragment")
+                .commit();
+    }
     /*
     LifeCycle Methods
      */
@@ -109,6 +122,11 @@ public class AccountFragment extends Fragment implements View.OnClickListener {
     public void onStart(){
         super.onStart();
         Log.d(TAG, "onStart() called");
+        Activity activity = requireActivity();
+        mUserAccountViewModel.getAllUserAccounts().observe((LifecycleOwner) activity, userAccounts -> {
+            mUserAccountList.clear();
+            mUserAccountList.addAll(userAccounts);
+        });
     }
 
     @Override

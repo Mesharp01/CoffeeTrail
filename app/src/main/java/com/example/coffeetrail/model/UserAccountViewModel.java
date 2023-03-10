@@ -21,4 +21,7 @@ public class UserAccountViewModel extends AndroidViewModel {
     // Methods for fetching a UserAccount, checking if UserAccount exists
     public LiveData<List<UserAccount>> getAllUserAccounts() { return mAllUserAccounts; }
     public void insert(UserAccount userAccount) { mRepository.insert(userAccount); }
+
+    public void delete(UserAccount userAccount){ mRepository.delete(userAccount);}
+    public void update(UserAccount userAccount){ mRepository.update(userAccount);}
 }
