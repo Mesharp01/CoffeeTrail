@@ -28,7 +28,7 @@ public class ShopOrderAdapter extends ListAdapter<ShopOrder, ShopOrderHolder> {
 
         @Override
         public boolean areItemsTheSame(@NonNull ShopOrder oldItem, @NonNull ShopOrder newItem) {
-            return oldItem == newItem;
+            return oldItem.getOrderId() == newItem.getOrderId();
         }
 
         @Override

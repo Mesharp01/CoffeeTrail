@@ -1,6 +1,7 @@
 package com.example.coffeetrail.ui.fragment;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -28,9 +29,12 @@ import com.example.coffeetrail.model.ShopOrderViewModel;
 import java.util.List;
 
 public class ShopOrderFragment extends Fragment {
-    private ShopOrderViewModel mShopOrderViewModel;
+    public ShopOrderViewModel mShopOrderViewModel;
     private List<ShopOrder> mShopOrderList;
     private ShopOrderAdapter mShopOrderAdapter;
+    private String storeName;
+    private String userId;
+    private String postContent;
 
     private LiveData<List<ShopOrder>> mShopOrderLiveData = new MutableLiveData<>();
 
@@ -40,13 +44,27 @@ public class ShopOrderFragment extends Fragment {
         super.onCreate(savedInstanceState);
         Activity activity = requireActivity();
         mShopOrderViewModel = new ViewModelProvider(this).get(ShopOrderViewModel.class);
-        mShopOrderViewModel.getAllShopOrders();
+        //mShopOrderViewModel.getAllShopOrders();
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.shoporder_recycler_view, container, false);
+        Bundle bundle = this.getArguments();
+        if(bundle != null) {
+            if(bundle.getString("shop") != null){
+                storeName = bundle.get("shop").toString();
+            }
+            if(bundle.getString("userId") != null){
+                userId = bundle.get("userId").toString();
+            }
+            if(bundle.get("postContent") != null){
+                postContent = bundle.get("postContent").toString();
+                ShopOrder o1 = new ShopOrder(postContent, userId, storeName);
+                mShopOrderViewModel.insert(o1);
+            }
+        }
         return v;
     }
 
@@ -58,16 +76,10 @@ public class ShopOrderFragment extends Fragment {
         final ShopOrderAdapter adapter = new ShopOrderAdapter(new ShopOrderAdapter.ShopOrderDiff());
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(activity));
-        fillShopOrderTable();
-    }
 
-    private void fillShopOrderTable(){
-        ShopOrder o1 = new ShopOrder("10/10 coffee", 0, 0);
-
-        mShopOrderViewModel.insert(o1);
-
-    }
-    public int getItemCount() {
-        return mShopOrderList.size();
+        mShopOrderViewModel.getShopOrdersForUserAndShop(userId, storeName).observe(this, orders -> {
+            // Update the cached copy of the words in the adapter.
+            adapter.submitList(orders);
+        });
     }
 }

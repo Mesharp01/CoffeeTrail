@@ -20,8 +20,20 @@ public interface CoffeeShopDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     public void insert(CoffeeShop coffeeShop);
+
+    @Query("SELECT rowid, name, url, location FROM coffeeshop WHERE rowid=:rowid ")
+    public CoffeeShop getCoffeeShopById(int rowid);
+
+    @Query("SELECT rowid, name, url, location FROM coffeeshop WHERE name=:name ")
+    public CoffeeShop getCoffeeShopByName(String name);
+
+    @Query("SELECT rowid, name FROM coffeeshop WHERE rowid=:rowid ")
+    public CoffeeShop getCoffeeShopNameId(int rowid);
     @Update
     public void update(CoffeeShop coffeeShop);
     @Delete
     public void delete(CoffeeShop coffeeShop);
+
+    @Query("DELETE FROM coffeeshop")
+    public void nukeTable();
 }

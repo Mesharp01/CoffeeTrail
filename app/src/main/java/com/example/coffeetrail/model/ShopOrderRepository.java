@@ -17,6 +17,9 @@ public class ShopOrderRepository {
 // Observed LiveData notify observer upon data change.
     LiveData<List<ShopOrder>> getAllShopOrders() {
         return mAllOrders; }
+
+    LiveData<List<ShopOrder>> findShopOrderByUidAndSid(String uid, String sid) {
+        return mShopOrderDao.findAllByUserAndShop(uid, sid); }
     LiveData<ShopOrder> findShopOrderByUidAndSid(
             ShopOrder o) {
         return mShopOrderDao.findByUserIdAndShopId(
@@ -35,5 +38,13 @@ public class ShopOrderRepository {
     void insert(ShopOrder o) {
         AppDatabase.databaseWriteExecutor.execute(() ->
                 mShopOrderDao.insert(o));  }
+
+    void delete(ShopOrder o) {
+        AppDatabase.databaseWriteExecutor.execute(() ->
+                mShopOrderDao.delete(o));  }
+
+    void update(ShopOrder o) {
+        AppDatabase.databaseWriteExecutor.execute(() ->
+                mShopOrderDao.updateOrder(o));  }
 // lambda expression
 }

@@ -5,18 +5,21 @@ import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.Fts4;
 import androidx.room.Ignore;
+import androidx.room.Index;
 import androidx.room.PrimaryKey;
 
 import java.util.Objects;
 import java.util.UUID;
 
-@Fts4  /* Supports full-text search */
-@Entity(tableName = "useraccount")
+//@Fts4  /* Supports full-text search */
+@Entity(tableName = "useraccount", indices = {@Index(value = {"name"},
+        unique = true)})
 public class UserAccount {
 
     @PrimaryKey(autoGenerate = true)
     @ColumnInfo(name = "rowid")
     public int mUid;
+
     @NonNull
     @ColumnInfo(name = "name")
     public String mName;
@@ -29,8 +32,17 @@ public class UserAccount {
         mPassword = password;
     }
 
+    public UserAccount(int id, @NonNull String name,
+                       @NonNull String password) {
+        mUid = id;
+        mName = name;
+        mPassword = password;
+    }
+
     public String getName() { return mName; }
     public String getPassword() { return mPassword; }
+
+    public int getId(){return mUid;}
     /* equals(), hashCode(), and toString() methods */
     @Override
     public boolean equals(Object o) {

@@ -10,7 +10,7 @@ import androidx.room.TypeConverters;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-@Database(entities = {UserAccount.class, CoffeeShop.class, ShopOrder.class}, version = 1,
+@Database(entities = {UserAccount.class, CoffeeShop.class, ShopOrder.class}, version = 5,
         exportSchema = false)
 @TypeConverters({Converters.class})
 public abstract class AppDatabase extends
@@ -28,7 +28,7 @@ public abstract class AppDatabase extends
             synchronized (AppDatabase.class) {
                 sInstance = Room.databaseBuilder(
                         context.getApplicationContext(),
-                        AppDatabase.class, "app_database").build();
+                        AppDatabase.class, "app_database").fallbackToDestructiveMigration().build();
             }
         }
         return sInstance;

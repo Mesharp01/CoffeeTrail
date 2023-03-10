@@ -1,21 +1,34 @@
 package com.example.coffeetrail.ui.fragment;
 
 import android.view.ViewGroup;
+import android.widget.Button;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.DiffUtil;
 import androidx.recyclerview.widget.ListAdapter;
 
 import com.example.coffeetrail.model.CoffeeShop;
+import com.example.coffeetrail.model.CoffeeShopViewModel;
 
 public class ShopListAdapter extends ListAdapter<CoffeeShop, ShopListHolder> {
-    public ShopListAdapter(@NonNull DiffUtil.ItemCallback<CoffeeShop> diffCallback) {
+    private Button mPostButton;
+    private Button mPastOrdersButton;
+    private String currentStore;
+    private String currentUser;
+
+    private String currentPost;
+
+    private CoffeeShopViewModel mViewModel;
+    public ShopListAdapter(@NonNull DiffUtil.ItemCallback<CoffeeShop> diffCallback, String user, String store, String post) {
         super(diffCallback);
+        currentStore = store;
+        currentUser = user;
+        currentPost = post;
     }
 
     @Override
     public ShopListHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        return ShopListHolder.create(parent);
+        return ShopListHolder.create(parent, currentStore, currentUser, currentPost);
     }
 
     @Override
@@ -37,3 +50,4 @@ public class ShopListAdapter extends ListAdapter<CoffeeShop, ShopListHolder> {
         }
     }
 }
+
