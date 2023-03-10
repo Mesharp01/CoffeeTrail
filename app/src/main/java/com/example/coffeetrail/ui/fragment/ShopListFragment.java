@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
@@ -20,7 +21,9 @@ import com.example.coffeetrail.model.CoffeeShopViewModel;
 public class ShopListFragment extends Fragment{
     private CoffeeShopViewModel mShopViewModel;
     private FragmentShopListBinding binding;
+    private TextView mNameTextView;
     public String currentUser;
+    public String currentUsername;
     public String currentStore;
     public String currentPost;
 
@@ -34,11 +37,18 @@ public class ShopListFragment extends Fragment{
                              Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.shoplist_recycler_view, container, false);
         Bundle bundle = this.getArguments();
+
         if(bundle.getString("shop") != null){
             currentStore = bundle.get("shop").toString();
+
         }
         if(bundle.getString("userId") != null){
             currentUser = bundle.get("userId").toString();
+        }
+        if(bundle.getString("userName") != null){
+            currentUsername = bundle.get("userName").toString();
+            mNameTextView = v.findViewById(R.id.name_text_view);
+            mNameTextView.setText("Hello " + currentUsername);
         }
         if(bundle.get("postContent") != null){
             currentPost = bundle.get("postContent").toString();

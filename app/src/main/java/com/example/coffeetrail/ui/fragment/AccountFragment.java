@@ -95,6 +95,7 @@ public class AccountFragment extends Fragment implements View.OnClickListener {
                 //startActivity(new Intent(activity, ShopListActivity.class));
                 //activity.finish();
                 Bundle bundle = new Bundle();
+                bundle.putString("userName", username);
                 bundle.putString("userId", user.getName());
                 bundle.putString("shop", null);
                 bundle.putString("postContent", null);

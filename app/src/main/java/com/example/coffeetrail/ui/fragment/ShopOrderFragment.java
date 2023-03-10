@@ -32,6 +32,7 @@ public class ShopOrderFragment extends Fragment {
     public ShopOrderViewModel mShopOrderViewModel;
     private List<ShopOrder> mShopOrderList;
     private ShopOrderAdapter mShopOrderAdapter;
+    private TextView mShopTextView;
     private String storeName;
     private String userId;
     private String postContent;
@@ -55,6 +56,8 @@ public class ShopOrderFragment extends Fragment {
         if(bundle != null) {
             if(bundle.getString("shop") != null){
                 storeName = bundle.get("shop").toString();
+                mShopTextView = v.findViewById(R.id.shop_name_text_view);
+                mShopTextView.setText("Posts for " + storeName);
             }
             if(bundle.getString("userId") != null){
                 userId = bundle.get("userId").toString();
