@@ -52,10 +52,11 @@ public class ShopOrderFragment extends Fragment {
         View v = inflater.inflate(R.layout.shoporder_recycler_view, container, false);
         Bundle bundle = this.getArguments();
         if(bundle != null) {
-            //storeName = bundle.get("name").toString();
-            postContent = bundle.get("postContent").toString();
-            ShopOrder o1 = new ShopOrder(postContent, 1, 1);
-            mShopOrderViewModel.insert(o1);
+            //TODO: figure out how to label bundles, shop order might receive bundles from MakePost and ShopList...
+            storeName = bundle.get("name").toString();
+            //postContent = bundle.get("postContent").toString();
+            //ShopOrder o1 = new ShopOrder(postContent, 1, 1);
+            //mShopOrderViewModel.insert(o1);
         }
         return v;
     }
