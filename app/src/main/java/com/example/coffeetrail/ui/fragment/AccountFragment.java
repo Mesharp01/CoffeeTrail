@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
 import androidx.fragment.app.FragmentManager;
@@ -73,21 +74,32 @@ public class AccountFragment extends Fragment implements View.OnClickListener {
     public void onClick(View v) {
         final int viewId = v.getId();
         if (viewId == R.id.login_button) {
-            checkLogin();
+            checkLogin(v);
         } else if(viewId == R.id.create_account_button){
             createAccount();
         }
     }
-    private void checkLogin(){
+    private void checkLogin(View v){
         final String username = mUsername.getText().toString();
         final String password = mPassword.getText().toString();
-        Activity activity = requireActivity();
+        //Activity activity = requireActivity();
         if(!TextUtils.isEmpty(username) && !TextUtils.isEmpty(password)) {
             UserAccount user = new UserAccount(username, password);
             boolean loginCheck = mUserAccountList.contains(user);
             if (loginCheck) {
-                startActivity(new Intent(activity, ShopListActivity.class));
-                activity.finish();
+                Bundle bundle = new Bundle();
+                Bundle bundleAccount = new Bundle();
+                bundleAccount.putInt("uid", user.getUid());
+                bundleAccount.putString("name", user.getName());
+                Log.d("bundle", user.getName());
+                bundle.putBundle("bundleAccount", bundleAccount);
+                ShopListFragment shopListFragment = new ShopListFragment();
+                shopListFragment.setArguments(bundle);
+
+                AppCompatActivity activity = (AppCompatActivity) v.getContext();
+                activity.getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, shopListFragment, "SHOP_LIST_FRAGMENT").addToBackStack(null).commit();
+                //startActivity(new Intent(activity, ShopListActivity.class));
+                //activity.finish();
             }
 
         }

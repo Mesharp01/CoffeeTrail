@@ -34,6 +34,8 @@ public class ShopOrderFragment extends Fragment {
     private ShopOrderAdapter mShopOrderAdapter;
     private String storeName;
     private String postContent;
+    private int shopId;
+    private int userId;
 
     private LiveData<List<ShopOrder>> mShopOrderLiveData = new MutableLiveData<>();
 
@@ -51,12 +53,16 @@ public class ShopOrderFragment extends Fragment {
                              Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.shoporder_recycler_view, container, false);
         Bundle bundle = this.getArguments();
+        Bundle bundleShopList = bundle.getBundle("bundleShopList");
+        Bundle bundleShopOrder = bundle.getBundle("bundleShopOrder");
+        Bundle bundleAccount = bundle.getBundle("bundleAccount");
         if(bundle != null) {
-            //TODO: figure out how to label bundles, shop order might receive bundles from MakePost and ShopList...
-            storeName = bundle.get("name").toString();
-            //postContent = bundle.get("postContent").toString();
-            //ShopOrder o1 = new ShopOrder(postContent, 1, 1);
-            //mShopOrderViewModel.insert(o1);
+            storeName = bundleShopList.getString("name");
+            shopId = bundleShopList.getInt("sid");
+            postContent = bundleShopOrder.getString("postContent");
+            userId = bundleShopOrder.getInt("uid");
+            ShopOrder o1 = new ShopOrder(postContent, userId, shopId);
+            mShopOrderViewModel.insert(o1);
         }
         return v;
     }

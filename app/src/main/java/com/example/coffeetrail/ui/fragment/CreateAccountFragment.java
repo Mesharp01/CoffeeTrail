@@ -39,6 +39,7 @@ public class CreateAccountFragment extends Fragment implements View.OnClickListe
     private EditText mConfirmP;
     private UserAccountViewModel mUserAccountViewModel;
     private final List<UserAccount> mUserAccountList = new CopyOnWriteArrayList<>();
+private static final String accountBundleKey = "bundleAccount";
 
 
     public CreateAccountFragment() {
@@ -47,8 +48,6 @@ public class CreateAccountFragment extends Fragment implements View.OnClickListe
 
     public static CreateAccountFragment newInstance(String param1, String param2) {
         CreateAccountFragment fragment = new CreateAccountFragment();
-        Bundle args = new Bundle();
-        fragment.setArguments(args);
         return fragment;
     }
 
@@ -94,6 +93,15 @@ public class CreateAccountFragment extends Fragment implements View.OnClickListe
         final String password = mPassword.getText().toString();
         if(!TextUtils.isEmpty(username) && !TextUtils.isEmpty(password)) {
             UserAccount newUser = new UserAccount(username, password);
+
+            //pass new uid to the fragment arguments to be used later
+            Bundle bundle = new Bundle();
+            Bundle bundleAccount = new Bundle();
+            bundleAccount.putInt("uid", newUser.getUid());
+            bundleAccount.putString("name", newUser.getName());
+            bundle.putBundle("bundleAccount", bundleAccount);
+            ShopListFragment shopListFragment = new ShopListFragment();
+            shopListFragment.setArguments(bundle);
             if(!mUserAccountList.contains(newUser)) {
                 mUserAccountViewModel.insert(newUser);
             }
@@ -101,5 +109,6 @@ public class CreateAccountFragment extends Fragment implements View.OnClickListe
         FragmentActivity activity = requireActivity();
         Toast.makeText(activity.getApplicationContext(), "New UserAccount added", Toast.LENGTH_SHORT).show();
         new Handler().postDelayed(() -> returnToLogin(), 3000);
+
     }
 }

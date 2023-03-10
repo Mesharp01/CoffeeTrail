@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
@@ -30,16 +31,27 @@ import com.example.coffeetrail.ui.activity.ShopListActivity;
 public class ShopListFragment extends Fragment{
     private CoffeeShopViewModel mShopViewModel;
     private FragmentShopListBinding binding;
+    private TextView mNameTextView;
+    private Bundle bundle;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Activity activity = requireActivity();
+
     }
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.shoplist_recycler_view, container, false);
+        bundle = this.getArguments();
+        Bundle bundleAccount = bundle.getBundle("bundleAccount");
+        if(bundleAccount != null) {
+            String name = bundleAccount.get("name").toString();
+            mNameTextView = v.findViewById(R.id.name_text_view);
+            mNameTextView.setText("Hello " + name);
+
+        }
         return v;
     }
 
@@ -72,6 +84,15 @@ public class ShopListFragment extends Fragment{
         CoffeeShop c2 = new CoffeeShop(2,"Boston Stoker Coffee Co.", "https://bostonstoker.com/", "10855 Engle Rd Vandalia, OH 45377");
         mShopViewModel.insert(c1);
         mShopViewModel.insert(c2);
+    }
+
+    public CoffeeShop getCoffeeShopByName(String name){
+//        mShopViewModel.getCoffeeShopByName(name).observe(this, shop -> {
+//            // Update the cached copy of the words in the adapter.
+//            return shop;
+//        });
+        Log.d("name", name);
+        return mShopViewModel.getCoffeeShopByName(name).getValue();
     }
 }
 

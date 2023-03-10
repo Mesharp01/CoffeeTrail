@@ -21,8 +21,11 @@ public interface CoffeeShopDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     public void insert(CoffeeShop coffeeShop);
 
-    @Query("SELECT rowid, name, url, location FROM coffeeshop WHERE rowid=:rowid ")
-    public CoffeeShop getCoffeeShopById(int rowid);
+    @Query("SELECT rowid, name, url, location FROM coffeeshop WHERE rowid LIKE :rowid")
+    public LiveData<CoffeeShop> getCoffeeShopById(int rowid);
+
+    @Query("SELECT rowid,name,url,location FROM coffeeshop WHERE name LIKE :name")
+    public LiveData<CoffeeShop> getCoffeeShopByName(String name);
     @Update
     public void update(CoffeeShop coffeeShop);
     @Delete

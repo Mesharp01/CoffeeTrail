@@ -45,16 +45,19 @@ public class MakePostFragment extends Fragment implements View.OnClickListener{
         View v = inflater.inflate(R.layout.fragment_makepost, container, false);
 
         Bundle bundle = this.getArguments();
+        Bundle bundleShopList = bundle.getBundle("bundleShopList");
+        Bundle bundleShopOrder = bundle.getBundle("bundleShopOrder");
+        Bundle bundleAccount = bundle.getBundle("bundleAccount");
         if(bundle != null) {
-            storeName = bundle.get("name").toString();
+            storeName = bundleShopList.getString("name");
         }
         mPostButton = v.findViewById(R.id.post_button);
         mPostContent = v.findViewById(R.id.post_text);
         mPostContent.setText(storeName);
         mPost = v.findViewById(R.id.post_edit);
         mPostButton.setOnClickListener(this);
-        userId = 1;
-        shopId = 1;
+        //shopId = bundleShopList.getInt("sid");
+        userId = bundleShopOrder.getInt("uid");
         return v;
     }
     public ShopOrder createShopOrder(){

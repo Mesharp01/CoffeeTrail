@@ -3,6 +3,7 @@ package com.example.coffeetrail.ui.fragment;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,6 +15,9 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.coffeetrail.model.CoffeeShop;
+import com.example.coffeetrail.model.CoffeeShopViewModel;
+import com.example.coffeetrail.ui.fragment.ShopListFragment;
 import com.example.coffeetrail.R;
 import com.example.coffeetrail.model.FragmentCommunication;
 import com.example.coffeetrail.ui.activity.MakePostActivity;
@@ -26,10 +30,12 @@ public class ShopListHolder extends RecyclerView.ViewHolder implements View.OnCl
     private Button mViewOrdersButton;
 
     private FragmentCommunication mCommunicator;
+    private Context mContext;
 
 
-    public ShopListHolder(View itemView) {
+    public ShopListHolder(Context context, View itemView) {
         super(itemView);
+        mContext = context;
         mShopListTextView = itemView.findViewById(R.id.list_item_shoplist);
         mViewOrdersButton = itemView.findViewById(R.id.see_orders_button);
         mVisitButton = itemView.findViewById(R.id.visit_shop_button);
@@ -44,28 +50,36 @@ public class ShopListHolder extends RecyclerView.ViewHolder implements View.OnCl
     static ShopListHolder create(ViewGroup parent) {
         View view = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.list_item_shoplist, parent, false);
-        return new ShopListHolder(view);
+        return new ShopListHolder(parent.getContext(), view);
     }
 
     @Override
     public void onClick(View view) {
         final int viewId = view.getId();
-        if (viewId == R.id.visit_shop_button) {
-            String storeName = mShopListTextView.getText().toString();
+        ShopListFragment shopListFragment = (ShopListFragment) ((AppCompatActivity)mContext).getSupportFragmentManager().findFragmentByTag("SHOP_LIST_FRAGMENT");
+        //CoffeeShop shop = shopListFragment.getCoffeeShopByName(mShopListTextView.getText().toString());
+        //Log.d("coffee shop", shop.toString());
 
-            Bundle bundle = new Bundle();
-            bundle.putString("name", storeName);
+        String storeName = mShopListTextView.getText().toString();
+        if (viewId == R.id.visit_shop_button) {
+            AppCompatActivity activity = (AppCompatActivity) view.getContext();
+            Bundle bundle = shopListFragment.getArguments();
+            Bundle bundleShopList = new Bundle();
+            bundleShopList.putString("name", storeName);
+            //bundleShopList.putInt("sid", shop.getShopId());
+            bundle.putBundle("bundleShopList", bundleShopList);
 
             MakePostFragment postFragment = new MakePostFragment();
             postFragment.setArguments(bundle);
 
-            AppCompatActivity activity = (AppCompatActivity) view.getContext();
             activity.getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, postFragment).addToBackStack(null).commit();
         } else if (viewId == R.id.see_orders_button) {
-            String storeName = mShopListTextView.getText().toString();
 
-            Bundle bundle = new Bundle();
-            bundle.putString("name", storeName);
+            Bundle bundle = shopListFragment.getArguments();
+            Bundle bundleShopList = new Bundle();
+            bundleShopList.putString("name", storeName);
+            //bundleShopList.putInt("sid", shop.getShopId());
+            bundle.putBundle("bundleShopList", bundleShopList);
 
             ShopOrderFragment orderFragment = new ShopOrderFragment();
             orderFragment.setArguments(bundle);

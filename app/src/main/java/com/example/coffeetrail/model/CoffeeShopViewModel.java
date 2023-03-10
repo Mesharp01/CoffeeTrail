@@ -1,6 +1,7 @@
 package com.example.coffeetrail.model;
 
 import android.app.Application;
+import android.util.Log;
 import android.view.View;
 
 import androidx.annotation.NonNull;
@@ -19,11 +20,11 @@ public class CoffeeShopViewModel extends AndroidViewModel {
         mAllCoffeeShops = mRepository.getAllCoffeeShops();
     }
     public LiveData<List<CoffeeShop>> getAllCoffeeShops() { return mAllCoffeeShops; }
+    public LiveData<CoffeeShop> getCoffeeShopByName(String name) {
+        return mRepository.getCoffeeShopByName(name);
+    }
     public void insert(CoffeeShop coffeeShop) {
-        int id = coffeeShop.getId();
-        if (mRepository.getCoffeeShopById(id) == null) {
-            mRepository.insert(coffeeShop);
-        }
+        mRepository.insert(coffeeShop);
     }
 
     public void nukeTable(){

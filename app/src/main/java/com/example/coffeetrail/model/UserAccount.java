@@ -35,7 +35,7 @@ public class UserAccount {
         mName = name;
         mPassword = password;
     }
-
+    public int getUid() { return mUid;}
     public String getName() { return mName; }
     public String getPassword() { return mPassword; }
     /* equals(), hashCode(), and toString() methods */

@@ -1,6 +1,7 @@
 package com.example.coffeetrail.model;
 
 import android.app.Application;
+import android.util.Log;
 
 import androidx.lifecycle.LiveData;
 import androidx.room.Database;
@@ -29,11 +30,23 @@ public class CoffeeShopRepository {
                 mCoffeeShopDao.insert(coffeeShop)); }
 //    }
 // lambda expression
-    CoffeeShop getCoffeeShopById(int id) {
-        final CoffeeShop[] shop = new CoffeeShop[1];
-        AppDatabase.databaseWriteExecutor.execute( () ->
-                shop[0] = mCoffeeShopDao.getCoffeeShopById(id));
-        return shop[0];
+    LiveData<CoffeeShop> getCoffeeShopById(int id) {
+//        final CoffeeShop[] shop = new CoffeeShop[1];
+//        AppDatabase.databaseWriteExecutor.execute( () -> {
+//                Log.d("coffee shop id", mCoffeeShopDao.getCoffeeShopById(id).toString());
+//                shop[0] = mCoffeeShopDao.getCoffeeShopById(id);});
+//        Log.d("coffee shop id", shop.toString());
+//        return shop[0];
+        return mCoffeeShopDao.getCoffeeShopById(id);
+    }
+    LiveData<CoffeeShop> getCoffeeShopByName(String name) {
+//        final CoffeeShop[] shop = new CoffeeShop[1];
+//        AppDatabase.databaseWriteExecutor.execute( () ->
+//                shop[0] = mCoffeeShopDao.getCoffeeShopByName(name));
+//        Log.d("coffee shop", shop.toString());
+//        return shop[0];
+
+        return mCoffeeShopDao.getCoffeeShopByName(name);
 
     }
 
