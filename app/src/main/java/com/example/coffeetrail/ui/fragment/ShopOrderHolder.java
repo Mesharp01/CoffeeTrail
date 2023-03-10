@@ -9,7 +9,9 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
+import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.coffeetrail.R;
@@ -23,22 +25,23 @@ public class ShopOrderHolder extends RecyclerView.ViewHolder {
         super(itemView);
         mShopOrderTextView = itemView.findViewById(R.id.list_item_shoporder);
         mEditButton = itemView.findViewById(R.id.edit_post_button);
-        mDeleteButton = itemView.findViewById(R.id.delete_post_button);
         mEditButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Toast.makeText(view.getContext(), "edit clicked", Toast.LENGTH_SHORT).show();
+                modifyPost();
 
             }
         });
 
-        mDeleteButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Toast.makeText(view.getContext(), "delete clicked", Toast.LENGTH_SHORT).show();
-
-            }
-        });
+    }
+    public void modifyPost(){
+        FragmentManager fm = getParentFragmentManager();
+        Fragment fragment = new ModifyPostFragment();
+        fm.beginTransaction()
+                .replace(R.id.fragment_container, fragment)
+                .addToBackStack("modify_post_fragment")
+                .commit();
     }
 
     void bind(String textPost) {
