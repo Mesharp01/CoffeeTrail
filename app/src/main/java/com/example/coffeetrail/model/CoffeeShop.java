@@ -42,7 +42,7 @@ public class CoffeeShop {
     public String getName() { return mName; }
     public String getUrl() { return mUrl; }
     public String getLocation() { return mLocation; }
-
+    public int getShopId() { return mSid; }
 
     public void equals(){
 

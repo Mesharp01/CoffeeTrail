@@ -1,6 +1,7 @@
 package com.example.coffeetrail.ui.fragment;
 
 import android.content.Intent;
+import android.os.Bundle;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -33,7 +34,7 @@ public class ShopListAdapter extends ListAdapter<CoffeeShop, ShopListHolder> {
         CoffeeShop current = getItem(position);
         holder.bind(current.getName());
 
-        mPostButton = holder.itemView.findViewById(R.id.visit_shop_button);
+        /*mPostButton = holder.itemView.findViewById(R.id.visit_shop_button);
         mPostButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -56,6 +57,16 @@ public class ShopListAdapter extends ListAdapter<CoffeeShop, ShopListHolder> {
                 view.getContext().startActivity(intent);
             }
         });*/
+
+        MakePostFragment makePostFragment = new MakePostFragment();
+        Bundle postBundle = new Bundle();
+        postBundle.putInt("ID", current.getShopId());
+        makePostFragment.setArguments(postBundle);
+
+        ShopOrderFragment shopOrderFragment = new ShopOrderFragment();
+        Bundle orderBundle = new Bundle();
+        postBundle.putString("NAME", current.getName());
+        shopOrderFragment.setArguments(postBundle);
     }
 
     static class ShopListDiff extends DiffUtil.ItemCallback<CoffeeShop> {
@@ -71,3 +82,4 @@ public class ShopListAdapter extends ListAdapter<CoffeeShop, ShopListHolder> {
         }
     }
 }
+

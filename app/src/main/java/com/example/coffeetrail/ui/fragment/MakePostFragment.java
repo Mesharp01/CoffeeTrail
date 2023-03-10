@@ -5,6 +5,8 @@ import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -63,9 +65,15 @@ public class MakePostFragment extends Fragment implements View.OnClickListener{
         if (viewId == R.id.post_button) {
             ShopOrder newOrder = createShopOrder();
             mShopOrderViewModel.insert(newOrder);
-            Intent intent = new Intent(v.getContext(), ShopListActivity.class);
-            //intent.putExtra("NewPost", newOrder);
-            v.getContext().startActivity(intent);
+            /*Intent intent = new Intent(v.getContext(), ShopListActivity.class);
+            intent.putExtra("NewPost", newOrder);
+            v.getContext().startActivity(intent);*/
+            ShopListFragment fragment =new ShopListFragment();
+            FragmentManager fragmentManager=getActivity().getSupportFragmentManager();
+            FragmentTransaction fragmentTransaction=fragmentManager.beginTransaction();
+            fragmentTransaction.replace(R.id.fragment_container,fragment,"postCreated");
+            fragmentTransaction.addToBackStack(null);
+            fragmentTransaction.commit();
         }
     }
 }
