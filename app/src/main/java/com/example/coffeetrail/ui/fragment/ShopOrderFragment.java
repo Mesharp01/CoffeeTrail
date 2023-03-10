@@ -36,6 +36,7 @@ public class ShopOrderFragment extends Fragment {
     public ShopOrderViewModel mShopOrderViewModel;
     private List<ShopOrder> mShopOrderList;
     private ShopOrderAdapter mShopOrderAdapter;
+    private String storeName;
 
     private LiveData<List<ShopOrder>> mShopOrderLiveData = new MutableLiveData<>();
 
@@ -52,6 +53,10 @@ public class ShopOrderFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.shoporder_recycler_view, container, false);
+        Bundle bundle = this.getArguments();
+        if(bundle != null) {
+            storeName = bundle.get("name").toString();
+        }
         return v;
     }
 
@@ -67,7 +72,7 @@ public class ShopOrderFragment extends Fragment {
     }
 
     private void fillShopOrderTable(){
-        ShopOrder o1 = new ShopOrder("10/10 coffee", 1, 1);
+        ShopOrder o1 = new ShopOrder(storeName, 1, 1);
 
         mShopOrderViewModel.insert(o1);
 

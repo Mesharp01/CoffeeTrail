@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.ListAdapter;
 
 import com.example.coffeetrail.R;
 import com.example.coffeetrail.model.CoffeeShop;
+import com.example.coffeetrail.model.FragmentCommunication;
 import com.example.coffeetrail.ui.activity.MakePostActivity;
 import com.example.coffeetrail.ui.activity.ShopOrderActivity;
 
@@ -33,40 +34,6 @@ public class ShopListAdapter extends ListAdapter<CoffeeShop, ShopListHolder> {
     public void onBindViewHolder(ShopListHolder holder, int position) {
         CoffeeShop current = getItem(position);
         holder.bind(current.getName());
-
-        /*mPostButton = holder.itemView.findViewById(R.id.visit_shop_button);
-        mPostButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(view.getContext(), MakePostActivity.class);
-                view.getContext().startActivity(intent);
-            }
-        });
-        mPastOrdersButton = holder.itemView.findViewById(R.id.see_orders_button);
-        mPastOrdersButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(view.getContext(), ShopOrderActivity.class);
-                view.getContext().startActivity(intent);
-            }
-        });
-        /*holder.itemView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(view.getContext(), MakePostActivity.class);
-                view.getContext().startActivity(intent);
-            }
-        });*/
-
-        MakePostFragment makePostFragment = new MakePostFragment();
-        Bundle postBundle = new Bundle();
-        postBundle.putInt("ID", current.getShopId());
-        makePostFragment.setArguments(postBundle);
-
-        ShopOrderFragment shopOrderFragment = new ShopOrderFragment();
-        Bundle orderBundle = new Bundle();
-        postBundle.putString("NAME", current.getName());
-        shopOrderFragment.setArguments(postBundle);
     }
 
     static class ShopListDiff extends DiffUtil.ItemCallback<CoffeeShop> {

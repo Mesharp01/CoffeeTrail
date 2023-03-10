@@ -9,7 +9,7 @@ import androidx.room.PrimaryKey;
 
 import java.util.UUID;
 
-@Fts4  /* Supports full-text search */
+//@Fts4  /* Supports full-text search */
 @Entity(tableName = "useraccount")
 public class UserAccount {
 

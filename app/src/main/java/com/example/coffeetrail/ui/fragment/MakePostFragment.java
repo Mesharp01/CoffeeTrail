@@ -31,6 +31,7 @@ public class MakePostFragment extends Fragment implements View.OnClickListener{
 
     private int userId;
     private int shopId;
+    private String storeName;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -41,8 +42,14 @@ public class MakePostFragment extends Fragment implements View.OnClickListener{
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_makepost, container, false);
+
+        Bundle bundle = this.getArguments();
+        if(bundle != null) {
+            storeName = bundle.get("name").toString();
+        }
         mPostButton = v.findViewById(R.id.post_button);
         mPostContent = v.findViewById(R.id.post_text);
+        mPostContent.setText(storeName);
         mPost = v.findViewById(R.id.post_edit);
         mPostButton.setOnClickListener(this);
         userId = 1;
@@ -64,10 +71,6 @@ public class MakePostFragment extends Fragment implements View.OnClickListener{
         final int viewId = v.getId();
         if (viewId == R.id.post_button) {
             ShopOrder newOrder = createShopOrder();
-            mShopOrderViewModel.insert(newOrder);
-            /*Intent intent = new Intent(v.getContext(), ShopListActivity.class);
-            intent.putExtra("NewPost", newOrder);
-            v.getContext().startActivity(intent);*/
             ShopListFragment fragment =new ShopListFragment();
             FragmentManager fragmentManager=getActivity().getSupportFragmentManager();
             FragmentTransaction fragmentTransaction=fragmentManager.beginTransaction();
