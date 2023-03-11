@@ -35,14 +35,12 @@ public class ShopOrderViewModel extends AndroidViewModel {
         return shopOrderInList;
     }
 
-
     public LiveData<List<ShopOrder>> getShopOrdersForUserAndShop(String userName, String shopName)
     {
         LiveData<List<ShopOrder>> shopOrderLiveData = mRepository.findShopOrderByUidAndSid(userName, shopName);
         return shopOrderLiveData; }
 
     public LiveData<List<ShopOrder>> getAllShopOrders() { return mRepository.getAllShopOrders(); }
-
     public void insert(ShopOrder shopOrder) {
         mRepository.insert(shopOrder);
         mAllShopOrders = mRepository.getAllShopOrders();
@@ -52,8 +50,6 @@ public class ShopOrderViewModel extends AndroidViewModel {
         mRepository.insert(shopOrder);
         mAllShopOrders = mRepository.getAllShopOrders();
     }
-
-
     public void update(ShopOrder shopOrder){
         mRepository.update(shopOrder);
         mAllShopOrders = mRepository.getAllShopOrders();

@@ -8,6 +8,7 @@ import androidx.room.Fts4;
 import androidx.room.Index;
 import androidx.room.PrimaryKey;
 
+import java.util.Objects;
 import java.util.UUID;
 
 //@Fts4 /* Supports full-text search */
@@ -35,31 +36,38 @@ public class CoffeeShop {
         mUrl = url;
         mLocation = location;
     }
-    public CoffeeShop(int id, @NonNull String name,
-                      @NonNull String url, @NonNull String location) {
-        mSid = id;
-        mName = name;
-        mUrl = url;
-        mLocation = location;
-    }
+//    public CoffeeShop(int id, @NonNull String name,
+//                      @NonNull String url, @NonNull String location) {
+//        mSid = id;
+//        mName = name;
+//        mUrl = url;
+//        mLocation = location;
+//    }
     public int getId() { return mSid; }
     public String getName() { return mName; }
     public String getUrl() { return mUrl; }
     public String getLocation() { return mLocation; }
     public int getShopId() { return mSid; }
 
-    public void equals(){
-
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        return o.equals(this);
     }
     @Override
-    public int hashCode(){
-
-        return 0;
+    public int hashCode() {
+        return Objects.hash(mSid, mName, mUrl, mLocation);
     }
     @NonNull
-    public String toString(){
-
-        return "";
+    @Override
+    public String toString() {
+        return "CoffeeShop{" +
+                "sid=" + mSid +
+                "; name='" + mName + '\'' +
+                "; url='" + mUrl + '\'' +
+                "; location='" + mLocation + '\'' +
+                '}';
     }
 }
 

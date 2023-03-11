@@ -81,10 +81,10 @@ public class ShopListFragment extends Fragment{
 
     private void fillCoffeeShopTable(){
         //mShopViewModel.nukeTable();
-        CoffeeShop c1 = new CoffeeShop(1, "The Bexley Coffee Shop", "https://www.facebook.com/BexleyCoffeeShop/", "492 N Cassady Ave Bexley, OH 43209" );
-        CoffeeShop c2 = new CoffeeShop(2,"Boston Stoker Coffee Co.", "https://bostonstoker.com/", "10855 Engle Rd Vandalia, OH 45377");
-        mShopViewModel.insert(c1);
-        mShopViewModel.insert(c2);
+        CoffeeShop c = new CoffeeShop( "The Bexley Coffee Shop", "https://www.facebook.com/BexleyCoffeeShop/", "492 N Cassady Ave Bexley, OH 43209" );
+        mShopViewModel.insert(c);
+        c = new CoffeeShop("Boston Stoker Coffee Co.", "https://bostonstoker.com/", "10855 Engle Rd Vandalia, OH 45377");
+        mShopViewModel.insert(c);
     }
 }
 

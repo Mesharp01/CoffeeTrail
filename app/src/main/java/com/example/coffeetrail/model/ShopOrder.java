@@ -24,19 +24,12 @@ public class ShopOrder implements Serializable {
     @PrimaryKey(autoGenerate = true)
     @ColumnInfo(name = "rowid")
     public int oid;
-
     @ColumnInfo(name = "description")
     public String desc;
-
-
     @ColumnInfo(name = "date")
     public Date date;
-
-
     @ColumnInfo(name = "user_id")
     public String uid;
-
-
     @ColumnInfo(name = "shop_id")
     public String sid;
 
