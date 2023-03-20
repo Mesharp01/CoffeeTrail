@@ -1,13 +1,10 @@
 package com.example.coffeetrail.ui.fragment;
 
-import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.ViewModelProvider;
 
 import android.view.LayoutInflater;
@@ -21,9 +18,6 @@ import android.widget.Toast;
 import com.example.coffeetrail.R;
 import com.example.coffeetrail.model.CoffeeShopViewModel;
 import com.example.coffeetrail.model.ShopOrder;
-import com.example.coffeetrail.model.ShopOrderViewModel;
-import com.example.coffeetrail.ui.activity.MakePostActivity;
-import com.example.coffeetrail.ui.activity.ShopListActivity;
 
 public class MakePostFragment extends Fragment implements View.OnClickListener{
     private Button mPostButton;
@@ -45,7 +39,7 @@ public class MakePostFragment extends Fragment implements View.OnClickListener{
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View v = inflater.inflate(R.layout.fragment_makepost, container, false);
+        View v = inflater.inflate(R.layout.fragment_make_post, container, false);
         mShopViewModel = new ViewModelProvider(this).get(CoffeeShopViewModel.class);
         Bundle bundle = this.getArguments();
         if(bundle.getString("shop") != null){
