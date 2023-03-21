@@ -20,7 +20,7 @@ public interface UserAccountDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     public void insert(UserAccount userAccount);
     @Update
-    public void updateUserAccount(UserAccount userAccount);
+    public void updateUserAccount(UserAccount... userAccount);
     @Delete
-    public void delete(UserAccount userAccount);
+    public void delete(UserAccount... userAccount);
 }
