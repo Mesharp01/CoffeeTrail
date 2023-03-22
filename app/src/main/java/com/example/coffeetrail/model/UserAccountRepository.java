@@ -35,5 +35,14 @@ public class UserAccountRepository {
     void update(UserAccount... userAccount) {
         AppDatabase.databaseWriteExecutor.execute(() ->
                 mUserAccountDao.updateUserAccount(userAccount));  }
+    void updatePassword(String newPassword, String username){
+        AppDatabase.databaseWriteExecutor.execute(() ->
+                mUserAccountDao.update(newPassword, username));
+    }
+    void deleteUser(String username, String password){
+        UserAccount user = mUserAccountDao.findByName(username, password).getValue();
+        AppDatabase.databaseWriteExecutor.execute(() ->
+                mUserAccountDao.deleteAccount(user.mName, user.mPassword, user.mUid));
+    }
 // lambda expression
 }

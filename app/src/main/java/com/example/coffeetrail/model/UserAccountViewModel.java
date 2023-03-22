@@ -33,5 +33,13 @@ public class UserAccountViewModel extends AndroidViewModel {
         mRepository.update(userAccount);
         mAllUserAccounts = mRepository.getAllUserAccounts();
     }
+    public void updatePassword(String newPassword, String username){
+        mRepository.updatePassword(newPassword, username);
+        mAllUserAccounts = mRepository.getAllUserAccounts();
+    }
+    public void deleteUser(String username, String password){
+        mRepository.deleteUser(username, password);
+        mAllUserAccounts = mRepository.getAllUserAccounts();
+    }
 
 }

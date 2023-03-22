@@ -88,8 +88,8 @@ public class DeleteAccountFragment extends Fragment implements View.OnClickListe
         final String password = mPassword.getText().toString();
         if(!TextUtils.isEmpty(username) && !TextUtils.isEmpty(password)){
             UserAccount newUser = new UserAccount(username, password);
-            mUserAccountList.remove(newUser);
-            mUserAccountViewModel.delete(newUser);
+            if(mUserAccountList.contains(newUser));
+            mUserAccountViewModel.deleteUser(username, password);
         }
         FragmentActivity activity = requireActivity();
         Toast.makeText(activity.getApplicationContext(), "User Account deleted", Toast.LENGTH_SHORT).show();

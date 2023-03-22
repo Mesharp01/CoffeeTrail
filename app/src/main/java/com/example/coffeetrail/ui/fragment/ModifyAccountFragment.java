@@ -101,10 +101,12 @@ public class ModifyAccountFragment extends Fragment implements View.OnClickListe
                     && newPassword.equals(newConfirm)) {
             UserAccount newUser = new UserAccount(username, password);
             if(mUserAccountList.contains(newUser)) {
-                newUser.mPassword = newPassword;
-                mUserAccountViewModel.update(newUser);
+                mUserAccountViewModel.updatePassword(newPassword, username);
             }
         }
+        FragmentActivity activity = requireActivity();
+        Toast.makeText(activity.getApplicationContext(), "New Password Set", Toast.LENGTH_SHORT).show();
+        new Handler().postDelayed(() -> returnToLogin(), 1000);
     }
     private void deleteAccount(){
         FragmentManager fm = getParentFragmentManager();
