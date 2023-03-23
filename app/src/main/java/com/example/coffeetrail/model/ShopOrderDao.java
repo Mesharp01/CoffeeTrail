@@ -14,12 +14,13 @@ public interface ShopOrderDao {
     @Query("SELECT oid, user_name, shop_name, description, date FROM shoporder")
     public LiveData<List<ShopOrder>> getAllShopOrders();
 
-    @Query("SELECT oid, description, date FROM shoporder WHERE user_name LIKE :username AND shop_name LIKE :shopname")
+    @Query("SELECT oid, user_name, shop_name, description, date FROM shoporder WHERE user_name LIKE :username AND shop_name LIKE :shopname")
     public LiveData<List<ShopOrder>> findAllByUserAndShop(String username, String shopname);
     @Query("SELECT oid, user_name, shop_name, description, date FROM shoporder WHERE user_name LIKE :username AND shop_name LIKE :shopname LIMIT 1")
     public LiveData<ShopOrder> findByUserIdAndShopId(String username, String shopname);
     @Query("SELECT oid, user_name, shop_name, description, date FROM shoporder WHERE shop_name LIKE :shopname")
     public LiveData<ShopOrder> getAllByShopId(String shopname);
+
 
     @Query("SELECT oid, user_name, shop_name, description, date FROM shoporder WHERE user_name LIKE :username")
     public LiveData<ShopOrder> getAllByUserId(String username);
@@ -29,6 +30,9 @@ public interface ShopOrderDao {
     public void updateOrder(ShopOrder shopOrder);
     @Delete
     public void delete(ShopOrder shopOrder);
+
     @Query("UPDATE shoporder SET description=:description WHERE oid = :oid")
     public void update(String description, int oid);
+    @Query("DELETE FROM shoporder")
+    public void nukeTable();
 }
