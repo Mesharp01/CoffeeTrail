@@ -11,41 +11,46 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.coffeetrail.R;
+import com.example.coffeetrail.model.CoffeeShop;
 import com.example.coffeetrail.model.CoffeeShopViewModel;
+import com.example.coffeetrail.model.ShopOrder;
+import com.example.coffeetrail.model.UserAccount;
 
 public class ShopListHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
     private final TextView mShopListTextView;
     private Button mVisitButton;
     private Button mViewOrdersButton;
 
-    private String currentStore;
-    private String currentUser;
-    private String newPost;
+    //private String currentStore;
+    private UserAccount currentUser;
+    private CoffeeShop currentStore;
+//    private ShopOrder mNewPost;
 
     private CoffeeShopViewModel mViewModel;
 
 
 
-    public ShopListHolder(View itemView, String shop, String user, String post) {
+    public ShopListHolder(View itemView, UserAccount user){// CoffeeShop shop){//CoffeeShop shop, UserAccount user, ShopOrder newPost) {
         super(itemView);
         mShopListTextView = itemView.findViewById(R.id.list_item_shoplist);
         mViewOrdersButton = itemView.findViewById(R.id.see_orders_button);
         mVisitButton = itemView.findViewById(R.id.visit_shop_button);
         mVisitButton.setOnClickListener(this);
         mViewOrdersButton.setOnClickListener(this);
-        currentStore = shop;
+        //currentStore = shop;
         currentUser = user;
-        newPost = post;
+        //mNewPost = newPost;
     }
 
-    void bind(String text) {
-        mShopListTextView.setText(text);
+    void bind(CoffeeShop shop) {
+        currentStore = shop;
+        mShopListTextView.setText(shop.getName());
     }
 
-    static ShopListHolder create(ViewGroup parent, String shop, String user, String post) {
+    static ShopListHolder create(ViewGroup parent, UserAccount user){//, CoffeeShop shop){//}, UserAccount user, ShopOrder newPost) {
         View view = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.list_item_shoplist, parent, false);
-        return new ShopListHolder(view, shop, user, post);
+        return new ShopListHolder(view, user);//, shop);//shop, user, newPost);
     }
 
     @Override
@@ -56,9 +61,10 @@ public class ShopListHolder extends RecyclerView.ViewHolder implements View.OnCl
             String storeName = mShopListTextView.getText().toString();
 
             Bundle bundle = new Bundle();
-            bundle.putString("userId", currentUser);
-            bundle.putString("shop", storeName);
-            bundle.putString("postContent", null);
+            bundle.putSerializable("user", currentUser);
+            bundle.putSerializable("shop", currentStore);
+//            bundle.putSerializable("shoporder", currentStore);
+            //bundle.putString("postContent", null);
 
             MakePostFragment postFragment = new MakePostFragment();
             postFragment.setArguments(bundle);
@@ -69,9 +75,9 @@ public class ShopListHolder extends RecyclerView.ViewHolder implements View.OnCl
             String storeName = mShopListTextView.getText().toString();
 
             Bundle bundle = new Bundle();
-            bundle.putString("userId", currentUser);
-            bundle.putString("shop", storeName);
-            bundle.putString("postContent", newPost);
+            bundle.putSerializable("user", currentUser);
+            bundle.putSerializable("shop", currentStore);
+//            bundle.putSerializable("shoporder", currentStore);
 
             ShopOrderFragment orderFragment = new ShopOrderFragment();
             orderFragment.setArguments(bundle);

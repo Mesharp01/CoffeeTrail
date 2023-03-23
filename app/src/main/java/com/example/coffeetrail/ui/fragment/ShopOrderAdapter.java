@@ -6,22 +6,37 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.DiffUtil;
 import androidx.recyclerview.widget.ListAdapter;
 
+import com.example.coffeetrail.model.CoffeeShop;
 import com.example.coffeetrail.model.ShopOrder;
+import com.example.coffeetrail.model.UserAccount;
 
 public class ShopOrderAdapter extends ListAdapter<ShopOrder, ShopOrderHolder> {
-    public ShopOrderAdapter(@NonNull DiffUtil.ItemCallback<ShopOrder> diffCallback) {
+    private CoffeeShop currentStore;
+    private UserAccount currentUser;
+    private ShopOrder currentPost;
+    //private ShopOrder currentPost;
+    public ShopOrderAdapter(@NonNull DiffUtil.ItemCallback<ShopOrder> diffCallback,UserAccount user, CoffeeShop store) {
         super(diffCallback);
+        currentStore = store;
+        currentUser = user;
     }
+
+//    public ShopListAdapter(@NonNull DiffUtil.ItemCallback<CoffeeShop> diffCallback, UserAccount user, CoffeeShop store, ShopOrder post) {
+//        super(diffCallback);
+//        currentStore = store;
+//        currentUser = user;
+//        currentPost = post;
+//    }
 
     @Override
     public ShopOrderHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        return ShopOrderHolder.create(parent);
+        return ShopOrderHolder.create(parent, currentStore, currentUser);
     }
 
     @Override
     public void onBindViewHolder(ShopOrderHolder holder, int position) {
-        ShopOrder current = getItem(position);
-        holder.bind(current);
+        currentPost = getItem(position);
+        holder.bind(currentPost);
     }
 
     static class ShopOrderDiff extends DiffUtil.ItemCallback<ShopOrder> {

@@ -47,7 +47,7 @@ public class ShopOrderViewModel extends AndroidViewModel {
     }
 
     public void delete(ShopOrder shopOrder) {
-        mRepository.insert(shopOrder);
+        mRepository.delete(shopOrder);
         mAllShopOrders = mRepository.getAllShopOrders();
     }
     public void update(ShopOrder shopOrder){
