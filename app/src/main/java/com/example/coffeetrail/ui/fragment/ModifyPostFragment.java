@@ -59,7 +59,7 @@ public class ModifyPostFragment extends Fragment implements View.OnClickListener
 //        if(bundle.get("order") != null){
 //            mPost = (ShopOrder) bundle.get("order");
 
-        mPostContent.setHint(currentPost.getDesc());
+        mPostContent.setText(currentPost.getDesc());
         //}
         mModifyButton = v.findViewById(R.id.modify_post_button);
         mDeleteButton = v.findViewById(R.id.delete_post_button);

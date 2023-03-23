@@ -47,7 +47,7 @@ public class ShopOrderHolder extends RecyclerView.ViewHolder {
         Bundle bundle = new Bundle();
         bundle.putSerializable("shop", currentStore);
         bundle.putSerializable("user", currentUser);
-        bundle.putSerializable("order",  currentPost);
+        bundle.putSerializable("shoporder",  currentPost);
 
         ShopOrderFragment shopOrderFragment = (ShopOrderFragment) ((AppCompatActivity)mContext).getSupportFragmentManager().findFragmentByTag("SHOP_ORDER_FRAGMENT");
 

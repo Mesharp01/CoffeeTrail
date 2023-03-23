@@ -19,6 +19,7 @@ import com.example.coffeetrail.R;
 import com.example.coffeetrail.model.CoffeeShop;
 import com.example.coffeetrail.model.CoffeeShopViewModel;
 import com.example.coffeetrail.model.ShopOrder;
+import com.example.coffeetrail.model.ShopOrderViewModel;
 import com.example.coffeetrail.model.UserAccount;
 
 public class MakePostFragment extends Fragment implements View.OnClickListener{
@@ -73,7 +74,8 @@ public class MakePostFragment extends Fragment implements View.OnClickListener{
         final String post = mPost.getText().toString();
         //need to access current shop and user to make a new shopOrder entry in the database...
         ShopOrder shopOrder = new ShopOrder(post, currentUser.getName(), currentStore.getName());
-        //mShopOrderViewModel.insert(shopOrder);
+        ShopOrderViewModel mShopOrderViewModel = new ViewModelProvider(this).get(ShopOrderViewModel.class);
+        mShopOrderViewModel.insert(shopOrder);
         Toast.makeText(activity.getApplicationContext(), "New post added", Toast.LENGTH_SHORT).show();
         return shopOrder;
     }
