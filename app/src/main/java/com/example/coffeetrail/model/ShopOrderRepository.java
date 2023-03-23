@@ -23,15 +23,15 @@ public class ShopOrderRepository {
     LiveData<ShopOrder> findShopOrderByUidAndSid(
             ShopOrder o) {
         return mShopOrderDao.findByUserIdAndShopId(
-                o.getUserId(), o.getShopId());
+                o.getUserName(), o.getShopName());
     }
     LiveData<ShopOrder> findShopOrderByUid(
             ShopOrder o) {
-        return mShopOrderDao.getAllByUserId(o.getUserId());
+        return mShopOrderDao.getAllByUserId(o.getUserName());
     }
     LiveData<ShopOrder> findShopOrderBySid(
             ShopOrder o) {
-        return mShopOrderDao.getAllByShopId(o.getShopId());
+        return mShopOrderDao.getAllByShopId(o.getShopName());
     }
     // You MUST call on non-UI thread or app throws
 // exception. I pass a Runnable object to thedatabase.

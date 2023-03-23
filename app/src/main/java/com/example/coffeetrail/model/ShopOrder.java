@@ -15,10 +15,10 @@ import java.util.Date;
 @Entity(tableName = "shoporder", foreignKeys = {
                 @ForeignKey(entity = UserAccount.class,
                         parentColumns = "name",
-                        childColumns = "user_id"),
+                        childColumns = "user_name"),
                 @ForeignKey(entity = CoffeeShop.class,
                         parentColumns = "name",
-                        childColumns = "shop_id")
+                        childColumns = "shop_name")
         })
 public class ShopOrder implements Serializable {
     @PrimaryKey(autoGenerate = true)
@@ -28,23 +28,23 @@ public class ShopOrder implements Serializable {
     public String desc;
     @ColumnInfo(name = "date")
     public Date date;
-    @ColumnInfo(name = "user_id")
-    public String uid;
-    @ColumnInfo(name = "shop_id")
-    public String sid;
+    @ColumnInfo(name = "user_name")
+    public String mUsername;
+    @ColumnInfo(name = "shop_name")
+    public String mShopname;
 
-    public ShopOrder(@NonNull String postContent, @NonNull String userId, @NonNull String shopId){
+    public ShopOrder(@NonNull String postContent, @NonNull String username, @NonNull String shopname){
         desc = postContent;
-        uid = userId;
-        sid = shopId;
+        mUsername = username;
+        mShopname = shopname;
         date = new Date();
     }
 
     public ShopOrder(){
     }
-    public String getShopId(){return sid;}
+    public String getShopName(){return mShopname;}
 
-    public String getUserId(){return uid;}
+    public String getUserName(){return mUsername;}
 
     public int getOrderId(){return oid;}
 

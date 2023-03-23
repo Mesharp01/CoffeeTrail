@@ -27,8 +27,8 @@ public class ShopOrderViewModel extends AndroidViewModel {
         ShopOrder theOrder = shopOrderLiveData.getValue();
         if (theOrder == null) {
             return false;
-        } else if (Objects.requireNonNull(theOrder).getShopId() == (shopOrder.getShopId()) &&
-                Objects.requireNonNull(theOrder).getUserId() == (shopOrder.getUserId())) {
+        } else if (Objects.requireNonNull(theOrder).getShopName() == (shopOrder.getShopName()) &&
+                Objects.requireNonNull(theOrder).getUserName() == (shopOrder.getUserName())) {
             shopOrderInList = true;
         }
 
