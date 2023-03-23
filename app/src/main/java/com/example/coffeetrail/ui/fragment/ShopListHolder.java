@@ -30,16 +30,14 @@ public class ShopListHolder extends RecyclerView.ViewHolder implements View.OnCl
 
 
 
-    public ShopListHolder(View itemView, UserAccount user){// CoffeeShop shop){//CoffeeShop shop, UserAccount user, ShopOrder newPost) {
+    public ShopListHolder(View itemView, UserAccount user){
         super(itemView);
         mShopListTextView = itemView.findViewById(R.id.list_item_shoplist);
         mViewOrdersButton = itemView.findViewById(R.id.see_orders_button);
         mVisitButton = itemView.findViewById(R.id.visit_shop_button);
         mVisitButton.setOnClickListener(this);
         mViewOrdersButton.setOnClickListener(this);
-        //currentStore = shop;
         currentUser = user;
-        //mNewPost = newPost;
     }
 
     void bind(CoffeeShop shop) {
@@ -47,24 +45,21 @@ public class ShopListHolder extends RecyclerView.ViewHolder implements View.OnCl
         mShopListTextView.setText(shop.getName());
     }
 
-    static ShopListHolder create(ViewGroup parent, UserAccount user){//, CoffeeShop shop){//}, UserAccount user, ShopOrder newPost) {
+    static ShopListHolder create(ViewGroup parent, UserAccount user){
         View view = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.list_item_shoplist, parent, false);
-        return new ShopListHolder(view, user);//, shop);//shop, user, newPost);
+        return new ShopListHolder(view, user);
     }
 
     @Override
     public void onClick(View view) {
         final int viewId = view.getId();
-        //currentStore = mViewModel.getStoreId("The Bexley Coffee Shop");
         if (viewId == R.id.visit_shop_button) {
             String storeName = mShopListTextView.getText().toString();
 
             Bundle bundle = new Bundle();
             bundle.putSerializable("user", currentUser);
             bundle.putSerializable("shop", currentStore);
-//            bundle.putSerializable("shoporder", currentStore);
-            //bundle.putString("postContent", null);
 
             MakePostFragment postFragment = new MakePostFragment();
             postFragment.setArguments(bundle);
@@ -77,7 +72,6 @@ public class ShopListHolder extends RecyclerView.ViewHolder implements View.OnCl
             Bundle bundle = new Bundle();
             bundle.putSerializable("user", currentUser);
             bundle.putSerializable("shop", currentStore);
-//            bundle.putSerializable("shoporder", currentStore);
 
             ShopOrderFragment orderFragment = new ShopOrderFragment();
             orderFragment.setArguments(bundle);

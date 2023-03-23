@@ -87,19 +87,12 @@ public class AccountFragment extends Fragment implements View.OnClickListener {
     private void checkLogin(View v){
         final String username = mUsername.getText().toString();
         final String password = mPassword.getText().toString();
-        //Activity activity = requireActivity();
         if(!TextUtils.isEmpty(username) && !TextUtils.isEmpty(password)) {
             UserAccount user = new UserAccount(username, password);
             boolean loginCheck = mUserAccountList.contains(user);
             if (loginCheck) {
-                //startActivity(new Intent(activity, ShopListActivity.class));
-                //activity.finish();
                 Bundle bundle = new Bundle();
                 bundle.putSerializable("user", user);
-//                bundle.putString("userName", username);
-//                bundle.putString("userId", user.getName());
-//                bundle.putString("shop", null);
-//                bundle.putString("postContent", null);
 
                 ShopListFragment shopFragment = new ShopListFragment();
                 shopFragment.setArguments(bundle);

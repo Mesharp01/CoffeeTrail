@@ -56,7 +56,7 @@ public class ShopOrderHolder extends RecyclerView.ViewHolder {
         fragment.setArguments(bundle);
         fm.beginTransaction()
                 .replace(R.id.fragment_container, fragment)
-                .addToBackStack(null)//"modify_post_fragment")
+                .addToBackStack(null)
                 .commit();
     }
 

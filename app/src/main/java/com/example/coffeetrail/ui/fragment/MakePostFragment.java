@@ -51,17 +51,6 @@ public class MakePostFragment extends Fragment implements View.OnClickListener{
         if(bundle.getSerializable("shop") != null){
             currentStore = (CoffeeShop) bundle.getSerializable("shop");
         }
-//        if(bundle.getString("shop") != null){
-//            currentStore = bundle.get("shop").toString();
-//            mTitleTextView = v.findViewById(R.id.post_text);
-//            mTitleTextView.setText("Make a post for " + currentStore);
-//        }
-//        if(bundle.getString("userId") != null){
-//            currentUser = bundle.get("userId").toString();
-//        }
-//        if(bundle.get("postContent") != null){
-//            currentPost = bundle.get("desc").toString();
-//        }
         mPostButton = v.findViewById(R.id.post_button);
         mPostContent = v.findViewById(R.id.post_text);
         //mPostContent.setText(mShopViewModel.getStoreName(currentStore));
@@ -90,9 +79,6 @@ public class MakePostFragment extends Fragment implements View.OnClickListener{
             Bundle bundle = new Bundle();
             bundle.putSerializable("user", currentUser);
             bundle.putSerializable("shop", currentStore);
-//            bundle.putString("userId", currentUser);
-//            bundle.putString("shop", currentStore);
-//            bundle.putString("postContent", postContent);
 
             ShopListFragment listFragment = new ShopListFragment();
             listFragment.setArguments(bundle);

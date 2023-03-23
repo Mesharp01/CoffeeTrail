@@ -43,7 +43,6 @@ public class ModifyPostFragment extends Fragment implements View.OnClickListener
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_modify_post, container, false);
-        //mShopViewModel = new ViewModelProvider(this).get(CoffeeShopViewModel.class);
         Bundle bundle = this.getArguments();
         if(bundle.getSerializable("user") != null){
             currentUser = (UserAccount) bundle.getSerializable("user");
@@ -56,11 +55,8 @@ public class ModifyPostFragment extends Fragment implements View.OnClickListener
         }
 
         mPostContent = v.findViewById(R.id.post_content);
-//        if(bundle.get("order") != null){
-//            mPost = (ShopOrder) bundle.get("order");
 
         mPostContent.setText(currentPost.getDesc());
-        //}
         mModifyButton = v.findViewById(R.id.modify_post_button);
         mDeleteButton = v.findViewById(R.id.delete_post_button);
 

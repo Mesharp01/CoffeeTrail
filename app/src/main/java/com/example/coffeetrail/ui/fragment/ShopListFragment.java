@@ -44,28 +44,6 @@ public class ShopListFragment extends Fragment{
             mNameTextView = v.findViewById(R.id.name_text_view);
             mNameTextView.setText("Hello " + currentUser.getName());
         }
-//        if(bundle.getSerializable("shop") != null){
-//            currentStore = (CoffeeShop) bundle.getSerializable("shop");
-//        }
-//        if(bundle.getSerializable("shoporder") != null){
-//            newPost = (ShopOrder) bundle.getSerializable("shoporder");
-//        }
-
-//        if(bundle.getString("shop") != null){
-//            currentStore = bundle.get("shop").toString();
-//
-//        }
-//        if(bundle.getString("userId") != null){
-//            currentUser = bundle.get("userId").toString();
-//        }
-//        if(bundle.getString("userName") != null){
-//            currentUsername = bundle.get("userName").toString();
-//            mNameTextView = v.findViewById(R.id.name_text_view);
-//            mNameTextView.setText("Hello " + currentUsername);
-//        }
-//        if(bundle.get("postContent") != null){
-//            currentPost = bundle.get("postContent").toString();
-//        }
         return v;
     }
 

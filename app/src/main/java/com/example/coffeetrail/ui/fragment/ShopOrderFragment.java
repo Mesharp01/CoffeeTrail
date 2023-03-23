@@ -46,7 +46,7 @@ public class ShopOrderFragment extends Fragment {
         super.onCreate(savedInstanceState);
         Activity activity = requireActivity();
         mShopOrderViewModel = new ViewModelProvider(this).get(ShopOrderViewModel.class);
-        //mShopOrderViewModel.getAllShopOrders();
+
     }
 
     @Override
@@ -63,24 +63,6 @@ public class ShopOrderFragment extends Fragment {
                 mShopTextView = v.findViewById(R.id.shop_name_text_view);
                 mShopTextView.setText("Posts for " + currentStore.getName());
             }
-//            if(bundle.getSerializable("shoporder") != null){
-//                currentPost = (ShopOrder) bundle.getSerializable("shoporder");
-//                ShopOrder o1 = new ShopOrder(currentPost.getDesc(), currentUser.getName(), currentStore.getName());
-//                mShopOrderViewModel.insert(o1);
-//            }
-//            if(bundle.getString("shop") != null){
-//                storeName = bundle.get("shop").toString();
-//                mShopTextView = v.findViewById(R.id.shop_name_text_view);
-//                mShopTextView.setText("Posts for " + storeName);
-//            }
-//            if(bundle.getString("userId") != null){
-//                userId = bundle.get("userId").toString();
-//            }
-//            if(bundle.get("postContent") != null){
-//                postContent = bundle.get("postContent").toString();
-//                ShopOrder o1 = new ShopOrder(postContent, userId, storeName);
-//                mShopOrderViewModel.insert(o1);
-//            }
         }
         return v;
     }

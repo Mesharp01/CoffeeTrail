@@ -24,7 +24,6 @@ public class ShopListAdapter extends ListAdapter<CoffeeShop, ShopListHolder> {
     public ShopListAdapter(@NonNull DiffUtil.ItemCallback<CoffeeShop> diffCallback, UserAccount user){//, CoffeeShop store, ShopOrder newPost) {
         super(diffCallback);
         currentUser = user;
-        //mNewPost = newPost;
     }
 
     @Override

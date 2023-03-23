@@ -21,13 +21,6 @@ public class ShopOrderAdapter extends ListAdapter<ShopOrder, ShopOrderHolder> {
         currentUser = user;
     }
 
-//    public ShopListAdapter(@NonNull DiffUtil.ItemCallback<CoffeeShop> diffCallback, UserAccount user, CoffeeShop store, ShopOrder post) {
-//        super(diffCallback);
-//        currentStore = store;
-//        currentUser = user;
-//        currentPost = post;
-//    }
-
     @Override
     public ShopOrderHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         return ShopOrderHolder.create(parent, currentStore, currentUser);
