@@ -16,8 +16,10 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.coffeetrail.R;
+import com.example.coffeetrail.model.CoffeeShop;
 import com.example.coffeetrail.model.CoffeeShopViewModel;
 import com.example.coffeetrail.model.ShopOrder;
+import com.example.coffeetrail.model.UserAccount;
 
 public class MakePostFragment extends Fragment implements View.OnClickListener{
     private Button mPostButton;
@@ -28,8 +30,8 @@ public class MakePostFragment extends Fragment implements View.OnClickListener{
     private CoffeeShopViewModel mShopViewModel;
     private TextView mTitleTextView;
 
-    private String currentUser;
-    private String currentStore;
+    private UserAccount currentUser;
+    private CoffeeShop currentStore;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -42,17 +44,23 @@ public class MakePostFragment extends Fragment implements View.OnClickListener{
         View v = inflater.inflate(R.layout.fragment_make_post, container, false);
         mShopViewModel = new ViewModelProvider(this).get(CoffeeShopViewModel.class);
         Bundle bundle = this.getArguments();
-        if(bundle.getString("shop") != null){
-            currentStore = bundle.get("shop").toString();
-            mTitleTextView = v.findViewById(R.id.post_text);
-            mTitleTextView.setText("Make a post for " + currentStore);
+        if(bundle.getSerializable("user") != null){
+            currentUser = (UserAccount) bundle.getSerializable("user");
         }
-        if(bundle.getString("userId") != null){
-            currentUser = bundle.get("userId").toString();
+        if(bundle.getSerializable("shop") != null){
+            currentStore = (CoffeeShop) bundle.getSerializable("shop");
         }
-        if(bundle.get("postContent") != null){
-            currentPost = bundle.get("desc").toString();
-        }
+//        if(bundle.getString("shop") != null){
+//            currentStore = bundle.get("shop").toString();
+//            mTitleTextView = v.findViewById(R.id.post_text);
+//            mTitleTextView.setText("Make a post for " + currentStore);
+//        }
+//        if(bundle.getString("userId") != null){
+//            currentUser = bundle.get("userId").toString();
+//        }
+//        if(bundle.get("postContent") != null){
+//            currentPost = bundle.get("desc").toString();
+//        }
         mPostButton = v.findViewById(R.id.post_button);
         mPostContent = v.findViewById(R.id.post_text);
         //mPostContent.setText(mShopViewModel.getStoreName(currentStore));
@@ -64,7 +72,7 @@ public class MakePostFragment extends Fragment implements View.OnClickListener{
         FragmentActivity activity = requireActivity();
         final String post = mPost.getText().toString();
         //need to access current shop and user to make a new shopOrder entry in the database...
-        ShopOrder shopOrder = new ShopOrder(post, currentUser, currentStore);
+        ShopOrder shopOrder = new ShopOrder(post, currentUser.getName(), currentStore.getName());
         //mShopOrderViewModel.insert(shopOrder);
         Toast.makeText(activity.getApplicationContext(), "New post added", Toast.LENGTH_SHORT).show();
         return shopOrder;
@@ -78,9 +86,11 @@ public class MakePostFragment extends Fragment implements View.OnClickListener{
             String postContent = newOrder.getDesc();
 
             Bundle bundle = new Bundle();
-            bundle.putString("userId", currentUser);
-            bundle.putString("shop", currentStore);
-            bundle.putString("postContent", postContent);
+            bundle.putSerializable("user", currentUser);
+            bundle.putSerializable("shop", currentStore);
+//            bundle.putString("userId", currentUser);
+//            bundle.putString("shop", currentStore);
+//            bundle.putString("postContent", postContent);
 
             ShopListFragment listFragment = new ShopListFragment();
             listFragment.setArguments(bundle);

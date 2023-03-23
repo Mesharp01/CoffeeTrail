@@ -17,16 +17,20 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.coffeetrail.R;
+import com.example.coffeetrail.model.CoffeeShop;
 import com.example.coffeetrail.model.CoffeeShopViewModel;
 import com.example.coffeetrail.model.ShopOrder;
 import com.example.coffeetrail.model.ShopOrderViewModel;
+import com.example.coffeetrail.model.UserAccount;
 
 public class ModifyPostFragment extends Fragment implements View.OnClickListener  {
-    private ShopOrder mPost;
+    private ShopOrder currentPost;
     private EditText mPostContent;
     private Button mModifyButton;
     private Button mDeleteButton;
     private ShopOrderViewModel mShopOrderViewModel;
+    private UserAccount currentUser;
+    private CoffeeShop currentStore;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -41,14 +45,22 @@ public class ModifyPostFragment extends Fragment implements View.OnClickListener
         View v = inflater.inflate(R.layout.fragment_modify_post, container, false);
         //mShopViewModel = new ViewModelProvider(this).get(CoffeeShopViewModel.class);
         Bundle bundle = this.getArguments();
-
+        if(bundle.getSerializable("user") != null){
+            currentUser = (UserAccount) bundle.getSerializable("user");
+        }
+        if(bundle.getSerializable("shop") != null){
+            currentStore = (CoffeeShop) bundle.getSerializable("shop");
+        }
+        if(bundle.getSerializable("shoporder") != null){
+            currentPost = (ShopOrder) bundle.getSerializable("shoporder");
+        }
 
         mPostContent = v.findViewById(R.id.post_content);
-        if(bundle.get("order") != null){
-            mPost = (ShopOrder) bundle.get("order");
+//        if(bundle.get("order") != null){
+//            mPost = (ShopOrder) bundle.get("order");
 
-            mPostContent.setHint(mPost.getDesc());
-        }
+        mPostContent.setHint(currentPost.getDesc());
+        //}
         mModifyButton = v.findViewById(R.id.modify_post_button);
         mDeleteButton = v.findViewById(R.id.delete_post_button);
 
@@ -63,12 +75,12 @@ public class ModifyPostFragment extends Fragment implements View.OnClickListener
     public void onClick(View v) {
         final int viewId = v.getId();
         if (viewId == R.id.modify_post_button) {
-            mShopOrderViewModel.updatePostDesc(mPostContent.getText().toString(), mPost.oid);
+            mShopOrderViewModel.updatePostDesc(mPostContent.getText().toString(), currentPost.oid);
             new Handler().postDelayed(() -> returnToShopOrders(), 500);
         } else if (viewId == R.id.delete_post_button) {
             FragmentActivity activity = requireActivity();
             Toast.makeText(activity.getApplicationContext(), "Post deleted", Toast.LENGTH_SHORT).show();
-            mShopOrderViewModel.delete(mPost);
+            mShopOrderViewModel.delete(currentPost);
             new Handler().postDelayed(() -> returnToShopOrders(), 500);
         }
     }

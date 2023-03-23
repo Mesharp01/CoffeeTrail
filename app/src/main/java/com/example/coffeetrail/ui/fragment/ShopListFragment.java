@@ -17,15 +17,16 @@ import com.example.coffeetrail.R;
 import com.example.coffeetrail.databinding.FragmentShopListBinding;
 import com.example.coffeetrail.model.CoffeeShop;
 import com.example.coffeetrail.model.CoffeeShopViewModel;
+import com.example.coffeetrail.model.ShopOrder;
+import com.example.coffeetrail.model.UserAccount;
 
 public class ShopListFragment extends Fragment{
     private CoffeeShopViewModel mShopViewModel;
     private FragmentShopListBinding binding;
     private TextView mNameTextView;
-    public String currentUser;
-    public String currentUsername;
-    public String currentStore;
-    public String currentPost;
+    public UserAccount currentUser;
+    public CoffeeShop currentStore;
+    public ShopOrder newPost;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -38,21 +39,33 @@ public class ShopListFragment extends Fragment{
         View v = inflater.inflate(R.layout.shoplist_recycler_view, container, false);
         Bundle bundle = this.getArguments();
 
-        if(bundle.getString("shop") != null){
-            currentStore = bundle.get("shop").toString();
-
-        }
-        if(bundle.getString("userId") != null){
-            currentUser = bundle.get("userId").toString();
-        }
-        if(bundle.getString("userName") != null){
-            currentUsername = bundle.get("userName").toString();
+        if(bundle.getSerializable("user") != null){
+            currentUser = (UserAccount) bundle.getSerializable("user");
             mNameTextView = v.findViewById(R.id.name_text_view);
-            mNameTextView.setText("Hello " + currentUsername);
+            mNameTextView.setText("Hello " + currentUser.getName());
         }
-        if(bundle.get("postContent") != null){
-            currentPost = bundle.get("postContent").toString();
-        }
+//        if(bundle.getSerializable("shop") != null){
+//            currentStore = (CoffeeShop) bundle.getSerializable("shop");
+//        }
+//        if(bundle.getSerializable("shoporder") != null){
+//            newPost = (ShopOrder) bundle.getSerializable("shoporder");
+//        }
+
+//        if(bundle.getString("shop") != null){
+//            currentStore = bundle.get("shop").toString();
+//
+//        }
+//        if(bundle.getString("userId") != null){
+//            currentUser = bundle.get("userId").toString();
+//        }
+//        if(bundle.getString("userName") != null){
+//            currentUsername = bundle.get("userName").toString();
+//            mNameTextView = v.findViewById(R.id.name_text_view);
+//            mNameTextView.setText("Hello " + currentUsername);
+//        }
+//        if(bundle.get("postContent") != null){
+//            currentPost = bundle.get("postContent").toString();
+//        }
         return v;
     }
 
@@ -62,7 +75,7 @@ public class ShopListFragment extends Fragment{
         Activity activity = requireActivity();
         mShopViewModel = new ViewModelProvider(this).get(CoffeeShopViewModel.class);
         RecyclerView recyclerView = view.findViewById(R.id.recyclerview);
-        final ShopListAdapter adapter = new ShopListAdapter(new ShopListAdapter.ShopListDiff(), currentUser, currentStore, currentPost);
+        final ShopListAdapter adapter = new ShopListAdapter(new ShopListAdapter.ShopListDiff(), currentUser);//, currentStore, newPost);
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(activity));
 

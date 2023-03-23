@@ -11,18 +11,18 @@ import androidx.room.Update;
 import java.util.List;
 @Dao
 public interface ShopOrderDao {
-    @Query("SELECT oid, user_id, shop_id, description, date FROM shoporder")
+    @Query("SELECT oid, user_name, shop_name, description, date FROM shoporder")
     public LiveData<List<ShopOrder>> getAllShopOrders();
 
-    @Query("SELECT oid, description, date FROM shoporder WHERE user_id LIKE :uid AND shop_id LIKE :sid")
-    public LiveData<List<ShopOrder>> findAllByUserAndShop(String uid, String sid);
-    @Query("SELECT oid, user_id, shop_id, description, date FROM shoporder WHERE user_id LIKE :uid AND shop_id LIKE :sid LIMIT 1")
-    public LiveData<ShopOrder> findByUserIdAndShopId(String uid, String sid);
-    @Query("SELECT oid, user_id, shop_id, description, date FROM shoporder WHERE shop_id LIKE :sid")
-    public LiveData<ShopOrder> getAllByShopId(String sid);
+    @Query("SELECT oid, description, date FROM shoporder WHERE user_name LIKE :username AND shop_name LIKE :shopname")
+    public LiveData<List<ShopOrder>> findAllByUserAndShop(String username, String shopname);
+    @Query("SELECT oid, user_name, shop_name, description, date FROM shoporder WHERE user_name LIKE :username AND shop_name LIKE :shopname LIMIT 1")
+    public LiveData<ShopOrder> findByUserIdAndShopId(String username, String shopname);
+    @Query("SELECT oid, user_name, shop_name, description, date FROM shoporder WHERE shop_name LIKE :shopname")
+    public LiveData<ShopOrder> getAllByShopId(String shopname);
 
-    @Query("SELECT oid, user_id, shop_id, description, date FROM shoporder WHERE user_id LIKE :uid")
-    public LiveData<ShopOrder> getAllByUserId(String uid);
+    @Query("SELECT oid, user_name, shop_name, description, date FROM shoporder WHERE user_name LIKE :username")
+    public LiveData<ShopOrder> getAllByUserId(String username);
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     public void insert(ShopOrder shopOrder);
     @Update

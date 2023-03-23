@@ -8,13 +8,14 @@ import androidx.room.Fts4;
 import androidx.room.Index;
 import androidx.room.PrimaryKey;
 
+import java.io.Serializable;
 import java.util.Objects;
 import java.util.UUID;
 
 //@Fts4 /* Supports full-text search */
 @Entity(tableName = "coffeeshop", indices = {@Index(value = {"name"},
         unique = true)})
-public class CoffeeShop {
+public class CoffeeShop implements Serializable {
     @PrimaryKey(autoGenerate = true)
     @ColumnInfo(name = "rowid")
     public int mSid;
