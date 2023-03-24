@@ -94,20 +94,20 @@ public class ModifyAccountFragment extends Fragment implements View.OnClickListe
         FragmentActivity activity = requireActivity();
         activity.getSupportFragmentManager().popBackStack();
     }
-    private void changePassword(){
+    private void changePassword() {
         final String username = mUsername.getText().toString();
         final String password = hashPassword(mPassword.getText().toString());
         final String newPassword = mNewPassword.getText().toString();
         final String newConfirm = mNewConfirm.getText().toString();
         FragmentActivity activity = requireActivity();
-        if(!TextUtils.isEmpty(username) && !TextUtils.isEmpty(password) && !TextUtils.isEmpty(newPassword) && !TextUtils.isEmpty(newConfirm)){
-            if (newPassword.equals(newConfirm)){
+        if (!TextUtils.isEmpty(username) && !TextUtils.isEmpty(password) && !TextUtils.isEmpty(newPassword) && !TextUtils.isEmpty(newConfirm)) {
+            if (newPassword.equals(newConfirm)) {
                 UserAccount newUser = new UserAccount(username, password);
-                if(mUserAccountList.contains(newUser)) {
+                if (mUserAccountList.contains(newUser)) {
                     mUserAccountViewModel.updatePassword(hashPassword(newPassword), username);
                     Toast.makeText(activity.getApplicationContext(), "Password updated", Toast.LENGTH_SHORT).show();
                     new Handler().postDelayed(() -> returnToLogin(), 500);
-                } else{
+                } else {
                     Toast.makeText(activity.getApplicationContext(), "Username and password not found", Toast.LENGTH_SHORT).show();
                 }
             } else {
@@ -118,6 +118,7 @@ public class ModifyAccountFragment extends Fragment implements View.OnClickListe
             Toast.makeText(activity.getApplicationContext(), "Complete all fields", Toast.LENGTH_SHORT).show();
 
         }
+    }
     
     private String hashPassword(String password) {
         try{
