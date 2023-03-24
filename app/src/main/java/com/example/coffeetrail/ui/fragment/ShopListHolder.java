@@ -20,6 +20,7 @@ public class ShopListHolder extends RecyclerView.ViewHolder implements View.OnCl
     private final TextView mShopListTextView;
     private Button mVisitButton;
     private Button mViewOrdersButton;
+    private Button mAboutButton;
 
     //private String currentStore;
     private UserAccount currentUser;
@@ -33,8 +34,10 @@ public class ShopListHolder extends RecyclerView.ViewHolder implements View.OnCl
     public ShopListHolder(View itemView, UserAccount user){
         super(itemView);
         mShopListTextView = itemView.findViewById(R.id.list_item_shoplist);
+        mAboutButton = itemView.findViewById(R.id.about_button);
         mViewOrdersButton = itemView.findViewById(R.id.see_orders_button);
         mVisitButton = itemView.findViewById(R.id.visit_shop_button);
+        mAboutButton.setOnClickListener(this);
         mVisitButton.setOnClickListener(this);
         mViewOrdersButton.setOnClickListener(this);
         currentUser = user;
@@ -54,7 +57,10 @@ public class ShopListHolder extends RecyclerView.ViewHolder implements View.OnCl
     @Override
     public void onClick(View view) {
         final int viewId = view.getId();
-        if (viewId == R.id.visit_shop_button) {
+        if(viewId == R.id.about_button){
+            AboutPopUpHelper popUpClass = new AboutPopUpHelper();
+            popUpClass.showPopupWindow(view, currentStore);
+        } else if (viewId == R.id.visit_shop_button) {
             String storeName = mShopListTextView.getText().toString();
 
             Bundle bundle = new Bundle();

@@ -23,6 +23,11 @@
         android:paddingRight="16dp"
         android:orientation="horizontal" >
         <Button
+            android:id="@+id/about_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="About"/>
+        <Button
             android:id="@+id/see_orders_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
