@@ -8,13 +8,14 @@ import androidx.room.Ignore;
 import androidx.room.Index;
 import androidx.room.PrimaryKey;
 
+import java.io.Serializable;
 import java.util.Objects;
 import java.util.UUID;
 
 //@Fts4  /* Supports full-text search */
 @Entity(tableName = "useraccount", indices = {@Index(value = {"name"},
         unique = true)})
-public class UserAccount {
+public class UserAccount implements Serializable {
 
     @PrimaryKey(autoGenerate = true)
     @ColumnInfo(name = "rowid")
@@ -32,12 +33,6 @@ public class UserAccount {
         mPassword = password;
     }
 
-    public UserAccount(int id, @NonNull String name,
-                       @NonNull String password) {
-        mUid = id;
-        mName = name;
-        mPassword = password;
-    }
 
     public String getName() { return mName; }
     public String getPassword() { return mPassword; }

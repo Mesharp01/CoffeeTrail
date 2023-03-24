@@ -31,6 +31,9 @@ import com.example.coffeetrail.model.UserAccount;
 import com.example.coffeetrail.model.UserAccountViewModel;
 import com.example.coffeetrail.ui.activity.ShopListActivity;
 
+import java.nio.charset.StandardCharsets;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 
@@ -96,24 +99,21 @@ public class AccountFragment extends Fragment implements View.OnClickListener {
     private void checkLogin(View v){
         final String username = mUsername.getText().toString();
         final String password = mPassword.getText().toString();
-        //Activity activity = requireActivity();
         if(!TextUtils.isEmpty(username) && !TextUtils.isEmpty(password)) {
-            UserAccount user = new UserAccount(username, password);
+            String hash = hashPassword(password);
+            UserAccount user = new UserAccount(username, hash);
             boolean loginCheck = mUserAccountList.contains(user);
             if (loginCheck) {
-                //startActivity(new Intent(activity, ShopListActivity.class));
-                //activity.finish();
                 Bundle bundle = new Bundle();
-                bundle.putString("userName", username);
-                bundle.putString("userId", user.getName());
-                bundle.putString("shop", null);
-                bundle.putString("postContent", null);
+                bundle.putSerializable("user", user);
 
                 ShopListFragment shopFragment = new ShopListFragment();
                 shopFragment.setArguments(bundle);
-
                 AppCompatActivity activity = (AppCompatActivity) v.getContext();
                 activity.getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, shopFragment).addToBackStack(null).commit();
+            } else {
+                FragmentActivity activity = requireActivity();
+                Toast.makeText(activity.getApplicationContext(), "Username and password not found", Toast.LENGTH_SHORT).show();
             }
 
         }
@@ -135,6 +135,30 @@ public class AccountFragment extends Fragment implements View.OnClickListener {
                 .replace(R.id.fragment_container, fragment)
                 .addToBackStack("modify_account_fragment")
                 .commit();
+    }
+
+    private String hashPassword(String password) {
+        try{
+            MessageDigest digest = MessageDigest.getInstance("SHA-256");
+            byte[] hashed = digest.digest(
+                    password.getBytes(StandardCharsets.UTF_8));
+            return bytesToHex(hashed);
+        }catch (NoSuchAlgorithmException e){
+            throw new RuntimeException("SHA-256 does not exist");
+        }
+
+    }
+
+    private static String bytesToHex(byte[] hash) {
+        StringBuilder hexString = new StringBuilder(2 * hash.length);
+        for (int i = 0; i < hash.length; i++) {
+            String hex = Integer.toHexString(0xff & hash[i]);
+            if(hex.length() == 1) {
+                hexString.append('0');
+            }
+            hexString.append(hex);
+        }
+        return hexString.toString();
     }
     /*
     LifeCycle Methods

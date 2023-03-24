@@ -18,7 +18,8 @@ android:id="@+id/shoporder_recycler_view">
         android:id="@+id/shop_name_text_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Posts for "/>
+        android:textSize="16dp"
+        android:text="Order History"/>
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerview"
         android:layout_width="match_parent"

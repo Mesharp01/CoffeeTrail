@@ -10,6 +10,7 @@
         style="?android:listSeparatorTextViewStyle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:textSize="26dp"
         android:text="@string/shop_list_text"/>
 
     <ListView
@@ -17,12 +18,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content" >
     </ListView>
-
-    <Button
-        android:id="@+id/visit_button"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/shop_list_button_label"/>
 
 
 </LinearLayout>

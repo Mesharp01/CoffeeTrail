@@ -9,32 +9,33 @@ import androidx.recyclerview.widget.ListAdapter;
 
 import com.example.coffeetrail.model.CoffeeShop;
 import com.example.coffeetrail.model.CoffeeShopViewModel;
+import com.example.coffeetrail.model.ShopOrder;
+import com.example.coffeetrail.model.UserAccount;
 
 public class ShopListAdapter extends ListAdapter<CoffeeShop, ShopListHolder> {
     private Button mPostButton;
     private Button mPastOrdersButton;
-    private String currentStore;
-    private String currentUser;
+    private CoffeeShop currentStore;
+    private UserAccount currentUser;
 
-    private String currentPost;
+    private ShopOrder mNewPost;
 
     private CoffeeShopViewModel mViewModel;
-    public ShopListAdapter(@NonNull DiffUtil.ItemCallback<CoffeeShop> diffCallback, String user, String store, String post) {
+    public ShopListAdapter(@NonNull DiffUtil.ItemCallback<CoffeeShop> diffCallback, UserAccount user){//, CoffeeShop store, ShopOrder newPost) {
         super(diffCallback);
-        currentStore = store;
         currentUser = user;
-        currentPost = post;
     }
 
     @Override
     public ShopListHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        return ShopListHolder.create(parent, currentStore, currentUser, currentPost);
+
+        return ShopListHolder.create(parent, currentUser);//, currentStore);//currentStore, currentUser, mNewPost);
     }
 
     @Override
     public void onBindViewHolder(ShopListHolder holder, int position) {
-        CoffeeShop current = getItem(position);
-        holder.bind(current.getName());
+        currentStore = getItem(position);
+        holder.bind(currentStore);
     }
 
     static class ShopListDiff extends DiffUtil.ItemCallback<CoffeeShop> {
