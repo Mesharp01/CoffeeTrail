@@ -21,9 +21,9 @@ public interface ShopOrderDao {
     @Query("SELECT oid, user_name, shop_name, description, date FROM shoporder WHERE shop_name LIKE :shopname")
     public LiveData<ShopOrder> getAllByShopId(String shopname);
 
-
     @Query("SELECT oid, user_name, shop_name, description, date FROM shoporder WHERE user_name LIKE :username")
-    public LiveData<ShopOrder> getAllByUserId(String username);
+    public List<ShopOrder> findAllByUser(String username);
+
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     public void insert(ShopOrder shopOrder);
     @Update

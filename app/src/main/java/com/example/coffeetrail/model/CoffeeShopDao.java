@@ -29,6 +29,7 @@ public interface CoffeeShopDao {
 
     @Query("SELECT rowid, name FROM coffeeshop WHERE rowid=:rowid ")
     public CoffeeShop getCoffeeShopNameId(int rowid);
+
     @Update
     public void update(CoffeeShop coffeeShop);
     @Delete

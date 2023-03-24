@@ -54,4 +54,16 @@ public class ShopOrder implements Serializable {
 
     }
 
+    @Override
+    public boolean equals(Object object)
+    {
+        boolean same = false;
+
+        if (object != null && object instanceof ShopOrder)
+        {
+            same = this.getShopName().equals(((ShopOrder) object).getShopName());
+        }
+
+        return same;
+    }
 }

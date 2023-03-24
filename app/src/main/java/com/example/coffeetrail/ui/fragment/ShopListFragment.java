@@ -13,6 +13,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -26,13 +27,21 @@ import com.example.coffeetrail.databinding.FragmentShopListBinding;
 import com.example.coffeetrail.model.CoffeeShop;
 import com.example.coffeetrail.model.CoffeeShopViewModel;
 import com.example.coffeetrail.model.ShopOrder;
+import com.example.coffeetrail.model.ShopOrderViewModel;
 import com.example.coffeetrail.model.UserAccount;
 import com.example.coffeetrail.ui.activity.MainActivity;
 
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+
 public class ShopListFragment extends Fragment{
     private CoffeeShopViewModel mShopViewModel;
+    private ShopOrderViewModel mShopOrderViewModel;
     private FragmentShopListBinding binding;
     private TextView mNameTextView;
+    private ProgressBar pgsBar;
     public UserAccount currentUser;
     public CoffeeShop currentStore;
     public ShopOrder newPost;
@@ -48,6 +57,7 @@ public class ShopListFragment extends Fragment{
                              Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.shoplist_recycler_view, container, false);
         Bundle bundle = this.getArguments();
+        pgsBar = v.findViewById(R.id.trail_progress);
 
         if(bundle.getSerializable("user") != null){
             currentUser = (UserAccount) bundle.getSerializable("user");
@@ -62,6 +72,8 @@ public class ShopListFragment extends Fragment{
         super.onViewCreated(view, savedInstanceState);
         Activity activity = requireActivity();
         mShopViewModel = new ViewModelProvider(this).get(CoffeeShopViewModel.class);
+        mShopOrderViewModel = new ViewModelProvider(this).get(ShopOrderViewModel.class);
+        mShopOrderViewModel.getAllShopOrders();
         RecyclerView recyclerView = view.findViewById(R.id.recyclerview);
         final ShopListAdapter adapter = new ShopListAdapter(new ShopListAdapter.ShopListDiff(), currentUser);//, currentStore, newPost);
         recyclerView.setAdapter(adapter);
@@ -72,12 +84,30 @@ public class ShopListFragment extends Fragment{
             adapter.submitList(shops);
         });
         fillCoffeeShopTable();
+        setProgress(currentUser.getName());
 
     }
 
     public void onDestroyView(){
         super.onDestroyView();
         binding = null;
+    }
+
+    public void setProgress(String user){
+        new Thread(new Runnable() {
+            public void run() {
+                List<ShopOrder> orders = mShopOrderViewModel.getShopOrdersForUser(user);
+                //Set<ShopOrder> uniqueOrders = new HashSet<>(orders);
+                List<ShopOrder> uniqueOrders = new ArrayList<>();
+                for(ShopOrder o:orders){
+                    if (!uniqueOrders.contains(o)){
+                        uniqueOrders.add(o);
+                    }
+                }
+                int progress = uniqueOrders.size();
+                pgsBar.setProgress(progress);
+            }
+        }).start();
     }
 
     @Override
@@ -191,8 +221,8 @@ public class ShopListFragment extends Fragment{
                 "https://www.winanscandies.com/",
                 "897 S 3rd St, Columbus, OH 43206");
         mShopViewModel.insert(c);
-
-
     }
+
+
 }
 

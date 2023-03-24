@@ -20,14 +20,15 @@ public class ShopOrderRepository {
 
     LiveData<List<ShopOrder>> findShopOrderByUidAndSid(String uid, String sid) {
         return mShopOrderDao.findAllByUserAndShop(uid, sid); }
+
+    List<ShopOrder> findShopOrderByUid(String uid) {
+        return mShopOrderDao.findAllByUser(uid);
+    }
+
     LiveData<ShopOrder> findShopOrderByUidAndSid(
             ShopOrder o) {
         return mShopOrderDao.findByUserIdAndShopId(
                 o.getUserName(), o.getShopName());
-    }
-    LiveData<ShopOrder> findShopOrderByUid(
-            ShopOrder o) {
-        return mShopOrderDao.getAllByUserId(o.getUserName());
     }
     LiveData<ShopOrder> findShopOrderBySid(
             ShopOrder o) {

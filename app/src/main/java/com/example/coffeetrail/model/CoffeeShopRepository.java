@@ -29,6 +29,7 @@ public class CoffeeShopRepository {
         int id = shop.getId();
         return id;
     }
+
     // Room executes all queries on a separate thread.
 // Observed LiveData notify observer upon data change.
     LiveData<List<CoffeeShop>> getAllCoffeeShops() {
