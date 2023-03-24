@@ -100,6 +100,6 @@ public class CreateAccountFragment extends Fragment implements View.OnClickListe
         }
         FragmentActivity activity = requireActivity();
         Toast.makeText(activity.getApplicationContext(), "New UserAccount added", Toast.LENGTH_SHORT).show();
-        new Handler().postDelayed(() -> returnToLogin(), 5000);
+        new Handler().postDelayed(() -> returnToLogin(), 500);
     }
 }

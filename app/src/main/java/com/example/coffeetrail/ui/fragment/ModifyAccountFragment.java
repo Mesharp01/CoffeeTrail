@@ -115,7 +115,7 @@ public class ModifyAccountFragment extends Fragment implements View.OnClickListe
         }
         FragmentActivity activity = requireActivity();
         Toast.makeText(activity.getApplicationContext(), "User Account deleted", Toast.LENGTH_SHORT).show();
-        new Handler().postDelayed(() -> returnToLogin(), 3000);
+        new Handler().postDelayed(() -> returnToLogin(), 500);
     }
 
 }

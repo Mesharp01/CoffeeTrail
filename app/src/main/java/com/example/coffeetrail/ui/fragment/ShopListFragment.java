@@ -72,10 +72,92 @@ public class ShopListFragment extends Fragment{
 
     private void fillCoffeeShopTable(){
         //mShopViewModel.nukeTable();
-        CoffeeShop c = new CoffeeShop( "The Bexley Coffee Shop", "https://www.facebook.com/BexleyCoffeeShop/", "492 N Cassady Ave Bexley, OH 43209" );
+        CoffeeShop c = new CoffeeShop( "The Bexley Coffee Shop",
+                "https://www.facebook.com/BexleyCoffeeShop/",
+                "492 N Cassady Ave, Bexley, OH 43209" );
         mShopViewModel.insert(c);
-        c = new CoffeeShop("Boston Stoker Coffee Co.", "https://bostonstoker.com/", "10855 Engle Rd Vandalia, OH 45377");
+        c = new CoffeeShop("Boston Stoker Coffee Co.",
+                "https://bostonstoker.com/",
+                "10855 Engle Rd, Vandalia, OH 45377");
         mShopViewModel.insert(c);
+        c = new CoffeeShop("Bottoms Up Coffee",
+                "https://www.bottomsupcoffee.com/",
+                "11069 West Broad St, Columbus, Ohio 43222");
+        mShopViewModel.insert(c);
+        c = new CoffeeShop("Brioso Coffee",
+                "https://briosocoffee.com/",
+                "53 N High St, Columbus, OH 43215");
+        mShopViewModel.insert(c);
+        c = new CoffeeShop("Chocolate Café",
+                "https://www.chocolatecafecolumbus.com/",
+                "1855 Northwest Blvd, Columbus, OH 43212");
+        mShopViewModel.insert(c);
+        c = new CoffeeShop("Coffee Connections of Hilliard",
+                "https://connections.coffee/",
+                "4004 Main St, Hilliard, OH 43026");
+        mShopViewModel.insert(c);
+        c = new CoffeeShop("Community Grounds Coffee & Meeting House",
+                "https://mycommunitygrounds.com/",
+                "1134 Parsons Ave, Columbus, OH 43206");
+        mShopViewModel.insert(c);
+        c = new CoffeeShop("Crimson Cup Coffee and Tea",
+                "https://www.crimsoncup.com/",
+                "4541 N High St, Columbus, OH 43214");
+        mShopViewModel.insert(c);
+        c = new CoffeeShop("Cup O Joe Coffee House",
+                "https://www.cupojoe.com/",
+                "2990 N High St, Columbus, OH 43202");
+        mShopViewModel.insert(c);
+        c = new CoffeeShop("Florin Coffee",
+                "https://www.florincoffee.com/",
+                "874 Oakland Park Ave, Columbus, OH 43224");
+        mShopViewModel.insert(c);
+        c = new CoffeeShop("Fox in the Snow Cafe",
+                "https://www.foxinthesnow.com/",
+                "1031 N 4th St, Columbus, OH 43201");
+        mShopViewModel.insert(c);
+        c = new CoffeeShop("Java Central Café and Roasters",
+                "https://javacentral.coffee/?v=7516fd43adaa",
+                "20 S State St B, Westerville, OH 43081");
+        mShopViewModel.insert(c);
+        c = new CoffeeShop("Kittie’s Cafe",
+                "https://kittiescakes.com/",
+                "2424 E Main St, Bexley, OH 43209");
+        mShopViewModel.insert(c);
+        c = new CoffeeShop("One Line Coffee",
+                "https://www.onelinecoffee.com/",
+                "745 N High St, Columbus, OH 43215");
+        mShopViewModel.insert(c);
+        c = new CoffeeShop("Pistacia Vera",
+                "https://www.pistaciavera.com/",
+                "541 S 3rd St, Columbus, OH 43215");
+        mShopViewModel.insert(c);
+        c = new CoffeeShop("Roaming Goat Coffee",
+                "https://www.roaminggoatcoffee.com/Default.asp",
+                "849 N High St, Columbus, OH 43215");
+        mShopViewModel.insert(c);
+        c = new CoffeeShop("Saucy Brew Works",
+                "https://www.saucybrewworks.com/",
+                "443 W 3rd Ave, Columbus, OH 43201");
+        mShopViewModel.insert(c);
+        c = new CoffeeShop("Stauf's Coffee Roasters",
+                "https://www.staufs.com/",
+                "1277 Grandview Ave, Columbus, OH 43212");
+        mShopViewModel.insert(c);
+        c = new CoffeeShop("The Roosevelt Coffeehouse",
+                "https://www.staufs.com/",
+                "300 E Long St, Columbus, OH 43215");
+        mShopViewModel.insert(c);
+        c = new CoffeeShop("Third Way Café",
+                "https://www.thirdwaycafe.org/",
+                "3058 W Broad St, Columbus, OH 43204");
+        mShopViewModel.insert(c);
+        c = new CoffeeShop("Winans Chocolates + Coffees",
+                "https://www.winanscandies.com/",
+                "897 S 3rd St, Columbus, OH 43206");
+        mShopViewModel.insert(c);
+
+
     }
 }
 
