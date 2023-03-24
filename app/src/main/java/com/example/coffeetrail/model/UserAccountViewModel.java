@@ -12,7 +12,7 @@ import java.util.List;
 
 public class UserAccountViewModel extends AndroidViewModel {
     private UserAccountRepository mRepository;
-    private final LiveData<List<UserAccount>> mAllUserAccounts;
+    private LiveData<List<UserAccount>> mAllUserAccounts;
     public UserAccountViewModel(Application application) {
         super(application);
         mRepository = new UserAccountRepository(application);
@@ -20,9 +20,26 @@ public class UserAccountViewModel extends AndroidViewModel {
     }
     // Methods for fetching a UserAccount, checking if UserAccount exists
     public LiveData<List<UserAccount>> getAllUserAccounts() { return mAllUserAccounts; }
-    public void insert(UserAccount userAccount) { mRepository.insert(userAccount); }
+    public void insert(UserAccount userAccount) {
+        mRepository.insert(userAccount);
+        mAllUserAccounts = mRepository.getAllUserAccounts();
+    }
 
-    public void delete(UserAccount userAccount){ mRepository.delete(userAccount);}
-    public void update(UserAccount userAccount){ mRepository.update(userAccount);}
+    public void delete(UserAccount userAccount){
+        mRepository.delete(userAccount);
+        mAllUserAccounts = mRepository.getAllUserAccounts();
+    }
+    public void update(UserAccount userAccount){
+        mRepository.update(userAccount);
+        mAllUserAccounts = mRepository.getAllUserAccounts();
+    }
+    public void updatePassword(String newPassword, String username){
+        mRepository.updatePassword(newPassword, username);
+        mAllUserAccounts = mRepository.getAllUserAccounts();
+    }
+    public void deleteUser(String username, String password){
+        mRepository.deleteUser(username, password);
+        mAllUserAccounts = mRepository.getAllUserAccounts();
+    }
 
 }

@@ -2,6 +2,7 @@ package com.example.coffeetrail.ui.fragment;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Paint;
 import android.os.Bundle;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -21,6 +22,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.coffeetrail.R;
@@ -38,6 +40,7 @@ import java.util.concurrent.CopyOnWriteArrayList;
 public class AccountFragment extends Fragment implements View.OnClickListener {
     private static final String TAG = "AccountFragment";
     private Button mLoginButton, mCreateAccountButton, mModifyAccountButton;
+    private TextView mCBUS, mCoffeeTrail;
     private EditText mUsername;
     private EditText mPassword;
     private UserAccountViewModel mUserAccountViewModel;
@@ -67,6 +70,12 @@ public class AccountFragment extends Fragment implements View.OnClickListener {
         mCreateAccountButton.setOnClickListener(this);
         mModifyAccountButton = v.findViewById(R.id.modify_account_button);
         mModifyAccountButton.setOnClickListener(this);
+//        mCBUS = v.findViewById(R.id.cbus);
+//        mCoffeeTrail = v.findViewById(R.id.coffeetrail);
+//        mCBUS.getPaint().setStrokeWidth(5);
+//        mCBUS.getPaint().setStyle(Paint.Style.STROKE);
+//        mCoffeeTrail.getPaint().setStrokeWidth(5);
+//        mCoffeeTrail.getPaint().setStyle(Paint.Style.STROKE);
 
         return v;
     }

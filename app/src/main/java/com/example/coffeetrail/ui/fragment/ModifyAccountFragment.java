@@ -5,6 +5,7 @@ import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
+import androidx.fragment.app.FragmentManager;
 import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.lifecycle.ViewModelStoreOwner;
@@ -103,11 +104,7 @@ public class ModifyAccountFragment extends Fragment implements View.OnClickListe
             if (newPassword.equals(newConfirm)){
                 UserAccount newUser = new UserAccount(username, password);
                 if(mUserAccountList.contains(newUser)) {
-                    //this isn't working
-                    //ben's changes should fix
-                    mUserAccountList.remove(newUser);
-                    newUser = new UserAccount(username, hashPassword(newPassword));
-                    mUserAccountList.add(newUser);
+                    mUserAccountViewModel.updatePassword(hashPassword(newPassword), username);
                     Toast.makeText(activity.getApplicationContext(), "Password updated", Toast.LENGTH_SHORT).show();
                     new Handler().postDelayed(() -> returnToLogin(), 500);
                 } else{
@@ -121,22 +118,7 @@ public class ModifyAccountFragment extends Fragment implements View.OnClickListe
             Toast.makeText(activity.getApplicationContext(), "Complete all fields", Toast.LENGTH_SHORT).show();
 
         }
-
-
-
-    }
-    private void deleteAccount(){
-        final String username = mUsername.getText().toString();
-        final String password = hashPassword(mPassword.getText().toString());
-        if(!TextUtils.isEmpty(username) && !TextUtils.isEmpty(password)){
-            UserAccount newUser = new UserAccount(username, password);
-            mUserAccountList.remove(newUser);
-        }
-        FragmentActivity activity = requireActivity();
-        Toast.makeText(activity.getApplicationContext(), "User Account deleted", Toast.LENGTH_SHORT).show();
-        new Handler().postDelayed(() -> returnToLogin(), 500);
-    }
-
+    
     private String hashPassword(String password) {
         try{
             MessageDigest digest = MessageDigest.getInstance("SHA-256");
@@ -160,5 +142,15 @@ public class ModifyAccountFragment extends Fragment implements View.OnClickListe
         }
         return hexString.toString();
     }
+    
+    private void deleteAccount(){
+        FragmentManager fm = getParentFragmentManager();
+        Fragment fragment = new DeleteAccountFragment();
+        fm.beginTransaction()
+                .replace(R.id.fragment_container, fragment)
+                .addToBackStack("delete_account_fragment")
+                .commit();
+    }
+
 
 }
