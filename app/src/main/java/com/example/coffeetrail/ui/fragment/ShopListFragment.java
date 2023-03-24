@@ -1,10 +1,18 @@
 package com.example.coffeetrail.ui.fragment;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
+import android.widget.PopupWindow;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -19,6 +27,7 @@ import com.example.coffeetrail.model.CoffeeShop;
 import com.example.coffeetrail.model.CoffeeShopViewModel;
 import com.example.coffeetrail.model.ShopOrder;
 import com.example.coffeetrail.model.UserAccount;
+import com.example.coffeetrail.ui.activity.MainActivity;
 
 public class ShopListFragment extends Fragment{
     private CoffeeShopViewModel mShopViewModel;
@@ -31,7 +40,8 @@ public class ShopListFragment extends Fragment{
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Activity activity = requireActivity();
+        //Activity activity = requireActivity();
+        setHasOptionsMenu(true);
     }
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -68,6 +78,31 @@ public class ShopListFragment extends Fragment{
     public void onDestroyView(){
         super.onDestroyView();
         binding = null;
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        super.onCreateOptionsMenu(menu, inflater);
+        inflater.inflate(R.menu.fragment_shop_list, menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        Activity activity = requireActivity();
+        switch (item.getItemId()) {
+            case R.id.help_button:
+                AlertDialog.Builder builder = new AlertDialog.Builder(activity);
+                builder.setMessage(R.string.app_how_to_desc);
+                builder.setTitle(R.string.app_how_to);
+                builder.setCancelable(false);
+                builder.setNegativeButton("Get Started!", (DialogInterface.OnClickListener) (dialog, which) -> {
+                    dialog.cancel();
+                });
+                AlertDialog alertDialog = builder.create();
+                alertDialog.show();
+            default:
+                return super.onOptionsItemSelected(item);
+        }
     }
 
     private void fillCoffeeShopTable(){

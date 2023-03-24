@@ -12,15 +12,6 @@
         android:layout_height="wrap_content"
         android:text="@string/shop_list_text"/>
 
-    <Button
-        android:id="@+id/bAbout"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:padding="16dp"
-        android:text="About this App"
-        android:drawableLeft="@android:drawable/ic_menu_search"
-        android:textSize="24sp"/>
-
     <ListView
         android:id="@+id/shops_list"
         android:layout_width="match_parent"
