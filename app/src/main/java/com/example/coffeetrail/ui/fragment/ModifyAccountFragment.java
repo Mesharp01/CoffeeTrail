@@ -5,6 +5,7 @@ import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
+import androidx.fragment.app.FragmentManager;
 import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.lifecycle.ViewModelStoreOwner;
@@ -22,6 +23,9 @@ import com.example.coffeetrail.R;
 import com.example.coffeetrail.model.UserAccount;
 import com.example.coffeetrail.model.UserAccountViewModel;
 
+import java.nio.charset.StandardCharsets;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 
@@ -90,32 +94,64 @@ public class ModifyAccountFragment extends Fragment implements View.OnClickListe
         FragmentActivity activity = requireActivity();
         activity.getSupportFragmentManager().popBackStack();
     }
-    private void changePassword(){
+    private void changePassword() {
         final String username = mUsername.getText().toString();
-        final String password = mPassword.getText().toString();
+        final String password = hashPassword(mPassword.getText().toString());
         final String newPassword = mNewPassword.getText().toString();
         final String newConfirm = mNewConfirm.getText().toString();
-        if(!TextUtils.isEmpty(username) && !TextUtils.isEmpty(password)
-                && !TextUtils.isEmpty(newPassword) && !TextUtils.isEmpty(newConfirm)
-                    && newPassword.equals(newConfirm)) {
-            UserAccount newUser = new UserAccount(username, password);
-            if(mUserAccountList.contains(newUser)) {
-                mUserAccountList.remove(newUser);
-                newUser.mPassword = newPassword;
-                mUserAccountList.add(newUser);
-            }
-        }
-    }
-    private void deleteAccount(){
-        final String username = mUsername.getText().toString();
-        final String password = mPassword.getText().toString();
-        if(!TextUtils.isEmpty(username) && !TextUtils.isEmpty(password)){
-            UserAccount newUser = new UserAccount(username, password);
-            mUserAccountList.remove(newUser);
-        }
         FragmentActivity activity = requireActivity();
-        Toast.makeText(activity.getApplicationContext(), "User Account deleted", Toast.LENGTH_SHORT).show();
-        new Handler().postDelayed(() -> returnToLogin(), 500);
+        if (!TextUtils.isEmpty(username) && !TextUtils.isEmpty(password) && !TextUtils.isEmpty(newPassword) && !TextUtils.isEmpty(newConfirm)) {
+            if (newPassword.equals(newConfirm)) {
+                UserAccount newUser = new UserAccount(username, password);
+                if (mUserAccountList.contains(newUser)) {
+                    mUserAccountViewModel.updatePassword(hashPassword(newPassword), username);
+                    Toast.makeText(activity.getApplicationContext(), "Password updated", Toast.LENGTH_SHORT).show();
+                    new Handler().postDelayed(() -> returnToLogin(), 500);
+                } else {
+                    Toast.makeText(activity.getApplicationContext(), "Username and password not found", Toast.LENGTH_SHORT).show();
+                }
+            } else {
+                Toast.makeText(activity.getApplicationContext(), "Passwords do not match", Toast.LENGTH_SHORT).show();
+
+            }
+        } else {
+            Toast.makeText(activity.getApplicationContext(), "Complete all fields", Toast.LENGTH_SHORT).show();
+
+        }
     }
+    
+    private String hashPassword(String password) {
+        try{
+            MessageDigest digest = MessageDigest.getInstance("SHA-256");
+            byte[] hashed = digest.digest(
+                    password.getBytes(StandardCharsets.UTF_8));
+            return bytesToHex(hashed);
+        }catch (NoSuchAlgorithmException e){
+            throw new RuntimeException("SHA-256 does not exist");
+        }
+
+    }
+
+    private static String bytesToHex(byte[] hash) {
+        StringBuilder hexString = new StringBuilder(2 * hash.length);
+        for (int i = 0; i < hash.length; i++) {
+            String hex = Integer.toHexString(0xff & hash[i]);
+            if(hex.length() == 1) {
+                hexString.append('0');
+            }
+            hexString.append(hex);
+        }
+        return hexString.toString();
+    }
+    
+    private void deleteAccount(){
+        FragmentManager fm = getParentFragmentManager();
+        Fragment fragment = new DeleteAccountFragment();
+        fm.beginTransaction()
+                .replace(R.id.fragment_container, fragment)
+                .addToBackStack("delete_account_fragment")
+                .commit();
+    }
+
 
 }

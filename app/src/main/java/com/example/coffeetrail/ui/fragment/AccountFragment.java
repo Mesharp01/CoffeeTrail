@@ -2,6 +2,7 @@ package com.example.coffeetrail.ui.fragment;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Paint;
 import android.os.Bundle;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -21,6 +22,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.coffeetrail.R;
@@ -29,12 +31,16 @@ import com.example.coffeetrail.model.UserAccount;
 import com.example.coffeetrail.model.UserAccountViewModel;
 import com.example.coffeetrail.ui.activity.ShopListActivity;
 
+import java.nio.charset.StandardCharsets;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 public class AccountFragment extends Fragment implements View.OnClickListener {
     private static final String TAG = "AccountFragment";
     private Button mLoginButton, mCreateAccountButton, mModifyAccountButton;
+    private TextView mCBUS, mCoffeeTrail;
     private EditText mUsername;
     private EditText mPassword;
     private UserAccountViewModel mUserAccountViewModel;
@@ -64,6 +70,12 @@ public class AccountFragment extends Fragment implements View.OnClickListener {
         mCreateAccountButton.setOnClickListener(this);
         mModifyAccountButton = v.findViewById(R.id.modify_account_button);
         mModifyAccountButton.setOnClickListener(this);
+//        mCBUS = v.findViewById(R.id.cbus);
+//        mCoffeeTrail = v.findViewById(R.id.coffeetrail);
+//        mCBUS.getPaint().setStrokeWidth(5);
+//        mCBUS.getPaint().setStyle(Paint.Style.STROKE);
+//        mCoffeeTrail.getPaint().setStrokeWidth(5);
+//        mCoffeeTrail.getPaint().setStyle(Paint.Style.STROKE);
 
         return v;
     }
@@ -88,7 +100,8 @@ public class AccountFragment extends Fragment implements View.OnClickListener {
         final String username = mUsername.getText().toString();
         final String password = mPassword.getText().toString();
         if(!TextUtils.isEmpty(username) && !TextUtils.isEmpty(password)) {
-            UserAccount user = new UserAccount(username, password);
+            String hash = hashPassword(password);
+            UserAccount user = new UserAccount(username, hash);
             boolean loginCheck = mUserAccountList.contains(user);
             if (loginCheck) {
                 Bundle bundle = new Bundle();
@@ -96,9 +109,11 @@ public class AccountFragment extends Fragment implements View.OnClickListener {
 
                 ShopListFragment shopFragment = new ShopListFragment();
                 shopFragment.setArguments(bundle);
-
                 AppCompatActivity activity = (AppCompatActivity) v.getContext();
                 activity.getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, shopFragment).addToBackStack(null).commit();
+            } else {
+                FragmentActivity activity = requireActivity();
+                Toast.makeText(activity.getApplicationContext(), "Username and password not found", Toast.LENGTH_SHORT).show();
             }
 
         }
@@ -120,6 +135,30 @@ public class AccountFragment extends Fragment implements View.OnClickListener {
                 .replace(R.id.fragment_container, fragment)
                 .addToBackStack("modify_account_fragment")
                 .commit();
+    }
+
+    private String hashPassword(String password) {
+        try{
+            MessageDigest digest = MessageDigest.getInstance("SHA-256");
+            byte[] hashed = digest.digest(
+                    password.getBytes(StandardCharsets.UTF_8));
+            return bytesToHex(hashed);
+        }catch (NoSuchAlgorithmException e){
+            throw new RuntimeException("SHA-256 does not exist");
+        }
+
+    }
+
+    private static String bytesToHex(byte[] hash) {
+        StringBuilder hexString = new StringBuilder(2 * hash.length);
+        for (int i = 0; i < hash.length; i++) {
+            String hex = Integer.toHexString(0xff & hash[i]);
+            if(hex.length() == 1) {
+                hexString.append('0');
+            }
+            hexString.append(hex);
+        }
+        return hexString.toString();
     }
     /*
     LifeCycle Methods

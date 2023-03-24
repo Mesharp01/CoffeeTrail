@@ -23,6 +23,9 @@ import com.example.coffeetrail.R;
 import com.example.coffeetrail.model.UserAccount;
 import com.example.coffeetrail.model.UserAccountViewModel;
 
+import java.nio.charset.StandardCharsets;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 
@@ -92,14 +95,49 @@ public class CreateAccountFragment extends Fragment implements View.OnClickListe
     private void createAccount(){
         final String username = mUsername.getText().toString();
         final String password = mPassword.getText().toString();
+        FragmentActivity activity = requireActivity();
         if(!TextUtils.isEmpty(username) && !TextUtils.isEmpty(password)) {
-            UserAccount newUser = new UserAccount(username, password);
-            if(!mUserAccountList.contains(newUser)) {
-                mUserAccountViewModel.insert(newUser);
+            if (mPassword.getText().toString().equals(mConfirmP.getText().toString())){
+                String hash = hashPassword(password);
+                UserAccount newUser = new UserAccount(username, hash);
+                if(!mUserAccountList.contains(newUser)) {
+                    mUserAccountViewModel.insert(newUser);
+                }
+                Toast.makeText(activity.getApplicationContext(), "New UserAccount added", Toast.LENGTH_SHORT).show();
+                new Handler().postDelayed(() -> returnToLogin(), 500);
+            }
+            else{
+                Toast.makeText(activity.getApplicationContext(), "Passwords do not match", Toast.LENGTH_SHORT).show();
             }
         }
-        FragmentActivity activity = requireActivity();
-        Toast.makeText(activity.getApplicationContext(), "New UserAccount added", Toast.LENGTH_SHORT).show();
-        new Handler().postDelayed(() -> returnToLogin(), 500);
+        else{
+            Toast.makeText(activity.getApplicationContext(), "Complete all fields", Toast.LENGTH_SHORT).show();
+
+        }
+    }
+
+
+    private String hashPassword(String password) {
+        try{
+            MessageDigest digest = MessageDigest.getInstance("SHA-256");
+            byte[] hashed = digest.digest(
+                    password.getBytes(StandardCharsets.UTF_8));
+            return bytesToHex(hashed);
+        }catch (NoSuchAlgorithmException e){
+            throw new RuntimeException("SHA-256 does not exist");
+        }
+
+    }
+
+    private static String bytesToHex(byte[] hash) {
+        StringBuilder hexString = new StringBuilder(2 * hash.length);
+        for (int i = 0; i < hash.length; i++) {
+            String hex = Integer.toHexString(0xff & hash[i]);
+            if(hex.length() == 1) {
+                hexString.append('0');
+            }
+            hexString.append(hex);
+        }
+        return hexString.toString();
     }
 }

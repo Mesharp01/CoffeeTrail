@@ -14,13 +14,20 @@ import java.util.List;
 public interface UserAccountDao {
     @Query("SELECT rowid, name, password  FROM useraccount")
     public LiveData<List<UserAccount>> getAllUserAccounts();
-    @Query("SELECT rowid, name, password FROM useraccount WHERE name LIKE :name AND password LIKE :password LIMIT 1")
-            public LiveData<UserAccount> findByName(String name,
+    @Query("SELECT rowid, name, password FROM useraccount WHERE name LIKE :name AND password LIKE :password")
+    public LiveData<UserAccount> findByName(String name,
             String password);
+
+    @Query("UPDATE useraccount SET password=:newPassword WHERE name = :username")
+    public void update(String newPassword, String username);
+
+    @Query("DELETE FROM useraccount WHERE name LIKE :username AND password LIKE :password AND rowid LIKE :rowid")
+    public void deleteAccount(String username, String password, int rowid);
+
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     public void insert(UserAccount userAccount);
     @Update
-    public void updateUserAccount(UserAccount userAccount);
+    public void updateUserAccount(UserAccount... userAccount);
     @Delete
-    public void delete(UserAccount userAccount);
+    public void delete(UserAccount... user);
 }
