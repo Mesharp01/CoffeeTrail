@@ -22,6 +22,6 @@
     <string name="second_fragment_label">Second Fragment</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="app_how_to">How to use this app!</string>
-    <string name="app_how_to_desc">This app...</string>
+    <string name="app_how_to">How to use this app:</string>
+    <string name="app_how_to_desc">This app helps you keep track of your journey on the Columbus Coffee Trail! \n\n  -View your status in the progress bar at the top of the home screen. \n  -When you visit a coffee shop, click the appropriate "Visit" button in the list. Then, make a post including what drink you ordered at the shop. \n  -To see your previous orders at a shop, click the "Past Orders" button.</string>
 </resources>
