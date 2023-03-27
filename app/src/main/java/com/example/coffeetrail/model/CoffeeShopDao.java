@@ -15,16 +15,16 @@ import java.util.List;
 @Dao
 public interface CoffeeShopDao {
 
-    @Query("SELECT rowid, name, url, location FROM coffeeshop")
+    @Query("SELECT rowid, name, url, location, latlng FROM coffeeshop")
     public LiveData<List<CoffeeShop>> getAllCoffeeShops();
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     public void insert(CoffeeShop coffeeShop);
 
-    @Query("SELECT rowid, name, url, location FROM coffeeshop WHERE rowid=:rowid ")
+    @Query("SELECT rowid, name, url, location, latlng  FROM coffeeshop WHERE rowid=:rowid ")
     public CoffeeShop getCoffeeShopById(int rowid);
 
-    @Query("SELECT rowid, name, url, location FROM coffeeshop WHERE name=:name ")
+    @Query("SELECT rowid, name, url, location, latlng  FROM coffeeshop WHERE name=:name ")
     public CoffeeShop getCoffeeShopByName(String name);
 
     @Query("SELECT rowid, name FROM coffeeshop WHERE rowid=:rowid ")
