@@ -17,6 +17,7 @@
     <string name="post_title_label">Make a post</string>
     <string name="post_title_hint">Type your post here!</string>
     <string name="title_activity_make_post">MakePostActivity</string>
+    <string name="title_activity_maps">MapsActivity</string>
     <!-- Strings used for fragments for navigation -->
     <string name="first_fragment_label">First Fragment</string>
     <string name="second_fragment_label">Second Fragment</string>

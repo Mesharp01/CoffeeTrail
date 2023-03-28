@@ -139,7 +139,7 @@ public class ShopListFragment extends Fragment{
         //mShopViewModel.nukeTable();
         CoffeeShop c = new CoffeeShop( "The Bexley Coffee Shop",
                 "https://www.facebook.com/BexleyCoffeeShop/",
-                "492 N Cassady Ave, Bexley, OH 43209" );
+                "39.98061501446167, -82.93161217824766" );
         mShopViewModel.insert(c);
         c = new CoffeeShop("Boston Stoker Coffee Co.",
                 "https://bostonstoker.com/",

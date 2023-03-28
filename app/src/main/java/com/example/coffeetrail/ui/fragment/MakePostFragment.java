@@ -5,6 +5,7 @@ import android.os.Bundle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
+import androidx.fragment.app.FragmentManager;
 import androidx.lifecycle.ViewModelProvider;
 
 import android.view.LayoutInflater;
@@ -80,11 +81,19 @@ public class MakePostFragment extends Fragment implements View.OnClickListener{
             bundle.putSerializable("user", currentUser);
             bundle.putSerializable("shop", currentStore);
 
-            ShopListFragment listFragment = new ShopListFragment();
-            listFragment.setArguments(bundle);
 
-            AppCompatActivity activity = (AppCompatActivity) v.getContext();
-            activity.getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, listFragment).addToBackStack(null).commit();
+            FragmentManager fm = getParentFragmentManager();
+            Fragment mapFragment = new MapsFragment();
+            mapFragment.setArguments(bundle);
+            fm.beginTransaction()
+                    .replace(R.id.fragment_container, mapFragment)
+                    .addToBackStack("maps_fragment")
+                    .commit();
+            //ShopListFragment listFragment = new ShopListFragment();
+            //listFragment.setArguments(bundle);
+
+            //AppCompatActivity activity = (AppCompatActivity) v.getContext();
+            //activity.getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, listFragment).addToBackStack(null).commit();
         }
     }
 }
