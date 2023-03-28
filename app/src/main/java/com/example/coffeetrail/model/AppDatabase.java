@@ -10,7 +10,7 @@ import androidx.room.TypeConverters;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-@Database(entities = {UserAccount.class, CoffeeShop.class, ShopOrder.class}, version = 6,
+@Database(entities = {UserAccount.class, CoffeeShop.class, ShopOrder.class}, version = 7,
         exportSchema = false)
 @TypeConverters({Converters.class})
 public abstract class AppDatabase extends

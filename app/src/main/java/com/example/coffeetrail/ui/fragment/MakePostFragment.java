@@ -89,11 +89,7 @@ public class MakePostFragment extends Fragment implements View.OnClickListener{
                     .replace(R.id.fragment_container, mapFragment)
                     .addToBackStack("maps_fragment")
                     .commit();
-            //ShopListFragment listFragment = new ShopListFragment();
-            //listFragment.setArguments(bundle);
 
-            //AppCompatActivity activity = (AppCompatActivity) v.getContext();
-            //activity.getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, listFragment).addToBackStack(null).commit();
         }
     }
 }

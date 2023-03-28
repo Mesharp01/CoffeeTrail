@@ -1,15 +1,13 @@
 package com.example.coffeetrail.ui.fragment;
 
 
-import androidx.activity.result.ActivityResultLauncher;
-import androidx.activity.result.contract.ActivityResultContract;
-import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
-import androidx.core.app.ActivityCompat;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
@@ -26,17 +24,15 @@ import com.google.android.gms.location.LocationRequest;
 
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.example.coffeetrail.R;
 import com.google.android.gms.location.LocationServices;
-import com.google.android.gms.location.Priority;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.GoogleMap.OnMyLocationButtonClickListener;
@@ -47,7 +43,6 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.CircleOptions;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
-import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 
 public class MapsFragment extends Fragment
@@ -57,16 +52,11 @@ public class MapsFragment extends Fragment
     private UserAccount currentUser;
     private CoffeeShop currentShop;
     private Location mLocation;
+    private LatLng userLocation;
     private LatLng shopLocation;
+    private static final int DEFAULT_ZOOM = 15;
 
-    private final ActivityResultLauncher<String> mActivityResult = registerForActivityResult(
-            new ActivityResultContracts.RequestPermission(), result -> {
-                if (result) {
-                    findLocation();
-                } else {
-                    //TODO:
-                }
-            });
+
     private OnMapReadyCallback callback = new OnMapReadyCallback() {
         @Override
         public void onMapReady(@NonNull GoogleMap googleMap) {
@@ -81,8 +71,8 @@ public class MapsFragment extends Fragment
                     .strokeColor(Color.RED));
             mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(shopLocation, 17));
             mMap.addMarker(new MarkerOptions().position(shopLocation).title(currentShop.mName));
-
-
+            findLocation();
+            updateLocationUI();
         }
     };
 
@@ -91,12 +81,6 @@ public class MapsFragment extends Fragment
         super.onCreate(savedInstance);
         setHasOptionsMenu(true);
         Log.d(TAG, "OnCreate Called");
-        registerForActivityResult(new ActivityResultContracts.RequestPermission(), result -> {
-            if (result) {
-                findLocation();
-            }
-        });
-        //getMapAsync(this);
     }
 
 
@@ -113,7 +97,11 @@ public class MapsFragment extends Fragment
         if (bundle.getSerializable("shop") != null) {
             currentShop = (CoffeeShop) bundle.getSerializable("shop");
         }
-        shopLocation = new LatLng(39.98061501446167, -82.93161217824766);
+        String latlngString = currentShop.mLatlng;
+        String[] coordniates = latlngString.split("[,]", 0);
+        double lat = Double.parseDouble(coordniates[0]);
+        double lng = Double.parseDouble(coordniates[1]);
+        shopLocation = new LatLng(lat, lng);
 
         return inflater.inflate(R.layout.fragment_maps, container, false);
     }
@@ -128,44 +116,75 @@ public class MapsFragment extends Fragment
             mapFragment.getMapAsync(callback);
         }
     }
-
+    @SuppressLint("MissingPermission")
     private void findLocation() {
-        final Activity activity = requireActivity();
-        LocationRequest locationRequest = new LocationRequest.Builder(1000).build();
-        FusedLocationProviderClient locationProvider = LocationServices.getFusedLocationProviderClient(activity);
-        boolean locationPermission = hasLocationPermission();
-        if (locationPermission) {
-            if (ActivityCompat.checkSelfPermission(activity, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(activity, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-                // TODO: Consider calling
-                //    ActivityCompat#requestPermissions
-                // here to request the missing permissions, and then overriding
-                //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-                //                                          int[] grantResults)
-                // to handle the case where the user grants the permission. See the documentation
-                // for ActivityCompat#requestPermissions for more details.
-                return;
-            }
-            Task locationResult = locationProvider.getLastLocation();
-            locationResult.addOnCompleteListener(activity, task -> {
-                if(task.isSuccessful()){
-                    Log.d("Location: ", locationResult.getResult().toString());
-                }else{
+        try {
+            final Activity activity = requireActivity();
+            LocationRequest locationRequest = LocationRequest.create();
+            locationRequest.setInterval(4000);
+            locationRequest.setFastestInterval(2000);
+            locationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
+            FusedLocationProviderClient locationProvider = LocationServices.getFusedLocationProviderClient(activity);
+            boolean locationPermission = hasLocationPermission();
+            if (locationPermission) {
+                updateLocationUI();
+                Task locationResult = locationProvider.getLastLocation();
+                locationResult.addOnCompleteListener(activity, task -> {
+                    if (task.isSuccessful()) {
+                        mLocation = (Location) task.getResult();
+                        if (mLocation != null) {
+                            userLocation = new LatLng(mLocation.getLatitude(), mLocation.getLongitude());
+                            //mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(userLocation, 18));
+                            checkUserAndShopLocation();
+                        }
+                    } else {
+                        Log.d(TAG, "Current location is null. Using defaults.");
+                        Log.e(TAG, "Exception: %s", task.getException());
+                        mMap.moveCamera(CameraUpdateFactory
+                                .newLatLngZoom(shopLocation, DEFAULT_ZOOM));
+                        mMap.getUiSettings().setMyLocationButtonEnabled(false);
+                    }
 
-                }
-            });
+                });
+
+            }
+        } catch (SecurityException e){
+            Log.e("Exception: %s", e.getMessage(), e);
+        }
+    }
+    private void checkUserAndShopLocation(){
+        double userLat = userLocation.latitude;
+        double userLong = userLocation.longitude;
+        double shopLat = shopLocation.latitude;
+        double shopLong = shopLocation.longitude;
+
+        float[] distance = new float[1];
+
+        Location.distanceBetween(userLat, userLong, shopLat, shopLong, distance);
+        Log.d("Distance between places: ", String.valueOf(distance[0]));
+// distance[0] is now the distance between these lat/lons in meters
+        if (distance[0] < 10.0) {
 
         }
+        new Handler().postDelayed(() -> returnToShopList(), 5000);
+
+
+    }
+    @SuppressLint("MissingPermission")
+    private void updateLocationUI() {
+        if (hasLocationPermission()) {
+            if (mMap != null) {
+                mMap.setMyLocationEnabled(true);
+                mMap.getUiSettings().setMyLocationButtonEnabled(true);
+            }
+        }
+
     }
     @Override
     public void onMapReady(@NonNull GoogleMap googleMap){
         mMap = googleMap;
         mMap.setBuildingsEnabled(true);
         mMap.setIndoorEnabled(true);
-        mMap.addCircle(new CircleOptions()
-                .center(new LatLng(40, -83))
-                .radius(10000)
-                .strokeColor(Color.RED)
-                .fillColor(Color.BLUE));
     }
 
     @Override
@@ -195,20 +214,16 @@ public class MapsFragment extends Fragment
     private boolean hasLocationPermission(){
         return !lacksLocationPermission();
     }
-    private void getLocationPermission() {
-        /*
-         * Request location permission, so that we can get the location of the
-         * device. The result of the permission request is handled by a callback,
-         * onRequestPermissionsResult.
-         */
-        if (ContextCompat.checkSelfPermission(this.getApplicationContext(),
-                android.Manifest.permission.ACCESS_FINE_LOCATION)
-                == PackageManager.PERMISSION_GRANTED) {
-            locationPermissionGranted = true;
-        } else {
-            ActivityCompat.requestPermissions(this,
-                    new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION},
-                    PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION);
-        }
+    private void returnToShopList(){
+        ShopListFragment listFragment = new ShopListFragment();
+        Bundle bundle = new Bundle();
+        bundle.putSerializable("user", currentUser);
+        bundle.putSerializable("shop", currentShop);
+        listFragment.setArguments(bundle);
+        FragmentManager fm = getParentFragmentManager();
+        fm.beginTransaction()
+                .replace(R.id.fragment_container, listFragment)
+                .addToBackStack(null)
+                .commit();
     }
 }
