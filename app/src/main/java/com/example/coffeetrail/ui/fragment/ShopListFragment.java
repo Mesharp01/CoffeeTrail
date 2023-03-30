@@ -154,8 +154,8 @@ public class ShopListFragment extends Fragment{
         mShopViewModel.insert(c);
         c = new CoffeeShop("Boston Stoker Coffee Co.",
                 "https://bostonstoker.com/",
-                "10855 Engle Rd, Vandalia, OH 45377",
-                "39.90648344518244, -84.18989273021215");
+                "1101 W 1st Ave, Grandview Heights, OH 43212",
+                "39.98272937683729, -83.03271079910144");
         mShopViewModel.insert(c);
         c = new CoffeeShop("Bottoms Up Coffee",
                 "https://www.bottomsupcoffee.com/",

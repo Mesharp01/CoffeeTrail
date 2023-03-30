@@ -117,14 +117,14 @@ public class ShopListHolder extends RecyclerView.ViewHolder implements View.OnCl
         mShopLocation = new LatLng(lat, lng);
         double userLat = mUserLocation.latitude;
         double userLong = mUserLocation.longitude;
-        double shopLat = mShopLocation.latitude;
-        double shopLong = mShopLocation.longitude;
+        double shopLat = lat;
+        double shopLong = lng;
 
 
 
         float[] distance = new float[1];
         Location.distanceBetween(userLat, userLong, shopLat, shopLong, distance);
-        double distanceMiles = distance[0]/16099.334;
+        double distanceMiles = distance[0]/1609.334;
         distanceBetween = String.format("%.2fmi", distanceMiles);
         Log.d("Distance between places: ", distanceBetween);
         mShopDistance.setText(distanceBetween);
