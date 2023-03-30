@@ -167,7 +167,7 @@ public class MapsFragment extends Fragment
         double shopLong = shopLocation.longitude;
         LatLng center = new LatLng(((userLat+shopLat)/2),((userLat+shopLat)/2));
         mMap.moveCamera(CameraUpdateFactory
-                .newLatLngZoom(center, DEFAULT_ZOOM));
+                .newLatLngZoom(userLocation, 13));
 
         float[] distance = new float[1];
 
@@ -179,7 +179,7 @@ public class MapsFragment extends Fragment
         } else{
             Toast.makeText(activity.getApplicationContext(), "Please get closer to the coffee shop", Toast.LENGTH_SHORT).show();
         }
-        new Handler().postDelayed(() -> returnToShopList(), 10000);
+        //new Handler().postDelayed(() -> returnToShopList(), 10000);
 
 
     }
