@@ -333,7 +333,7 @@ public class ShopListFragment extends Fragment{
 
         float[] distance = new float[1];
         Location.distanceBetween(userLat, userLong, shopLat, shopLong, distance);
-        double distanceMiles = distance[0]/16099.334;
+        double distanceMiles = distance[0]/1609.334;
         s.setDistance(distanceMiles);
         return s;
     }
