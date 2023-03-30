@@ -48,7 +48,7 @@ public class CoffeeShop implements Serializable {
         mUrl = url;
         mLocation = location;
         mLatlng = latlng;
-        mDistance = 0;
+        mDistance = -1;
     }
 
 
@@ -64,6 +64,7 @@ public class CoffeeShop implements Serializable {
     public String getUrl() { return mUrl; }
     public String getLocation() { return mLocation; }
     public String getLatlng() { return mLatlng; }
+    public double getDistance(){return mDistance;}
 
     @Override
     public boolean equals(Object o) {

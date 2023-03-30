@@ -43,11 +43,13 @@ public class ShopListHolder extends RecyclerView.ViewHolder implements View.OnCl
 //    private ShopOrder mNewPost;
 
     private CoffeeShopViewModel mCoffeeShopViewModel;
+    private boolean initializedLocations;
 
 
 
     public ShopListHolder(Context context, View itemView, UserAccount user){
         super(itemView);
+        initializedLocations = false;
         mShopListTextView = itemView.findViewById(R.id.list_item_shoplist);
         mViewOrdersButton = itemView.findViewById(R.id.see_orders_button);
         mAboutButton = itemView.findViewById(R.id.about_button);
@@ -66,7 +68,9 @@ public class ShopListHolder extends RecyclerView.ViewHolder implements View.OnCl
     void bind(CoffeeShop shop) {
         currentStore = shop;
         mShopListTextView.setText(shop.getName());
-        checkUserAndShopLocation();
+        if (currentStore.getDistance() != -1){
+            checkUserAndShopLocation();
+        }
     }
 
     static ShopListHolder create(ViewGroup parent, UserAccount user, LatLng userLocation){
@@ -127,11 +131,12 @@ public class ShopListHolder extends RecyclerView.ViewHolder implements View.OnCl
         double shopLong = mShopLocation.longitude;
 
         float[] distance = new float[1];
-        //Location.distanceBetween(userLat, userLong, shopLat, shopLong, distance);
+        Location.distanceBetween(userLat, userLong, shopLat, shopLong, distance);
         double distanceMiles = distance[0]/16099.334;
         mCoffeeShopViewModel.update(distanceMiles, currentStore.getId());
         distanceBetween = String.format("%.2fmi", distanceMiles);
         Log.d("Distance between places: ", distanceBetween);
         mShopDistance.setText(distanceBetween);
+        initializedLocations = true;
     }
 }
