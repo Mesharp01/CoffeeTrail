@@ -12,18 +12,24 @@ import java.util.List;
 
 public class CoffeeShopViewModel extends AndroidViewModel {
     private CoffeeShopRepository mRepository;
-    private final LiveData<List<CoffeeShop>> mAllCoffeeShops;
+    private LiveData<List<CoffeeShop>> mAllCoffeeShops;
     public CoffeeShopViewModel(Application application) {
         super(application);
         mRepository = new CoffeeShopRepository(application);
-        mAllCoffeeShops = mRepository.getAllCoffeeShops();
+        mAllCoffeeShops = getAllCoffeeShops();
     }
-    public LiveData<List<CoffeeShop>> getAllCoffeeShops() { return mAllCoffeeShops; }
+    public LiveData<List<CoffeeShop>> getAllCoffeeShops() { return mRepository.getAllCoffeeShops(); }
+
     public void insert(CoffeeShop coffeeShop) {
         int id = coffeeShop.getId();
         if (mRepository.getCoffeeShopById(id) == null) {
             mRepository.insert(coffeeShop);
         }
+    }
+
+    public void update(double distance, int sid){
+        mRepository.update(distance, sid);
+        //mAllCoffeeShops = getAllCoffeeShops();
     }
 
     public String getStoreName(int shopId){

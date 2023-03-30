@@ -71,6 +71,9 @@ public class ShopListFragment extends Fragment{
         setHasOptionsMenu(true);
 
     }
+    public CoffeeShopViewModel getViewModel(){
+        return mShopViewModel;
+    }
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {

@@ -34,25 +34,24 @@ public class CoffeeShop implements Serializable {
     @ColumnInfo(name = "latlng")
     public String mLatlng;
 
+    @ColumnInfo(name = "distance")
+    public float mDistance;
+
     public CoffeeShop(@NonNull String name,
-                               @NonNull String url, @NonNull String location, @NonNull String latlng) {
+                               @NonNull String url, @NonNull String location,
+                      @NonNull String latlng) {
         mName = name;
         mUrl = url;
         mLocation = location;
         mLatlng = latlng;
+        mDistance = 0;
     }
-//    public CoffeeShop(int id, @NonNull String name,
-//                      @NonNull String url, @NonNull String location) {
-//        mSid = id;
-//        mName = name;
-//        mUrl = url;
-//        mLocation = location;
-//    }
     public int getId() { return mSid; }
     public String getName() { return mName; }
     public String getUrl() { return mUrl; }
     public String getLocation() { return mLocation; }
     public String getLatlng() { return mLatlng; }
+    public double getDistance(){ return mDistance;}
 
     @Override
     public boolean equals(Object o) {
