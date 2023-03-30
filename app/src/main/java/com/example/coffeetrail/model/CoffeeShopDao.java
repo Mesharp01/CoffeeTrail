@@ -15,7 +15,7 @@ import java.util.List;
 @Dao
 public interface CoffeeShopDao {
 
-    @Query("SELECT rowid, name, url, location, latlng, distance FROM coffeeshop ORDER BY distance ASC")
+    @Query("SELECT rowid, name, url, location, latlng, distance FROM coffeeshop")
     public LiveData<List<CoffeeShop>> getAllCoffeeShops();
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)

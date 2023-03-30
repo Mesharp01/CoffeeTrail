@@ -28,6 +28,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.LiveData;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -48,6 +49,8 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.tasks.Task;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -275,14 +278,22 @@ public class ShopListFragment extends Fragment{
                             mShopViewModel = new ViewModelProvider(this).get(CoffeeShopViewModel.class);
                             mShopOrderViewModel = new ViewModelProvider(this).get(ShopOrderViewModel.class);
                             mShopOrderViewModel.getAllShopOrders();
+
                             RecyclerView recyclerView = view.findViewById(R.id.recyclerview);
                             final ShopListAdapter adapter = new ShopListAdapter(new ShopListAdapter.ShopListDiff(), currentUser, userLocation);//, currentStore, newPost);
                             recyclerView.setAdapter(adapter);
                             recyclerView.setLayoutManager(new LinearLayoutManager(activity));
 
                             mShopViewModel.getAllCoffeeShops().observe(this, shops -> {
+                                List<CoffeeShop> shopsWithDistances = calculateDistances(shops);
+                                Collections.sort(shopsWithDistances, new Comparator<CoffeeShop>() {
+                                    @Override
+                                    public int compare(CoffeeShop lhs, CoffeeShop rhs) {
+                                        return lhs.getDistance() < rhs.getDistance() ? -1 : (lhs.getDistance() > rhs.getDistance() ) ? 1 : 0;
+                                    }
+                                });
                                 // Update the cached copy of the words in the adapter.
-                                adapter.submitList(shops);
+                                adapter.submitList(shopsWithDistances);
                             });
                             fillCoffeeShopTable();
                             setProgress(currentUser.getName());
@@ -298,6 +309,33 @@ public class ShopListFragment extends Fragment{
         } catch (SecurityException e){
             Log.e("Exception: %s", e.getMessage(), e);
         }
+    }
+    private List<CoffeeShop> calculateDistances(List<CoffeeShop> shops){
+        List<CoffeeShop> newShops = new ArrayList<CoffeeShop>();
+        for (CoffeeShop s:shops) {
+            newShops.add(checkUserAndShopLocation(s));
+        }
+
+        return newShops;
+    }
+
+    private CoffeeShop checkUserAndShopLocation(CoffeeShop s) {
+        LatLng mUserLocation = userLocation;
+        String latlngString = s.mLatlng;
+        String[] coordniates = latlngString.split("[,]", 0);
+        double lat = Double.parseDouble(coordniates[0]);
+        double lng = Double.parseDouble(coordniates[1]);
+        LatLng mShopLocation = new LatLng(lat, lng);
+        double userLat = mUserLocation.latitude;
+        double userLong = mUserLocation.longitude;
+        double shopLat = mShopLocation.latitude;
+        double shopLong = mShopLocation.longitude;
+
+        float[] distance = new float[1];
+        Location.distanceBetween(userLat, userLong, shopLat, shopLong, distance);
+        double distanceMiles = distance[0]/16099.334;
+        s.setDistance(distanceMiles);
+        return s;
     }
     @RequiresApi(api = Build.VERSION_CODES.M)
     private boolean lacksLocationPermission(){

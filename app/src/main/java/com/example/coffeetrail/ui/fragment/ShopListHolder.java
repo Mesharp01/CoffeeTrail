@@ -66,7 +66,9 @@ public class ShopListHolder extends RecyclerView.ViewHolder implements View.OnCl
     void bind(CoffeeShop shop) {
         currentStore = shop;
         mShopListTextView.setText(shop.getName());
-        checkUserAndShopLocation();
+        String distanceBetween = String.format("%.2fmi", shop.getDistance());
+        Log.d("Distance between places: ", distanceBetween);
+        mShopDistance.setText(distanceBetween);
     }
 
     static ShopListHolder create(ViewGroup parent, UserAccount user, LatLng userLocation){
@@ -115,23 +117,5 @@ public class ShopListHolder extends RecyclerView.ViewHolder implements View.OnCl
             AppCompatActivity activity = (AppCompatActivity) view.getContext();
             activity.getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, orderFragment, "SHOP_ORDER_FRAGMENT").addToBackStack(null).commit();
         }
-    }private void checkUserAndShopLocation() {
-        String latlngString = currentStore.mLatlng;
-        String[] coordniates = latlngString.split("[,]", 0);
-        double lat = Double.parseDouble(coordniates[0]);
-        double lng = Double.parseDouble(coordniates[1]);
-        mShopLocation = new LatLng(lat, lng);
-        double userLat = mUserLocation.latitude;
-        double userLong = mUserLocation.longitude;
-        double shopLat = mShopLocation.latitude;
-        double shopLong = mShopLocation.longitude;
-
-        float[] distance = new float[1];
-        //Location.distanceBetween(userLat, userLong, shopLat, shopLong, distance);
-        double distanceMiles = distance[0]/16099.334;
-        mCoffeeShopViewModel.update(distanceMiles, currentStore.getId());
-        distanceBetween = String.format("%.2fmi", distanceMiles);
-        Log.d("Distance between places: ", distanceBetween);
-        mShopDistance.setText(distanceBetween);
     }
 }
