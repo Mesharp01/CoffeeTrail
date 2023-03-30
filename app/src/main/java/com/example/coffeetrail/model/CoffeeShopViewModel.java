@@ -36,6 +36,10 @@ public class CoffeeShopViewModel extends AndroidViewModel {
         return id;
     }
 
+    public void update(double distance, int sid){
+        mRepository.update(distance, sid);
+    }
+
     public void nukeTable(){
         mRepository.nukeTable();
     }

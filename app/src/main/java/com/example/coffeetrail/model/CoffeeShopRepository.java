@@ -58,6 +58,11 @@ public class CoffeeShopRepository {
 
     }
 
+    void update(double distance, int sid){
+        AppDatabase.databaseWriteExecutor.execute(() ->
+                mCoffeeShopDao.update(distance, sid));
+    }
+
     void nukeTable(){
         AppDatabase.databaseWriteExecutor.execute(() ->
                 mCoffeeShopDao.nukeTable()); }

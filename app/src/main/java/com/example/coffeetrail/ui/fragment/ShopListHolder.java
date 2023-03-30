@@ -1,5 +1,6 @@
 package com.example.coffeetrail.ui.fragment;
 
+import android.content.Context;
 import android.content.DialogInterface;
 import android.location.Location;
 import android.os.Bundle;
@@ -14,6 +15,8 @@ import android.widget.TextView;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentActivity;
+import androidx.lifecycle.ViewModelProvider;
+import androidx.lifecycle.ViewModelStoreOwner;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.coffeetrail.R;
@@ -39,11 +42,11 @@ public class ShopListHolder extends RecyclerView.ViewHolder implements View.OnCl
     private String distanceBetween;
 //    private ShopOrder mNewPost;
 
-    private CoffeeShopViewModel mViewModel;
+    private CoffeeShopViewModel mCoffeeShopViewModel;
 
 
 
-    public ShopListHolder(View itemView, UserAccount user){
+    public ShopListHolder(Context context, View itemView, UserAccount user){
         super(itemView);
         mShopListTextView = itemView.findViewById(R.id.list_item_shoplist);
         mViewOrdersButton = itemView.findViewById(R.id.see_orders_button);
@@ -54,6 +57,9 @@ public class ShopListHolder extends RecyclerView.ViewHolder implements View.OnCl
         mVisitButton.setOnClickListener(this);
         mViewOrdersButton.setOnClickListener(this);
         currentUser = user;
+        AppCompatActivity activity = (AppCompatActivity) context;
+        mCoffeeShopViewModel = new ViewModelProvider((ViewModelStoreOwner) activity).get(CoffeeShopViewModel.class);
+
 
     }
 
@@ -67,7 +73,7 @@ public class ShopListHolder extends RecyclerView.ViewHolder implements View.OnCl
         View view = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.list_item_shoplist, parent, false);
         mUserLocation = userLocation;
-        return new ShopListHolder(view, user);
+        return new ShopListHolder(parent.getContext(), view, user);
     }
 
     @Override
@@ -120,11 +126,10 @@ public class ShopListHolder extends RecyclerView.ViewHolder implements View.OnCl
         double shopLat = mShopLocation.latitude;
         double shopLong = mShopLocation.longitude;
 
-
-
         float[] distance = new float[1];
-        Location.distanceBetween(userLat, userLong, shopLat, shopLong, distance);
+        //Location.distanceBetween(userLat, userLong, shopLat, shopLong, distance);
         double distanceMiles = distance[0]/16099.334;
+        mCoffeeShopViewModel.update(distanceMiles, currentStore.getId());
         distanceBetween = String.format("%.2fmi", distanceMiles);
         Log.d("Distance between places: ", distanceBetween);
         mShopDistance.setText(distanceBetween);

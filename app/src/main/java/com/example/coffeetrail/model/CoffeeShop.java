@@ -1,5 +1,8 @@
 package com.example.coffeetrail.model;
 
+import android.location.Location;
+import android.util.Log;
+
 import androidx.annotation.NonNull;
 import androidx.lifecycle.ViewModel;
 import androidx.room.ColumnInfo;
@@ -7,6 +10,8 @@ import androidx.room.Entity;
 import androidx.room.Fts4;
 import androidx.room.Index;
 import androidx.room.PrimaryKey;
+
+import com.google.android.gms.maps.model.LatLng;
 
 import java.io.Serializable;
 import java.util.Objects;
@@ -34,13 +39,19 @@ public class CoffeeShop implements Serializable {
     @ColumnInfo(name = "latlng")
     public String mLatlng;
 
+    @ColumnInfo(name = "distance")
+    public double mDistance;
+
     public CoffeeShop(@NonNull String name,
                                @NonNull String url, @NonNull String location, @NonNull String latlng) {
         mName = name;
         mUrl = url;
         mLocation = location;
         mLatlng = latlng;
+        mDistance = 0;
     }
+
+
 //    public CoffeeShop(int id, @NonNull String name,
 //                      @NonNull String url, @NonNull String location) {
 //        mSid = id;
