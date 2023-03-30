@@ -1,10 +1,18 @@
 package com.example.coffeetrail.ui.fragment;
 
+import android.Manifest;
+import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.app.ActivityManager;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.pm.ConfigurationInfo;
+import android.content.pm.PackageManager;
+import android.location.Location;
+import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -17,6 +25,8 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -30,6 +40,12 @@ import com.example.coffeetrail.model.ShopOrder;
 import com.example.coffeetrail.model.ShopOrderViewModel;
 import com.example.coffeetrail.model.UserAccount;
 import com.example.coffeetrail.ui.activity.MainActivity;
+import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationRequest;
+import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.maps.CameraUpdateFactory;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.tasks.Task;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -45,12 +61,15 @@ public class ShopListFragment extends Fragment{
     public UserAccount currentUser;
     public CoffeeShop currentStore;
     public ShopOrder newPost;
+    public LatLng userLocation;
+    private static final String TAG = "ShopList:";
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         //Activity activity = requireActivity();
         setHasOptionsMenu(true);
+
     }
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -71,21 +90,7 @@ public class ShopListFragment extends Fragment{
     public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         Activity activity = requireActivity();
-        mShopViewModel = new ViewModelProvider(this).get(CoffeeShopViewModel.class);
-        mShopOrderViewModel = new ViewModelProvider(this).get(ShopOrderViewModel.class);
-        mShopOrderViewModel.getAllShopOrders();
-        RecyclerView recyclerView = view.findViewById(R.id.recyclerview);
-        final ShopListAdapter adapter = new ShopListAdapter(new ShopListAdapter.ShopListDiff(), currentUser);//, currentStore, newPost);
-        recyclerView.setAdapter(adapter);
-        recyclerView.setLayoutManager(new LinearLayoutManager(activity));
-
-        mShopViewModel.getAllCoffeeShops().observe(this, shops -> {
-            // Update the cached copy of the words in the adapter.
-            adapter.submitList(shops);
-        });
-        fillCoffeeShopTable();
-        setProgress(currentUser.getName());
-
+        findLocation(view);
     }
 
     public void onDestroyView(){
@@ -137,7 +142,12 @@ public class ShopListFragment extends Fragment{
 
     private void fillCoffeeShopTable(){
         //mShopViewModel.nukeTable();
-        CoffeeShop c = new CoffeeShop( "The Bexley Coffee Shop",
+        CoffeeShop c = new CoffeeShop( "Test Coffee Shop",
+                "blank",
+                "blank" ,
+                "40.001811906256656, -83.01259787019028");
+        mShopViewModel.insert(c);
+        c = new CoffeeShop( "The Bexley Coffee Shop",
                 "https://www.facebook.com/BexleyCoffeeShop/",
                 "492 N Cassady Ave, Bexley, OH 43209" ,
                 "39.98072154248498, -82.93141499180881");
@@ -243,7 +253,61 @@ public class ShopListFragment extends Fragment{
                 "39.944629903683364, -82.9934295373535");
         mShopViewModel.insert(c);
     }
+    @SuppressLint("MissingPermission")
+    private void findLocation(@NonNull View view) {
+        try {
+            final Activity activity = requireActivity();
+            LocationRequest locationRequest = LocationRequest.create();
+            locationRequest.setInterval(4000);
+            locationRequest.setFastestInterval(2000);
+            locationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
+            FusedLocationProviderClient locationProvider = LocationServices.getFusedLocationProviderClient(activity);
+            boolean locationPermission = hasLocationPermission();
+            if (locationPermission) {
+                Task locationResult = locationProvider.getLastLocation();
+                locationResult.addOnCompleteListener(activity, task -> {
+                    Location mLocation;
+                    if (task.isSuccessful()) {
+                        mLocation = (Location) task.getResult();
+                        if (mLocation != null) {
+                            userLocation = new LatLng(mLocation.getLatitude(), mLocation.getLongitude());
+                            Log.d(TAG, userLocation.toString());
+                            mShopViewModel = new ViewModelProvider(this).get(CoffeeShopViewModel.class);
+                            mShopOrderViewModel = new ViewModelProvider(this).get(ShopOrderViewModel.class);
+                            mShopOrderViewModel.getAllShopOrders();
+                            RecyclerView recyclerView = view.findViewById(R.id.recyclerview);
+                            final ShopListAdapter adapter = new ShopListAdapter(new ShopListAdapter.ShopListDiff(), currentUser, userLocation);//, currentStore, newPost);
+                            recyclerView.setAdapter(adapter);
+                            recyclerView.setLayoutManager(new LinearLayoutManager(activity));
 
+                            mShopViewModel.getAllCoffeeShops().observe(this, shops -> {
+                                // Update the cached copy of the words in the adapter.
+                                adapter.submitList(shops);
+                            });
+                            fillCoffeeShopTable();
+                            setProgress(currentUser.getName());
+                        }
+                    } else {
+                        Log.d(TAG, "Current location is null. Using defaults.");
+                        Log.e(TAG, "Exception: %s", task.getException());
+                    }
 
+                });
+
+            }
+        } catch (SecurityException e){
+            Log.e("Exception: %s", e.getMessage(), e);
+        }
+    }
+    @RequiresApi(api = Build.VERSION_CODES.M)
+    private boolean lacksLocationPermission(){
+        final Activity activity = requireActivity();
+        int result = ContextCompat.checkSelfPermission(activity, Manifest.permission.ACCESS_FINE_LOCATION);
+        return result != PackageManager.PERMISSION_GRANTED;
+    }
+    @RequiresApi(api = Build.VERSION_CODES.M)
+    private boolean hasLocationPermission(){
+        return !lacksLocationPermission();
+    }
 }
 

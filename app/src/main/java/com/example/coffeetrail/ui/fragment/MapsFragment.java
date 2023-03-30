@@ -7,6 +7,7 @@ import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentActivity;
 import androidx.fragment.app.FragmentManager;
 
 import android.Manifest;
@@ -22,6 +23,11 @@ import com.example.coffeetrail.model.UserAccount;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationRequest;
 
+import android.opengl.EGLConfig;
+import android.opengl.EGL14;
+import android.opengl.EGLContext;
+import android.opengl.EGLDisplay;
+import android.opengl.GLSurfaceView;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
@@ -44,6 +50,8 @@ import com.google.android.gms.maps.model.CircleOptions;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.Task;
+
+
 
 public class MapsFragment extends Fragment
         implements OnMapReadyCallback, OnMyLocationButtonClickListener, OnMyLocationClickListener {
@@ -134,7 +142,6 @@ public class MapsFragment extends Fragment
                         mLocation = (Location) task.getResult();
                         if (mLocation != null) {
                             userLocation = new LatLng(mLocation.getLatitude(), mLocation.getLongitude());
-                            //mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(userLocation, 18));
                             checkUserAndShopLocation();
                         }
                     } else {
@@ -153,20 +160,26 @@ public class MapsFragment extends Fragment
         }
     }
     private void checkUserAndShopLocation(){
+        FragmentActivity activity = requireActivity();
         double userLat = userLocation.latitude;
         double userLong = userLocation.longitude;
         double shopLat = shopLocation.latitude;
         double shopLong = shopLocation.longitude;
+        LatLng center = new LatLng(((userLat+shopLat)/2),((userLat+shopLat)/2));
+        mMap.moveCamera(CameraUpdateFactory
+                .newLatLngZoom(center, DEFAULT_ZOOM));
 
         float[] distance = new float[1];
 
         Location.distanceBetween(userLat, userLong, shopLat, shopLong, distance);
         Log.d("Distance between places: ", String.valueOf(distance[0]));
-// distance[0] is now the distance between these lat/lons in meters
-        if (distance[0] < 10.0) {
-
+        // distance[0] is now the distance between these lat/lons in meters
+        if (distance[0] < 100.0) {
+            Toast.makeText(activity.getApplicationContext(), "User location verified", Toast.LENGTH_SHORT).show();
+        } else{
+            Toast.makeText(activity.getApplicationContext(), "Please get closer to the coffee shop", Toast.LENGTH_SHORT).show();
         }
-        new Handler().postDelayed(() -> returnToShopList(), 5000);
+        new Handler().postDelayed(() -> returnToShopList(), 10000);
 
 
     }
@@ -226,4 +239,5 @@ public class MapsFragment extends Fragment
                 .addToBackStack(null)
                 .commit();
     }
+
 }

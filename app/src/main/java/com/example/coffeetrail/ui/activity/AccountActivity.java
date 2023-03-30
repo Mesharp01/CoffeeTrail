@@ -4,6 +4,9 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
+import android.app.ActivityManager;
+import android.content.Context;
+import android.content.pm.ConfigurationInfo;
 import android.os.Bundle;
 import android.util.Log;
 
@@ -33,6 +36,12 @@ public class AccountActivity extends AppCompatActivity {
     public void onStart() {
         super.onStart();
         Log.d(TAG, "onStart() called");
+        ActivityManager activityManager = (ActivityManager) getSystemService(Context.ACTIVITY_SERVICE);
+        ConfigurationInfo configurationInfo = activityManager.getDeviceConfigurationInfo();
+
+        System.out.println(Double.parseDouble(configurationInfo.getGlEsVersion()));
+        System.out.println(configurationInfo.reqGlEsVersion >= 0x30000);
+        System.err.println(String.format("%X", configurationInfo.reqGlEsVersion));
     }
 
     @Override
