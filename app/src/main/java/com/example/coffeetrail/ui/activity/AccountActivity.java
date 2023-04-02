@@ -36,12 +36,6 @@ public class AccountActivity extends AppCompatActivity {
     public void onStart() {
         super.onStart();
         Log.d(TAG, "onStart() called");
-        ActivityManager activityManager = (ActivityManager) getSystemService(Context.ACTIVITY_SERVICE);
-        ConfigurationInfo configurationInfo = activityManager.getDeviceConfigurationInfo();
-
-        System.out.println(Double.parseDouble(configurationInfo.getGlEsVersion()));
-        System.out.println(configurationInfo.reqGlEsVersion >= 0x30000);
-        System.err.println(String.format("%X", configurationInfo.reqGlEsVersion));
     }
 
     @Override

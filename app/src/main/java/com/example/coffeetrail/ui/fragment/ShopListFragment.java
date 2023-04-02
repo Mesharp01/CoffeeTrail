@@ -148,7 +148,7 @@ public class ShopListFragment extends Fragment{
         CoffeeShop c = new CoffeeShop( "Test Coffee Shop",
                 "blank",
                 "blank" ,
-                "40.001811906256656, -83.01259787019028");
+                "39.990552178060554, -83.00813045127312");
         mShopViewModel.insert(c);
         c = new CoffeeShop( "The Bexley Coffee Shop",
                 "https://www.facebook.com/BexleyCoffeeShop/",

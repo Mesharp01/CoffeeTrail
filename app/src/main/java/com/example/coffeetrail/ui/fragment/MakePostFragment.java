@@ -64,9 +64,6 @@ public class MakePostFragment extends Fragment implements View.OnClickListener{
         final String post = mPost.getText().toString();
         //need to access current shop and user to make a new shopOrder entry in the database...
         ShopOrder shopOrder = new ShopOrder(post, currentUser.getName(), currentStore.getName());
-        ShopOrderViewModel mShopOrderViewModel = new ViewModelProvider(this).get(ShopOrderViewModel.class);
-        mShopOrderViewModel.insert(shopOrder);
-        Toast.makeText(activity.getApplicationContext(), "New post added", Toast.LENGTH_SHORT).show();
         return shopOrder;
     }
 
@@ -80,6 +77,7 @@ public class MakePostFragment extends Fragment implements View.OnClickListener{
             Bundle bundle = new Bundle();
             bundle.putSerializable("user", currentUser);
             bundle.putSerializable("shop", currentStore);
+            bundle.putSerializable("order", newOrder);
 
 
             FragmentManager fm = getParentFragmentManager();

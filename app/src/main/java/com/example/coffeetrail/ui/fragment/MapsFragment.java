@@ -9,6 +9,7 @@ import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
 import androidx.fragment.app.FragmentManager;
+import androidx.lifecycle.ViewModelProvider;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
@@ -19,6 +20,8 @@ import android.graphics.Color;
 import android.location.Location;
 
 import com.example.coffeetrail.model.CoffeeShop;
+import com.example.coffeetrail.model.ShopOrder;
+import com.example.coffeetrail.model.ShopOrderViewModel;
 import com.example.coffeetrail.model.UserAccount;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationRequest;
@@ -54,11 +57,12 @@ import com.google.android.gms.tasks.Task;
 
 
 public class MapsFragment extends Fragment
-        implements OnMapReadyCallback, OnMyLocationButtonClickListener, OnMyLocationClickListener {
+        implements OnMapReadyCallback {
     private static final String TAG = "Maps:";
     private GoogleMap mMap;
     private UserAccount currentUser;
     private CoffeeShop currentShop;
+    private ShopOrder newOrder;
     private Location mLocation;
     private LatLng userLocation;
     private LatLng shopLocation;
@@ -104,6 +108,9 @@ public class MapsFragment extends Fragment
         }
         if (bundle.getSerializable("shop") != null) {
             currentShop = (CoffeeShop) bundle.getSerializable("shop");
+        }
+        if (bundle.getSerializable("order") != null) {
+            newOrder = (ShopOrder) bundle.getSerializable("order");
         }
         String latlngString = currentShop.mLatlng;
         String[] coordniates = latlngString.split("[,]", 0);
@@ -176,10 +183,14 @@ public class MapsFragment extends Fragment
         // distance[0] is now the distance between these lat/lons in meters
         if (distance[0] < 100.0) {
             Toast.makeText(activity.getApplicationContext(), "User location verified", Toast.LENGTH_SHORT).show();
+            ShopOrderViewModel mShopOrderViewModel = new ViewModelProvider(this).get(ShopOrderViewModel.class);
+            mShopOrderViewModel.insert(newOrder);
+            Toast.makeText(activity.getApplicationContext(), "New post added", Toast.LENGTH_SHORT).show();
+            new Handler().postDelayed(() -> returnToShopList(), 10000);
         } else{
             Toast.makeText(activity.getApplicationContext(), "Please get closer to the coffee shop", Toast.LENGTH_SHORT).show();
+            new Handler().postDelayed(() -> returnToPost(), 5000);
         }
-        //new Handler().postDelayed(() -> returnToShopList(), 10000);
 
 
     }
@@ -200,23 +211,6 @@ public class MapsFragment extends Fragment
         mMap.setIndoorEnabled(true);
     }
 
-    @Override
-    public boolean onMyLocationButtonClick() {
-        Context context = requireContext();
-        Toast.makeText(context, "MyLocation button clicked", Toast.LENGTH_SHORT).show();
-        if (hasLocationPermission()) {
-            findLocation();
-        }
-        // Return false so that we don't consume the event and the default behavior still occurs
-        // (the camera animates to the user's current position).
-        return false;
-    }
-    @Override
-    public void onMyLocationClick(@NonNull Location location) {
-        Context context = requireContext();
-        Toast.makeText(context, "Current location:\n" + location, Toast.LENGTH_LONG).show();
-    }
-
     @RequiresApi(api = Build.VERSION_CODES.M)
     private boolean lacksLocationPermission(){
         final Activity activity = requireActivity();
@@ -226,6 +220,11 @@ public class MapsFragment extends Fragment
     @RequiresApi(api = Build.VERSION_CODES.M)
     private boolean hasLocationPermission(){
         return !lacksLocationPermission();
+    }
+
+    private void returnToPost(){
+        FragmentActivity activity = requireActivity();
+        activity.getSupportFragmentManager().popBackStack();
     }
     private void returnToShopList(){
         ShopListFragment listFragment = new ShopListFragment();
