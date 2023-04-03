@@ -77,14 +77,7 @@ public class MapsFragment extends Fragment
             mMap = googleMap;
             mMap.setBuildingsEnabled(true);
             mMap.setIndoorEnabled(true);
-            mMap.addCircle(new CircleOptions()
-                    .center(new LatLng(40, -83))
-                    .radius(10000)
-                    .strokeColor(Color.RED));
-            mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(shopLocation, 17));
-            mMap.addMarker(new MarkerOptions().position(shopLocation).title(currentShop.mName));
             findLocation();
-            updateLocationUI();
         }
     };
 
@@ -168,6 +161,7 @@ public class MapsFragment extends Fragment
     }
     private void checkUserAndShopLocation(){
         FragmentActivity activity = requireActivity();
+        mMap.addMarker(new MarkerOptions().position(shopLocation).title(currentShop.mName));
         double userLat = userLocation.latitude;
         double userLong = userLocation.longitude;
         double shopLat = shopLocation.latitude;

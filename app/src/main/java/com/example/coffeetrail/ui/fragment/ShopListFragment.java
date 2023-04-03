@@ -12,6 +12,7 @@ import android.content.pm.PackageManager;
 import android.location.Location;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -23,7 +24,10 @@ import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.core.content.ContextCompat;
@@ -64,9 +68,22 @@ public class ShopListFragment extends Fragment{
     public UserAccount currentUser;
     public CoffeeShop currentStore;
     public ShopOrder newPost;
+    private View gView;
     public LatLng userLocation;
     private static final String TAG = "ShopList:";
 
+
+    private ActivityResultLauncher<String> requestPermissionLauncher =
+            registerForActivityResult(new ActivityResultContracts.RequestPermission(), isGranted -> {
+                if (isGranted) {
+                    findLocation(gView);
+                } else {
+                    if (lacksLocationPermission()) {
+                        Toast.makeText(requireActivity(), "Please allow location to use the app", Toast.LENGTH_SHORT).show();
+                        new Handler().postDelayed(() -> requestLocation(), 5000);
+                    }
+                }
+            });
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -93,9 +110,12 @@ public class ShopListFragment extends Fragment{
     public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         Activity activity = requireActivity();
-        findLocation(view);
+        gView = view;
+        requestLocation();
     }
-
+    private void requestLocation(){
+        requestPermissionLauncher.launch(Manifest.permission.ACCESS_FINE_LOCATION);
+    }
     public void onDestroyView(){
         super.onDestroyView();
         binding = null;
