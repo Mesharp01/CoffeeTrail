@@ -53,7 +53,7 @@ public class ShopListHolder extends RecyclerView.ViewHolder implements View.OnCl
         mAboutButton = itemView.findViewById(R.id.about_button);
         mVisitButton = itemView.findViewById(R.id.visit_shop_button);
         mShopDistance = itemView.findViewById(R.id.distance);
-        //mAboutButton.setOnClickListener(this);
+        mAboutButton.setOnClickListener(this);
         mVisitButton.setOnClickListener(this);
         mViewOrdersButton.setOnClickListener(this);
         currentUser = user;
