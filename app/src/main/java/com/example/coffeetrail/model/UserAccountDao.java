@@ -21,8 +21,8 @@ public interface UserAccountDao {
     @Query("UPDATE useraccount SET password=:newPassword WHERE name = :username")
     public void update(String newPassword, String username);
 
-    @Query("DELETE FROM useraccount WHERE name LIKE :username AND password LIKE :password AND rowid LIKE :rowid")
-    public void deleteAccount(String username, String password, int rowid);
+    @Query("DELETE FROM useraccount WHERE name LIKE :username AND password LIKE :password")
+    public void deleteAccount(String username, String password);
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     public void insert(UserAccount userAccount);

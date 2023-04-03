@@ -75,8 +75,8 @@ public class ModifyAccountFragment extends Fragment implements View.OnClickListe
         mCancelButton.setOnClickListener(this);
         mChangePasswordButton = v.findViewById(R.id.change_password_button);
         mChangePasswordButton.setOnClickListener(this);
-        mDeleteAccountButton = v.findViewById(R.id.delete_account_button);
-        mDeleteAccountButton.setOnClickListener(this);
+        //mDeleteAccountButton = v.findViewById(R.id.delete_account_button);
+        //mDeleteAccountButton.setOnClickListener(this);
         return v;
     }
     @Override
@@ -84,11 +84,12 @@ public class ModifyAccountFragment extends Fragment implements View.OnClickListe
         final int viewId = v.getId();
         if (viewId == R.id.change_password_button) {
             changePassword();
-        } else if(viewId == R.id.cancel_button){
+        } else if(viewId == R.id.cancel_button) {
             returnToLogin();
-        } else if(viewId == R.id.delete_account_button){
-            deleteAccount();
         }
+//        } else if(viewId == R.id.delete_account_button){
+//            deleteAccount();
+//        }
     }
     private void returnToLogin(){
         FragmentActivity activity = requireActivity();

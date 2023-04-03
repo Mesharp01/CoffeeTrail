@@ -42,7 +42,7 @@ public class UserAccountRepository {
     void deleteUser(String username, String password){
         UserAccount user = mUserAccountDao.findByName(username, password).getValue();
         AppDatabase.databaseWriteExecutor.execute(() ->
-                mUserAccountDao.deleteAccount(user.mName, user.mPassword, user.mUid));
+                mUserAccountDao.deleteAccount(username, password));
     }
 // lambda expression
 }

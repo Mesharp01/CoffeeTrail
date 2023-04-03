@@ -92,11 +92,11 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Cancel" />
-        <Button
-            android:id="@+id/delete_account_button"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Delete Account" />
+<!--        <Button-->
+<!--            android:id="@+id/delete_account_button"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:text="Delete Account" />-->
     </LinearLayout>
 
 
