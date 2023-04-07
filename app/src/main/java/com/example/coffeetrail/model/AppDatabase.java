@@ -24,12 +24,17 @@ public abstract class AppDatabase extends
             Executors.newFixedThreadPool(sNumberOfThreads);
     static AppDatabase getDatabase(
             final Context context) {
+
         if (sInstance == null) {
             synchronized (AppDatabase.class) {
                 sInstance = Room.databaseBuilder(
                         context.getApplicationContext(),
-                        AppDatabase.class, "app_database").fallbackToDestructiveMigration().build();
+                        AppDatabase.class, "app_database")
+                        .fallbackToDestructiveMigration()
+                        .createFromAsset("database/coffee_trail_db.db")
+                        .build();
             }
+
         }
         return sInstance;
     }
