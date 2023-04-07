@@ -44,7 +44,7 @@ public class MakePostFragment extends Fragment implements View.OnClickListener{
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_make_post, container, false);
-        mShopViewModel = new ViewModelProvider(this).get(CoffeeShopViewModel.class);
+
         Bundle bundle = this.getArguments();
         if(bundle.getSerializable("user") != null){
             currentUser = (UserAccount) bundle.getSerializable("user");
