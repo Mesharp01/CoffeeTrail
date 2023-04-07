@@ -10,8 +10,8 @@ public class UserAccountRepository {
     private UserAccountDao mUserAccountDao;
     private LiveData<List<UserAccount>> mAllUserAccounts;
     UserAccountRepository(Application application) {
-        AppDatabase db =
-                AppDatabase.getDatabase(application);
+        MyDatabase db =
+                MyDatabase.getDatabase(application);
         mUserAccountDao = db.getUserAccountDao();
         mAllUserAccounts = mUserAccountDao.getAllUserAccounts();
     }
@@ -27,21 +27,21 @@ public class UserAccountRepository {
     // You MUST call on non-UI thread or app throws
 // exception. I pass a Runnable object to thedatabase.
     void insert(UserAccount userAccount) {
-        AppDatabase.databaseWriteExecutor.execute(() ->
+        MyDatabase.databaseWriteExecutor.execute(() ->
                 mUserAccountDao.insert(userAccount));  }
     void delete(UserAccount... userAccount) {
-        AppDatabase.databaseWriteExecutor.execute(() ->
+        MyDatabase.databaseWriteExecutor.execute(() ->
                 mUserAccountDao.delete(userAccount));  }
     void update(UserAccount... userAccount) {
-        AppDatabase.databaseWriteExecutor.execute(() ->
+        MyDatabase.databaseWriteExecutor.execute(() ->
                 mUserAccountDao.updateUserAccount(userAccount));  }
     void updatePassword(String newPassword, String username){
-        AppDatabase.databaseWriteExecutor.execute(() ->
+        MyDatabase.databaseWriteExecutor.execute(() ->
                 mUserAccountDao.update(newPassword, username));
     }
     void deleteUser(String username, String password){
         UserAccount user = mUserAccountDao.findByName(username, password).getValue();
-        AppDatabase.databaseWriteExecutor.execute(() ->
+        MyDatabase.databaseWriteExecutor.execute(() ->
                 mUserAccountDao.deleteAccount(username, password));
     }
 // lambda expression
