@@ -9,11 +9,13 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.pm.ConfigurationInfo;
 import android.content.pm.PackageManager;
+import android.graphics.Typeface;
 import android.location.Location;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
+import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -30,7 +32,9 @@ import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
+import androidx.core.content.res.ResourcesCompat;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.ViewModelProvider;
@@ -158,6 +162,34 @@ public class ShopListFragment extends Fragment{
                 });
                 AlertDialog alertDialog = builder.create();
                 alertDialog.show();
+            case R.id.change_font_button:
+                //activity.setTheme(R.style.DyslexiaTheme);
+                TypedValue outValue = new TypedValue();
+                getContext().getTheme().resolveAttribute(R.attr.fontFamily, outValue, true);
+                if(getContext().getTheme().equals(R.style.DyslexiaTheme)){
+                    getContext().getTheme().applyStyle(R.style.RegFontTheme, true);
+                    Bundle bundle = new Bundle();
+                    bundle.putSerializable("user", currentUser);
+                    bundle.putSerializable("shop", currentStore);
+
+                    ShopListFragment listFragment = new ShopListFragment();
+                    listFragment.setArguments(bundle);
+
+                    AppCompatActivity startActivity = (AppCompatActivity) getContext();
+                    startActivity.getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, listFragment).addToBackStack(null).commit();
+                }
+                else{
+                    getContext().getTheme().applyStyle(R.style.DyslexiaTheme, true);
+                    Bundle bundle = new Bundle();
+                    bundle.putSerializable("user", currentUser);
+                    bundle.putSerializable("shop", currentStore);
+
+                    ShopListFragment listFragment = new ShopListFragment();
+                    listFragment.setArguments(bundle);
+
+                    AppCompatActivity startActivity = (AppCompatActivity) getContext();
+                    startActivity.getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, listFragment).addToBackStack(null).commit();
+                }
             default:
                 return super.onOptionsItemSelected(item);
         }
