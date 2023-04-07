@@ -165,8 +165,8 @@ public class ShopListFragment extends Fragment{
             case R.id.change_font_button:
                 //activity.setTheme(R.style.DyslexiaTheme);
                 TypedValue outValue = new TypedValue();
-                getContext().getTheme().resolveAttribute(R.attr.fontFamily, outValue, true);
-                if(getContext().getTheme().equals(R.style.DyslexiaTheme)){
+                getContext().getTheme().resolveAttribute(R.attr.themeName, outValue, true);
+                if("dyslexiaFont".equals(outValue.string)){
                     getContext().getTheme().applyStyle(R.style.RegFontTheme, true);
                     Bundle bundle = new Bundle();
                     bundle.putSerializable("user", currentUser);
