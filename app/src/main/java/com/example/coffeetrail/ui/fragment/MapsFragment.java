@@ -80,6 +80,8 @@ public class MapsFragment extends Fragment
             findLocation();
         }
     };
+    public void runMap(){checkUserAndShopLocation();}
+
 
     @Override
     public void onCreate(Bundle savedInstance) {
@@ -102,9 +104,7 @@ public class MapsFragment extends Fragment
         if (bundle.getSerializable("shop") != null) {
             currentShop = (CoffeeShop) bundle.getSerializable("shop");
         }
-        if (bundle.getSerializable("order") != null) {
-            newOrder = (ShopOrder) bundle.getSerializable("order");
-        }
+
         String latlngString = currentShop.mLatlng;
         String[] coordniates = latlngString.split("[,]", 0);
         double lat = Double.parseDouble(coordniates[0]);
@@ -142,7 +142,6 @@ public class MapsFragment extends Fragment
                         mLocation = (Location) task.getResult();
                         if (mLocation != null) {
                             userLocation = new LatLng(mLocation.getLatitude(), mLocation.getLongitude());
-                            checkUserAndShopLocation();
                         }
                     } else {
                         Log.d(TAG, "Current location is null. Using defaults.");
@@ -160,6 +159,10 @@ public class MapsFragment extends Fragment
         }
     }
     private void checkUserAndShopLocation(){
+        Bundle bundle = this.getArguments();
+        if (bundle.getSerializable("order") != null) {
+            newOrder = (ShopOrder) bundle.getSerializable("order");
+        }
         FragmentActivity activity = requireActivity();
         mMap.addMarker(new MarkerOptions().position(shopLocation).title(currentShop.mName));
         double userLat = userLocation.latitude;
@@ -217,8 +220,15 @@ public class MapsFragment extends Fragment
     }
 
     private void returnToPost(){
-        FragmentActivity activity = requireActivity();
-        activity.getSupportFragmentManager().popBackStack();
+        Bundle bundle = new Bundle();
+        bundle.putSerializable("user", currentUser);
+        bundle.putSerializable("shop", currentShop);
+
+        MakePostFragment postFragment = new MakePostFragment();
+        postFragment.setArguments(bundle);
+
+        FragmentManager fm = getParentFragmentManager();
+        fm.beginTransaction().replace(R.id.fragment_container, postFragment).addToBackStack(null).commit();
     }
     private void returnToShopList(){
         ShopListFragment listFragment = new ShopListFragment();
