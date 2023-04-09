@@ -30,6 +30,8 @@
     </style>
 
     <style name="RegFontTheme">
-        <item name="android:fontFamily">"sans-serif"</item>
+        <item name="android:fontFamily">"@font/regularfont"</item>
+        <item name="fontFamily">@font/regularfont</item>
+        <item name="themeName">regularFont</item>
     </style>
 </resources>

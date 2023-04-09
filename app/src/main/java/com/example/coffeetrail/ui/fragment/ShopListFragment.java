@@ -162,8 +162,8 @@ public class ShopListFragment extends Fragment{
                 });
                 AlertDialog alertDialog = builder.create();
                 alertDialog.show();
+                return true;
             case R.id.change_font_button:
-                //activity.setTheme(R.style.DyslexiaTheme);
                 TypedValue outValue = new TypedValue();
                 getContext().getTheme().resolveAttribute(R.attr.themeName, outValue, true);
                 if("dyslexiaFont".equals(outValue.string)){
@@ -190,6 +190,7 @@ public class ShopListFragment extends Fragment{
                     AppCompatActivity startActivity = (AppCompatActivity) getContext();
                     startActivity.getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, listFragment).addToBackStack(null).commit();
                 }
+                return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
