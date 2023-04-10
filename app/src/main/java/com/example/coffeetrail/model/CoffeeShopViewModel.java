@@ -19,7 +19,7 @@ public class CoffeeShopViewModel extends AndroidViewModel {
         mRepository = new CoffeeShopRepository(application);
         mAllCoffeeShops = mRepository.getAllCoffeeShops();
         if(dataInitialized){
-            fillCoffeeShopTable();
+            //fillCoffeeShopTable();
         }
     }
     public LiveData<List<CoffeeShop>> getAllCoffeeShops() { return mRepository.getAllCoffeeShops(); }
