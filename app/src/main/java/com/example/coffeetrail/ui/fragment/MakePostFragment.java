@@ -1,5 +1,8 @@
 package com.example.coffeetrail.ui.fragment;
 
+import android.content.Context;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -44,7 +47,7 @@ public class MakePostFragment extends Fragment implements View.OnClickListener{
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_make_post, container, false);
-        mShopViewModel = new ViewModelProvider(this).get(CoffeeShopViewModel.class);
+
         Bundle bundle = this.getArguments();
         if(bundle.getSerializable("user") != null){
             currentUser = (UserAccount) bundle.getSerializable("user");
@@ -83,11 +86,24 @@ public class MakePostFragment extends Fragment implements View.OnClickListener{
             FragmentManager fm = getParentFragmentManager();
             Fragment mapFragment = new MapsFragment();
             mapFragment.setArguments(bundle);
-            fm.beginTransaction()
-                    .replace(R.id.fragment_container, mapFragment)
-                    .addToBackStack("maps_fragment")
-                    .commit();
+            if(isNetworkAvailable()){
+                fm.beginTransaction()
+                        .replace(R.id.fragment_container, mapFragment)
+                        .addToBackStack("maps_fragment")
+                        .commit();
+            } else {
+                FragmentActivity activity = requireActivity();
+                Toast.makeText(activity.getApplicationContext(), "Connect to the internet to post!", Toast.LENGTH_SHORT).show();
+                activity.getSupportFragmentManager().popBackStack();
+            }
+
 
         }
     }
+
+    private boolean isNetworkAvailable() {
+        ConnectivityManager connectivityManager
+                = (ConnectivityManager) requireActivity().getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo activeNetworkInfo = connectivityManager != null ? connectivityManager.getActiveNetworkInfo() : null;
+        return activeNetworkInfo != null && activeNetworkInfo.isConnectedOrConnecting();    }
 }
