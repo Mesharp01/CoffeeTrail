@@ -13,7 +13,7 @@ import androidx.sqlite.db.SupportSQLiteDatabase;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-@Database(entities = {UserAccount.class, CoffeeShop.class, ShopOrder.class}, version = 12,
+@Database(entities = {UserAccount.class, CoffeeShop.class, ShopOrder.class}, version = 14,
         exportSchema = false)
 @TypeConverters({Converters.class})
 public abstract class MyDatabase extends

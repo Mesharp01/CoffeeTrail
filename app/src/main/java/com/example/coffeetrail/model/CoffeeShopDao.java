@@ -21,11 +21,11 @@ public interface CoffeeShopDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     public void insert(CoffeeShop coffeeShop);
 
-    @Query("SELECT rowid, name, url, location, latlng, distance  FROM coffeeshop WHERE rowid=:rowid ")
+    @Query("SELECT rowid, name, url, location, latlng, distance  FROM coffeeshop WHERE rowid LIKE :rowid ")
     public CoffeeShop getCoffeeShopById(int rowid);
 
-    @Query("SELECT rowid, name, url, location, latlng, distance  FROM coffeeshop WHERE name=:name ")
-    public CoffeeShop getCoffeeShopByName(String name);
+    @Query("SELECT rowid, name, url, location, latlng, distance  FROM coffeeshop WHERE name LIKE :name")
+    public List<CoffeeShop> getCoffeeShopsByName(String name);
 
     @Query("SELECT rowid, name, distance FROM coffeeshop WHERE rowid=:rowid ")
     public CoffeeShop getCoffeeShopNameId(int rowid);
