@@ -1,10 +1,13 @@
 package com.example.coffeetrail.model;
 
 import android.app.Application;
+import android.util.Log;
 
 import androidx.lifecycle.LiveData;
 
 import java.util.List;
+import java.util.concurrent.Callable;
+import java.util.concurrent.Future;
 
 public class CoffeeShopRepository {
     private CoffeeShopDao mCoffeeShopDao;
@@ -17,17 +20,7 @@ public class CoffeeShopRepository {
         mAllCoffeeShops = mCoffeeShopDao.getAllCoffeeShops();
     }
 
-    public String findShopById(int id) {
-        CoffeeShop shop = getCoffeeShopById(id);
-        String name = shop.getName();
-        return name;
-    }
 
-    public int findShopByName(String name) {
-        CoffeeShop shop = getCoffeeShopByName(name);
-        int id = shop.getId();
-        return id;
-    }
 
     // Room executes all queries on a separate thread.
 // Observed LiveData notify observer upon data change.
@@ -39,23 +32,15 @@ public class CoffeeShopRepository {
     void insert(CoffeeShop coffeeShop) {
         MyDatabase.databaseWriteExecutor.execute(() ->
                 mCoffeeShopDao.insert(coffeeShop)); }
-//    }
-// lambda expression
-    CoffeeShop getCoffeeShopById(int id) {
-        final CoffeeShop[] shop = new CoffeeShop[1];
-        MyDatabase.databaseWriteExecutor.execute( () ->
-                shop[0] = mCoffeeShopDao.getCoffeeShopById(id));
-        return shop[0];
+
+
+    List<CoffeeShop> getCoffeeShopsByName(String name) {
+        final List<CoffeeShop> shops = mCoffeeShopDao.getCoffeeShopsByName(name);
+        Log.d("fillCoffeeShopTable","repo name"+name);
+        return shops;
 
     }
 
-    CoffeeShop getCoffeeShopByName(String name) {
-        final CoffeeShop[] shop = new CoffeeShop[1];
-        MyDatabase.databaseWriteExecutor.execute( () ->
-                shop[0] = mCoffeeShopDao.getCoffeeShopByName(name));
-        return shop[0];
-
-    }
 
     void update(double distance, int sid){
         MyDatabase.databaseWriteExecutor.execute(() ->

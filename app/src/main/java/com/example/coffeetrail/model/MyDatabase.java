@@ -13,7 +13,7 @@ import androidx.sqlite.db.SupportSQLiteDatabase;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-@Database(entities = {UserAccount.class, CoffeeShop.class, ShopOrder.class}, version = 12,
+@Database(entities = {UserAccount.class, CoffeeShop.class, ShopOrder.class}, version = 14,
         exportSchema = false)
 @TypeConverters({Converters.class})
 public abstract class MyDatabase extends
@@ -30,32 +30,9 @@ public abstract class MyDatabase extends
 
         if (sInstance == null) {
             synchronized (MyDatabase.class) {
-                sInstance = Room.databaseBuilder(context.getApplicationContext(), MyDatabase.class,
-                                "my_database")
-                        .fallbackToDestructiveMigration()
-                        .addCallback(new Callback() {
-                                @Override
-                                public void onCreate(@NonNull SupportSQLiteDatabase db) {
-                                    super.onCreate(db);
-            //                        ContentValues c = new ContentValues();
-            //                        c.put("name", "test1");
-            //                        c.put("url", "test1");
-            //                        c.put("location", "test1");
-            //                        c.put("latlng", "test1");
-                                    CoffeeShop c = new CoffeeShop("Third Way Café",
-                                            "https://www.thirdwaycafe.org/",
-                                            "3058 W Broad St, Columbus, OH 43204",
-                                            "39.95539870923077, -83.07998996917694");
-
-                                    sInstance.getCoffeeShopDao().insert(c);
-                                    //b.CoffeeShopDao().insert("coffeeshop", 0, c);
-                                    //db.execSQL("INSERT INTO coffeeshop (name, url, location, latlng) VALUES (\"test2\",\"test2\",\"test2\",\"test2\")");
-                                }
-                            })
-                        .build();
-//                sInstance = Room.databaseBuilder(
-//                        context.getApplicationContext(),
-//                        MyDatabase.class, "my_database").fallbackToDestructiveMigration().build();
+                sInstance = Room.databaseBuilder(
+                        context.getApplicationContext(),
+                        MyDatabase.class, "my_database").fallbackToDestructiveMigration().build();
             }
 
         }
