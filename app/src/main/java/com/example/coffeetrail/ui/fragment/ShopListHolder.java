@@ -6,6 +6,7 @@ import android.location.Location;
 import android.os.Bundle;
 import android.text.method.LinkMovementMethod;
 import android.util.Log;
+import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -60,6 +61,13 @@ public class ShopListHolder extends RecyclerView.ViewHolder implements View.OnCl
         AppCompatActivity activity = (AppCompatActivity) context;
         mCoffeeShopViewModel = new ViewModelProvider((ViewModelStoreOwner) activity).get(CoffeeShopViewModel.class);
 
+        TypedValue outValue = new TypedValue();
+        activity.getTheme().resolveAttribute(R.attr.themeName, outValue, true);
+        if ("dyslexiaFont".equals(outValue.string)) {
+            mAboutButton.setTextSize(11);
+            mVisitButton.setTextSize(11);
+            mViewOrdersButton.setTextSize(11);
+        }
 
     }
 
