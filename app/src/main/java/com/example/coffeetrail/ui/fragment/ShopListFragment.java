@@ -9,11 +9,13 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.pm.ConfigurationInfo;
 import android.content.pm.PackageManager;
+import android.graphics.Typeface;
 import android.location.Location;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
+import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -30,7 +32,9 @@ import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
+import androidx.core.content.res.ResourcesCompat;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.ViewModelProvider;
@@ -158,21 +162,143 @@ public class ShopListFragment extends Fragment{
                 });
                 AlertDialog alertDialog = builder.create();
                 alertDialog.show();
+                return true;
+            case R.id.change_font_button:
+                TypedValue outValue = new TypedValue();
+                getContext().getTheme().resolveAttribute(R.attr.themeName, outValue, true);
+                if("dyslexiaFont".equals(outValue.string)){
+                    getContext().getTheme().applyStyle(R.style.RegFontTheme, true);
+                    Bundle bundle = new Bundle();
+                    bundle.putSerializable("user", currentUser);
+                    bundle.putSerializable("shop", currentStore);
+
+                    ShopListFragment listFragment = new ShopListFragment();
+                    listFragment.setArguments(bundle);
+
+                    AppCompatActivity startActivity = (AppCompatActivity) getContext();
+                    startActivity.getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, listFragment).addToBackStack(null).commit();
+                }
+                else{
+                    getContext().getTheme().applyStyle(R.style.DyslexiaTheme, true);
+                    Bundle bundle = new Bundle();
+                    bundle.putSerializable("user", currentUser);
+                    bundle.putSerializable("shop", currentStore);
+
+                    ShopListFragment listFragment = new ShopListFragment();
+                    listFragment.setArguments(bundle);
+
+                    AppCompatActivity startActivity = (AppCompatActivity) getContext();
+                    startActivity.getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, listFragment).addToBackStack(null).commit();
+                }
+                return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
     }
 
+
+    @SuppressLint("MissingPermission")
+    private void findLocation(@NonNull View view) {
+        try {
+            final Activity activity = requireActivity();
+            LocationRequest locationRequest = LocationRequest.create();
+            locationRequest.setInterval(4000);
+            locationRequest.setFastestInterval(2000);
+            locationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
+            FusedLocationProviderClient locationProvider = LocationServices.getFusedLocationProviderClient(activity);
+            boolean locationPermission = hasLocationPermission();
+            if (locationPermission) {
+                Task locationResult = locationProvider.getLastLocation();
+                locationResult.addOnCompleteListener(activity, task -> {
+                    Location mLocation;
+                    if (task.isSuccessful()) {
+                        mLocation = (Location) task.getResult();
+                        if (mLocation != null) {
+                            userLocation = new LatLng(mLocation.getLatitude(), mLocation.getLongitude());
+                            Log.d(TAG, userLocation.toString());
+                            mShopViewModel = new ViewModelProvider(this).get(CoffeeShopViewModel.class);
+                            mShopOrderViewModel = new ViewModelProvider(this).get(ShopOrderViewModel.class);
+                            mShopOrderViewModel.getAllShopOrders();
+
+                            RecyclerView recyclerView = view.findViewById(R.id.recyclerview);
+                            final ShopListAdapter adapter = new ShopListAdapter(new ShopListAdapter.ShopListDiff(), currentUser, userLocation);//, currentStore, newPost);
+                            recyclerView.setAdapter(adapter);
+                            recyclerView.setLayoutManager(new LinearLayoutManager(activity));
+
+                            mShopViewModel.getAllCoffeeShops().observe(this, shops -> {
+                                List<CoffeeShop> shopsWithDistances = calculateDistances(shops);
+                                Collections.sort(shopsWithDistances, new Comparator<CoffeeShop>() {
+                                    @Override
+                                    public int compare(CoffeeShop lhs, CoffeeShop rhs) {
+                                        return lhs.getDistance() < rhs.getDistance() ? -1 : (lhs.getDistance() > rhs.getDistance() ) ? 1 : 0;
+                                    }
+                                });
+                                // Update the cached copy of the words in the adapter.
+                                adapter.submitList(shopsWithDistances);
+                            });
+                            //fillCoffeeShopTable();
+                            setProgress(currentUser.getName());
+                        }
+                    } else {
+                        Log.d(TAG, "Current location is null. Using defaults.");
+                        Log.e(TAG, "Exception: %s", task.getException());
+                    }
+
+                });
+
+            }
+        } catch (SecurityException e){
+            Log.e("Exception: %s", e.getMessage(), e);
+        }
+    }
+    private List<CoffeeShop> calculateDistances(List<CoffeeShop> shops){
+        List<CoffeeShop> newShops = new ArrayList<CoffeeShop>();
+        for (CoffeeShop s:shops) {
+            newShops.add(checkUserAndShopLocation(s));
+        }
+
+        return newShops;
+    }
+
+    private CoffeeShop checkUserAndShopLocation(CoffeeShop s) {
+        LatLng mUserLocation = userLocation;
+        String latlngString = s.mLatlng;
+        String[] coordniates = latlngString.split("[,]", 0);
+        double lat = Double.parseDouble(coordniates[0]);
+        double lng = Double.parseDouble(coordniates[1]);
+        LatLng mShopLocation = new LatLng(lat, lng);
+        double userLat = mUserLocation.latitude;
+        double userLong = mUserLocation.longitude;
+        double shopLat = mShopLocation.latitude;
+        double shopLong = mShopLocation.longitude;
+
+        float[] distance = new float[1];
+        Location.distanceBetween(userLat, userLong, shopLat, shopLong, distance);
+        double distanceMiles = distance[0]/1609.334;
+        s.setDistance(distanceMiles);
+        return s;
+    }
+    @RequiresApi(api = Build.VERSION_CODES.M)
+    private boolean lacksLocationPermission(){
+        final Activity activity = requireActivity();
+        int result = ContextCompat.checkSelfPermission(activity, Manifest.permission.ACCESS_FINE_LOCATION);
+        return result != PackageManager.PERMISSION_GRANTED;
+    }
+    @RequiresApi(api = Build.VERSION_CODES.M)
+    private boolean hasLocationPermission(){
+        return !lacksLocationPermission();
+    }
+
     private void fillCoffeeShopTable(){
         //mShopViewModel.nukeTable();
-        CoffeeShop c = new CoffeeShop( "Test Coffee Shop",
+        CoffeeShop c = new CoffeeShop("Test Coffee Shop",
                 "blank",
-                "blank" ,
+                "blank",
                 "39.990552178060554, -83.00813045127312");
         mShopViewModel.insert(c);
-        c = new CoffeeShop( "The Bexley Coffee Shop",
+        c = new CoffeeShop("The Bexley Coffee Shop",
                 "https://www.facebook.com/BexleyCoffeeShop/",
-                "492 N Cassady Ave, Bexley, OH 43209" ,
+                "492 N Cassady Ave, Bexley, OH 43209",
                 "39.98072154248498, -82.93141499180881");
         mShopViewModel.insert(c);
         c = new CoffeeShop("Boston Stoker Coffee Co.",
@@ -275,97 +401,7 @@ public class ShopListFragment extends Fragment{
                 "897 S 3rd St, Columbus, OH 43206",
                 "39.944629903683364, -82.9934295373535");
         mShopViewModel.insert(c);
-    }
-    @SuppressLint("MissingPermission")
-    private void findLocation(@NonNull View view) {
-        try {
-            final Activity activity = requireActivity();
-            LocationRequest locationRequest = LocationRequest.create();
-            locationRequest.setInterval(4000);
-            locationRequest.setFastestInterval(2000);
-            locationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
-            FusedLocationProviderClient locationProvider = LocationServices.getFusedLocationProviderClient(activity);
-            boolean locationPermission = hasLocationPermission();
-            if (locationPermission) {
-                Task locationResult = locationProvider.getLastLocation();
-                locationResult.addOnCompleteListener(activity, task -> {
-                    Location mLocation;
-                    if (task.isSuccessful()) {
-                        mLocation = (Location) task.getResult();
-                        if (mLocation != null) {
-                            userLocation = new LatLng(mLocation.getLatitude(), mLocation.getLongitude());
-                            Log.d(TAG, userLocation.toString());
-                            mShopViewModel = new ViewModelProvider(this).get(CoffeeShopViewModel.class);
-                            mShopOrderViewModel = new ViewModelProvider(this).get(ShopOrderViewModel.class);
-                            mShopOrderViewModel.getAllShopOrders();
 
-                            RecyclerView recyclerView = view.findViewById(R.id.recyclerview);
-                            final ShopListAdapter adapter = new ShopListAdapter(new ShopListAdapter.ShopListDiff(), currentUser, userLocation);//, currentStore, newPost);
-                            recyclerView.setAdapter(adapter);
-                            recyclerView.setLayoutManager(new LinearLayoutManager(activity));
-
-                            mShopViewModel.getAllCoffeeShops().observe(this, shops -> {
-                                List<CoffeeShop> shopsWithDistances = calculateDistances(shops);
-                                Collections.sort(shopsWithDistances, new Comparator<CoffeeShop>() {
-                                    @Override
-                                    public int compare(CoffeeShop lhs, CoffeeShop rhs) {
-                                        return lhs.getDistance() < rhs.getDistance() ? -1 : (lhs.getDistance() > rhs.getDistance() ) ? 1 : 0;
-                                    }
-                                });
-                                // Update the cached copy of the words in the adapter.
-                                adapter.submitList(shopsWithDistances);
-                            });
-                            fillCoffeeShopTable();
-                            setProgress(currentUser.getName());
-                        }
-                    } else {
-                        Log.d(TAG, "Current location is null. Using defaults.");
-                        Log.e(TAG, "Exception: %s", task.getException());
-                    }
-
-                });
-
-            }
-        } catch (SecurityException e){
-            Log.e("Exception: %s", e.getMessage(), e);
-        }
-    }
-    private List<CoffeeShop> calculateDistances(List<CoffeeShop> shops){
-        List<CoffeeShop> newShops = new ArrayList<CoffeeShop>();
-        for (CoffeeShop s:shops) {
-            newShops.add(checkUserAndShopLocation(s));
-        }
-
-        return newShops;
-    }
-
-    private CoffeeShop checkUserAndShopLocation(CoffeeShop s) {
-        LatLng mUserLocation = userLocation;
-        String latlngString = s.mLatlng;
-        String[] coordniates = latlngString.split("[,]", 0);
-        double lat = Double.parseDouble(coordniates[0]);
-        double lng = Double.parseDouble(coordniates[1]);
-        LatLng mShopLocation = new LatLng(lat, lng);
-        double userLat = mUserLocation.latitude;
-        double userLong = mUserLocation.longitude;
-        double shopLat = mShopLocation.latitude;
-        double shopLong = mShopLocation.longitude;
-
-        float[] distance = new float[1];
-        Location.distanceBetween(userLat, userLong, shopLat, shopLong, distance);
-        double distanceMiles = distance[0]/1609.334;
-        s.setDistance(distanceMiles);
-        return s;
-    }
-    @RequiresApi(api = Build.VERSION_CODES.M)
-    private boolean lacksLocationPermission(){
-        final Activity activity = requireActivity();
-        int result = ContextCompat.checkSelfPermission(activity, Manifest.permission.ACCESS_FINE_LOCATION);
-        return result != PackageManager.PERMISSION_GRANTED;
-    }
-    @RequiresApi(api = Build.VERSION_CODES.M)
-    private boolean hasLocationPermission(){
-        return !lacksLocationPermission();
     }
 }
 

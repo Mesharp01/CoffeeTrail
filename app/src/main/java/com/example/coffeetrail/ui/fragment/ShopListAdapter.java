@@ -20,8 +20,6 @@ public class ShopListAdapter extends ListAdapter<CoffeeShop, ShopListHolder> {
     private UserAccount currentUser;
     private LatLng mUserLocation;
     private ShopOrder mNewPost;
-
-    private CoffeeShopViewModel mViewModel;
     public ShopListAdapter(@NonNull DiffUtil.ItemCallback<CoffeeShop> diffCallback, UserAccount user, LatLng userLocation){//, CoffeeShop store, ShopOrder newPost) {
         super(diffCallback);
         currentUser = user;
