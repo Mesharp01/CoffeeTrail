@@ -41,11 +41,6 @@ public class ShopListHolder extends RecyclerView.ViewHolder implements View.OnCl
     private static LatLng mUserLocation;
     private static LatLng mShopLocation;
     private String distanceBetween;
-//    private ShopOrder mNewPost;
-
-    private CoffeeShopViewModel mCoffeeShopViewModel;
-
-
 
     public ShopListHolder(Context context, View itemView, UserAccount user){
         super(itemView);
@@ -59,7 +54,6 @@ public class ShopListHolder extends RecyclerView.ViewHolder implements View.OnCl
         mViewOrdersButton.setOnClickListener(this);
         currentUser = user;
         AppCompatActivity activity = (AppCompatActivity) context;
-        mCoffeeShopViewModel = new ViewModelProvider((ViewModelStoreOwner) activity).get(CoffeeShopViewModel.class);
 
         TypedValue outValue = new TypedValue();
         activity.getTheme().resolveAttribute(R.attr.themeName, outValue, true);

@@ -1,6 +1,7 @@
 package com.example.coffeetrail.model;
 
 import android.app.Application;
+import android.util.Log;
 
 import androidx.lifecycle.LiveData;
 
@@ -25,8 +26,11 @@ public class CoffeeShopRepository {
 
     public int findShopByName(String name) {
         CoffeeShop shop = getCoffeeShopByName(name);
-        int id = shop.getId();
-        return id;
+        if(shop != null){
+            int id = shop.getId();
+            return id;
+        }
+        return -1;
     }
 
     // Room executes all queries on a separate thread.

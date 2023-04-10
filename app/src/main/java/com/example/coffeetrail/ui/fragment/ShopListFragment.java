@@ -236,7 +236,7 @@ public class ShopListFragment extends Fragment{
                                 // Update the cached copy of the words in the adapter.
                                 adapter.submitList(shopsWithDistances);
                             });
-                            fillCoffeeShopTable();
+                            //fillCoffeeShopTable();
                             setProgress(currentUser.getName());
                         }
                     } else {
