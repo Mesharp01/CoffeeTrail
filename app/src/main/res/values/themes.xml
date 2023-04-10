@@ -22,4 +22,16 @@
     <style name="Theme.CoffeeTrail.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
 
     <style name="Theme.CoffeeTrail.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
+
+    <style name="DyslexiaTheme">
+        <item name="android:fontFamily">@font/dyslexiafont</item>
+        <item name="fontFamily">@font/dyslexiafont</item>
+        <item name="themeName">dyslexiaFont</item>
+    </style>
+
+    <style name="RegFontTheme">
+        <item name="android:fontFamily">"@font/regularfont"</item>
+        <item name="fontFamily">@font/regularfont</item>
+        <item name="themeName">regularFont</item>
+    </style>
 </resources>

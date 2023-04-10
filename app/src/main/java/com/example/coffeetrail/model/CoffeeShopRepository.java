@@ -32,7 +32,7 @@ public class CoffeeShopRepository {
     // Room executes all queries on a separate thread.
 // Observed LiveData notify observer upon data change.
     LiveData<List<CoffeeShop>> getAllCoffeeShops() {
-        return mAllCoffeeShops; }
+        return mCoffeeShopDao.getAllCoffeeShops();}
 
     // You MUST call on non-UI thread or app throws
 // exception. I pass a Runnable object to thedatabase.

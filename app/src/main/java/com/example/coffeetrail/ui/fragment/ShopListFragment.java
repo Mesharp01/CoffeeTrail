@@ -9,11 +9,13 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.pm.ConfigurationInfo;
 import android.content.pm.PackageManager;
+import android.graphics.Typeface;
 import android.location.Location;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
+import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -30,7 +32,9 @@ import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
+import androidx.core.content.res.ResourcesCompat;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.ViewModelProvider;
@@ -158,124 +162,41 @@ public class ShopListFragment extends Fragment{
                 });
                 AlertDialog alertDialog = builder.create();
                 alertDialog.show();
+                return true;
+            case R.id.change_font_button:
+                TypedValue outValue = new TypedValue();
+                getContext().getTheme().resolveAttribute(R.attr.themeName, outValue, true);
+                if("dyslexiaFont".equals(outValue.string)){
+                    getContext().getTheme().applyStyle(R.style.RegFontTheme, true);
+                    Bundle bundle = new Bundle();
+                    bundle.putSerializable("user", currentUser);
+                    bundle.putSerializable("shop", currentStore);
+
+                    ShopListFragment listFragment = new ShopListFragment();
+                    listFragment.setArguments(bundle);
+
+                    AppCompatActivity startActivity = (AppCompatActivity) getContext();
+                    startActivity.getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, listFragment).addToBackStack(null).commit();
+                }
+                else{
+                    getContext().getTheme().applyStyle(R.style.DyslexiaTheme, true);
+                    Bundle bundle = new Bundle();
+                    bundle.putSerializable("user", currentUser);
+                    bundle.putSerializable("shop", currentStore);
+
+                    ShopListFragment listFragment = new ShopListFragment();
+                    listFragment.setArguments(bundle);
+
+                    AppCompatActivity startActivity = (AppCompatActivity) getContext();
+                    startActivity.getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, listFragment).addToBackStack(null).commit();
+                }
+                return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
     }
 
-    private void fillCoffeeShopTable(){
-        //mShopViewModel.nukeTable();
-        CoffeeShop c = new CoffeeShop( "Test Coffee Shop",
-                "blank",
-                "blank" ,
-                "39.990552178060554, -83.00813045127312");
-        mShopViewModel.insert(c);
-        c = new CoffeeShop( "The Bexley Coffee Shop",
-                "https://www.facebook.com/BexleyCoffeeShop/",
-                "492 N Cassady Ave, Bexley, OH 43209" ,
-                "39.98072154248498, -82.93141499180881");
-        mShopViewModel.insert(c);
-        c = new CoffeeShop("Boston Stoker Coffee Co.",
-                "https://bostonstoker.com/",
-                "1101 W 1st Ave, Grandview Heights, OH 43212",
-                "39.98272937683729, -83.03271079910144");
-        mShopViewModel.insert(c);
-        c = new CoffeeShop("Bottoms Up Coffee",
-                "https://www.bottomsupcoffee.com/",
-                "1069 West Broad St, Columbus, Ohio 43222",
-                "39.958731939177035, -83.0285495361505");
-        mShopViewModel.insert(c);
-        c = new CoffeeShop("Brioso Coffee",
-                "https://briosocoffee.com/",
-                "53 N High St, Columbus, OH 43215",
-                "39.963657044011946, -83.00100083373579");
-        mShopViewModel.insert(c);
-        c = new CoffeeShop("Chocolate Café",
-                "https://www.chocolatecafecolumbus.com/",
-                "1855 Northwest Blvd, Columbus, OH 43212",
-                "39.99629569297916, -83.04757091971237");
-        mShopViewModel.insert(c);
-        c = new CoffeeShop("Coffee Connections of Hilliard",
-                "https://connections.coffee/",
-                "4004 Main St, Hilliard, OH 43026",
-                "40.03355137526235, -83.15957643111837");
-        mShopViewModel.insert(c);
-        c = new CoffeeShop("Community Grounds Coffee & Meeting House",
-                "https://mycommunitygrounds.com/",
-                "1134 Parsons Ave, Columbus, OH 43206",
-                "39.94064423126, -82.98183857911383");
-        mShopViewModel.insert(c);
-        c = new CoffeeShop("Crimson Cup Coffee and Tea",
-                "https://www.crimsoncup.com/",
-                "4541 N High St, Columbus, OH 43214",
-                "40.054816849556346, -83.0200731400133");
-        mShopViewModel.insert(c);
-        c = new CoffeeShop("Cup O Joe Coffee House",
-                "https://www.cupojoe.com/",
-                "2990 N High St, Columbus, OH 43202",
-                "40.023264223040144, -83.01295883974394");
-        mShopViewModel.insert(c);
-        c = new CoffeeShop("Florin Coffee",
-                "https://www.florincoffee.com/",
-                "874 Oakland Park Ave, Columbus, OH 43224",
-                "40.03285182966685, -82.99063515518463");
-        mShopViewModel.insert(c);
-        c = new CoffeeShop("Fox in the Snow Cafe",
-                "https://www.foxinthesnow.com/",
-                "1031 N 4th St, Columbus, OH 43201",
-                "39.98423227566821, -82.9990942723746");
-        mShopViewModel.insert(c);
-        c = new CoffeeShop("Java Central Café and Roasters",
-                "https://javacentral.coffee/?v=7516fd43adaa",
-                "20 S State St B, Westerville, OH 43081",
-                "40.12748436219508, -82.92270555513912");
-        mShopViewModel.insert(c);
-        c = new CoffeeShop("Kittie’s Cafe",
-                "https://kittiescakes.com/",
-                "2424 E Main St, Bexley, OH 43209",
-                "39.95761331905781, -82.93317258336911");
-        mShopViewModel.insert(c);
-        c = new CoffeeShop("One Line Coffee",
-                "https://www.onelinecoffee.com/",
-                "745 N High St, Columbus, OH 43215",
-                "39.97880450571279, -82.99930826602618");
-        mShopViewModel.insert(c);
-        c = new CoffeeShop("Pistacia Vera",
-                "https://www.pistaciavera.com/",
-                "541 S 3rd St, Columbus, OH 43215",
-                "39.95173844996031, -82.99373963849749");
-        mShopViewModel.insert(c);
-        c = new CoffeeShop("Roaming Goat Coffee",
-                "https://www.roaminggoatcoffee.com/Default.asp",
-                "849 N High St, Columbus, OH 43215",
-                "39.97986201336324, -83.0034588134321");
-        mShopViewModel.insert(c);
-        c = new CoffeeShop("Saucy Brew Works",
-                "https://www.saucybrewworks.com/",
-                "443 W 3rd Ave, Columbus, OH 43201",
-                "39.98435657868971, -83.01639542142169");
-        mShopViewModel.insert(c);
-        c = new CoffeeShop("Stauf's Coffee Roasters",
-                "https://www.staufs.com/",
-                "1277 Grandview Ave, Columbus, OH 43212",
-                "39.98420414833093, -83.04368174529284");
-        mShopViewModel.insert(c);
-        c = new CoffeeShop("The Roosevelt Coffeehouse",
-                "https://www.staufs.com/",
-                "300 E Long St, Columbus, OH 43215",
-                "39.9668094574469, -82.99133378993994");
-        mShopViewModel.insert(c);
-        c = new CoffeeShop("Third Way Café",
-                "https://www.thirdwaycafe.org/",
-                "3058 W Broad St, Columbus, OH 43204",
-                "39.95539870923077, -83.07998996917694");
-        mShopViewModel.insert(c);
-        c = new CoffeeShop("Winans Chocolates + Coffees",
-                "https://www.winanscandies.com/",
-                "897 S 3rd St, Columbus, OH 43206",
-                "39.944629903683364, -82.9934295373535");
-        mShopViewModel.insert(c);
-    }
+
     @SuppressLint("MissingPermission")
     private void findLocation(@NonNull View view) {
         try {
@@ -315,7 +236,7 @@ public class ShopListFragment extends Fragment{
                                 // Update the cached copy of the words in the adapter.
                                 adapter.submitList(shopsWithDistances);
                             });
-                            fillCoffeeShopTable();
+                            //fillCoffeeShopTable();
                             setProgress(currentUser.getName());
                         }
                     } else {

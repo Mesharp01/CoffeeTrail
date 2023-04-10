@@ -1,16 +1,19 @@
 package com.example.coffeetrail.model;
 
+import android.content.ContentValues;
 import android.content.Context;
 
+import androidx.annotation.NonNull;
 import androidx.room.Database;
 import androidx.room.Room;
 import androidx.room.RoomDatabase;
 import androidx.room.TypeConverters;
+import androidx.sqlite.db.SupportSQLiteDatabase;
 
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-@Database(entities = {UserAccount.class, CoffeeShop.class, ShopOrder.class}, version = 9,
+@Database(entities = {UserAccount.class, CoffeeShop.class, ShopOrder.class}, version = 12,
         exportSchema = false)
 @TypeConverters({Converters.class})
 public abstract class MyDatabase extends
@@ -24,13 +27,18 @@ public abstract class MyDatabase extends
             Executors.newFixedThreadPool(sNumberOfThreads);
     static MyDatabase getDatabase(
             final Context context) {
+
         if (sInstance == null) {
             synchronized (MyDatabase.class) {
                 sInstance = Room.databaseBuilder(
                         context.getApplicationContext(),
                         MyDatabase.class, "my_database").fallbackToDestructiveMigration().build();
             }
+
         }
         return sInstance;
+
+
+
     }
 }
