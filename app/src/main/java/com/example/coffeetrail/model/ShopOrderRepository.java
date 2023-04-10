@@ -8,8 +8,8 @@ public class ShopOrderRepository {
     private ShopOrderDao mShopOrderDao;
     private LiveData<List<ShopOrder>> mAllOrders;
     ShopOrderRepository(Application application) {
-        AppDatabase db =
-                AppDatabase.getDatabase(application);
+        MyDatabase db =
+                MyDatabase.getDatabase(application);
         mShopOrderDao = db.getShopOrderDao();
         mAllOrders = mShopOrderDao.getAllShopOrders();
     }
@@ -37,19 +37,19 @@ public class ShopOrderRepository {
     // You MUST call on non-UI thread or app throws
 // exception. I pass a Runnable object to thedatabase.
     void insert(ShopOrder o) {
-        AppDatabase.databaseWriteExecutor.execute(() ->
+        MyDatabase.databaseWriteExecutor.execute(() ->
                 mShopOrderDao.insert(o));  }
 
     void delete(ShopOrder o) {
-        AppDatabase.databaseWriteExecutor.execute(() ->
+        MyDatabase.databaseWriteExecutor.execute(() ->
                 mShopOrderDao.delete(o));  }
 
     void update(ShopOrder o) {
-        AppDatabase.databaseWriteExecutor.execute(() ->
+        MyDatabase.databaseWriteExecutor.execute(() ->
                 mShopOrderDao.updateOrder(o));  }
 
     public void update(String description, int oid){
-        AppDatabase.databaseWriteExecutor.execute(() ->
+        MyDatabase.databaseWriteExecutor.execute(() ->
                 mShopOrderDao.update(description, oid));  }
 
 }

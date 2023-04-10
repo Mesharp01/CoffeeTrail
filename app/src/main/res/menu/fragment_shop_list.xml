@@ -5,4 +5,10 @@
         android:icon="@drawable/ic_menu_help"
         android:title="About This App"
         app:showAsAction="ifRoom|withText" />
+    <item
+        android:icon="@drawable/ic_menu_change_font"
+        android:id="@+id/change_font_button"
+        android:layout_width="wrap_content"
+        android:title="Change Font Button"
+        app:showAsAction="ifRoom|withText"/>
 </menu>

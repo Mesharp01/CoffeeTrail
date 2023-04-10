@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:paddingLeft="16dp"
+    android:paddingRight="16dp"
+    android:orientation="vertical">
+    <TextView
+        android:id="@+id/list_item_shoplist"
+        android:text="Coffee Shop"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:layout_marginBottom="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        android:textSize="24dp"
+        xmlns:android="http://schemas.android.com/apk/res/android" />
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:paddingLeft="8dp"
+        android:paddingRight="8dp">
+        <TextView
+            android:id="@+id/distanceToShop"
+            android:text="Distance: "
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="16dp"
+            xmlns:android="http://schemas.android.com/apk/res/android" />
+
+        <TextView
+            android:id="@+id/distance"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:textSize="16dp"
+            android:text="mi" />
+
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="54dp"
+        android:orientation="horizontal"
+        android:paddingLeft="8dp"
+        android:paddingRight="8dp">
+
+        <Button
+            android:id="@+id/about_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="About" />
+
+        <Button
+            android:id="@+id/see_orders_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Past Orders" />
+
+        <Button
+            android:id="@+id/visit_shop_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Visit" />
+
+
+    </LinearLayout>
+
+</LinearLayout>

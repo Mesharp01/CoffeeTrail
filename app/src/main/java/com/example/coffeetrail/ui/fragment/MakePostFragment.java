@@ -108,6 +108,16 @@ public class MakePostFragment extends Fragment implements View.OnClickListener{
                 mapsFragment.runMap();
                 fm.beginTransaction().hide(this).show(mapsFragment).commit();
             } else {
+//            FragmentManager fm = getParentFragmentManager();
+//            Fragment mapFragment = new MapsFragment();
+//            mapFragment.setArguments(bundle);
+//            if(isNetworkAvailable()){
+//                fm.beginTransaction()
+//                        .replace(R.id.fragment_container, mapFragment)
+//                        .addToBackStack("maps_fragment")
+//                        .commit();
+//            } else {
+//                FragmentActivity activity = requireActivity();
                 Toast.makeText(activity.getApplicationContext(), "Connect to the internet to post!", Toast.LENGTH_SHORT).show();
                 activity.getSupportFragmentManager().popBackStack();
             }
