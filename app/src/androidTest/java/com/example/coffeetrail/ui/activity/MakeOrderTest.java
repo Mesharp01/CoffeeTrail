@@ -141,14 +141,9 @@ public class MakeOrderTest {
 
         Thread.sleep(6000);
 
+        Matcher<View> firstIconMatcher = allOf(withId(R.id.visit_shop_button));
         ViewInteraction materialButton4 = onView(
-                allOf(withId(R.id.visit_shop_button), withText("Visit"),
-                        childAtPosition(
-                                childAtPosition(
-                                        withClassName(is("android.widget.LinearLayout")),
-                                        2),
-                                2),
-                        isDisplayed()));
+                withIndex(firstIconMatcher , 0));
         materialButton4.perform(click());
 
         Thread.sleep(6000);
@@ -177,14 +172,9 @@ public class MakeOrderTest {
 
         Thread.sleep(10000);
 
+        Matcher<View> firstIconMatcher2 = allOf(withId(R.id.see_orders_button));
         ViewInteraction materialButton6 = onView(
-                allOf(withId(R.id.see_orders_button), withText("Past Orders"),
-                        childAtPosition(
-                                childAtPosition(
-                                        withClassName(is("android.widget.LinearLayout")),
-                                        2),
-                                1),
-                        isDisplayed()));
+                withIndex(firstIconMatcher2 , 0));
         materialButton6.perform(click());
 
         Thread.sleep(2000);
@@ -215,6 +205,23 @@ public class MakeOrderTest {
                 ViewParent parent = view.getParent();
                 return parent instanceof ViewGroup && parentMatcher.matches(parent)
                         && view.equals(((ViewGroup) parent).getChildAt(position));
+            }
+        };
+    }
+    public static Matcher<View> withIndex(final Matcher<View> matcher, final int index) {
+        return new TypeSafeMatcher<View>() {
+            int currentIndex = 0;
+
+            @Override
+            public void describeTo(Description description) {
+                description.appendText("with index: ");
+                description.appendValue(index);
+                matcher.describeTo(description);
+            }
+
+            @Override
+            public boolean matchesSafely(View view) {
+                return matcher.matches(view) && currentIndex++ == index;
             }
         };
     }
