@@ -61,17 +61,14 @@ public class UserAccount implements Serializable {
     }
 
     public static boolean isValidPassword(String password) {
-        // Check if the password is at least 8 characters long
         if (password.length() < 8) {
             return false;
         }
 
-        // Initialize variables to track password requirements
         boolean hasUppercase = false;
         boolean hasLowercase = false;
         boolean hasNumber = false;
 
-        // Loop through each character in the password and check its properties
         for (int i = 0; i < password.length(); i++) {
             char c = password.charAt(i);
             if (Character.isUpperCase(c)) {
@@ -81,18 +78,14 @@ public class UserAccount implements Serializable {
             } else if (Character.isDigit(c)) {
                 hasNumber = true;
             }
-            // If all password requirements are met, exit loop early
             if (hasUppercase && hasLowercase && hasNumber) {
                 break;
             }
         }
 
-        // Check if all password requirements are met
         if (!hasUppercase || !hasLowercase || !hasNumber) {
             return false;
         }
-
-        // If all checks pass, return true
         return true;
     }
 
