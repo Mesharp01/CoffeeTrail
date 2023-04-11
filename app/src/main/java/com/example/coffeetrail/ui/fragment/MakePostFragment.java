@@ -4,6 +4,8 @@ import android.content.Context;
 import android.location.LocationManager;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.app.Activity;
+import android.content.Context;
 import android.os.Bundle;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -17,6 +19,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -40,10 +43,13 @@ public class MakePostFragment extends Fragment implements View.OnClickListener{
 
     private UserAccount currentUser;
     private CoffeeShop currentStore;
+    private MapsFragment mapsFragment;
+    private FragmentManager fm;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
     }
 
     @Override
@@ -63,6 +69,18 @@ public class MakePostFragment extends Fragment implements View.OnClickListener{
         //mPostContent.setText(mShopViewModel.getStoreName(currentStore));
         mPost = v.findViewById(R.id.post_edit);
         mPostButton.setOnClickListener(this);
+        Bundle bundle2 = new Bundle();
+        bundle2.putSerializable("user", currentUser);
+        bundle2.putSerializable("shop", currentStore);
+        mapsFragment = new MapsFragment();
+        mapsFragment.setArguments(bundle2);
+        fm = getParentFragmentManager();
+        fm.beginTransaction()
+                .add(R.id.fragment_container, mapsFragment)
+                .hide(mapsFragment)
+                .addToBackStack("maps_fragment")
+                .commit();
+
         return v;
     }
     public ShopOrder createShopOrder(){
@@ -83,36 +101,29 @@ public class MakePostFragment extends Fragment implements View.OnClickListener{
     public void onClick(View v) {
         final int viewId = v.getId();
         if (viewId == R.id.post_button) {
+            FragmentActivity activity = requireActivity();
+            InputMethodManager imm = (InputMethodManager) activity.getSystemService(Activity.INPUT_METHOD_SERVICE);
+            // hide the keyboard
+            imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
             ShopOrder newOrder = createShopOrder();
             String postContent = newOrder.getDesc();
 
             Bundle bundle = new Bundle();
-            bundle.putSerializable("user", currentUser);
-            bundle.putSerializable("shop", currentStore);
             bundle.putSerializable("order", newOrder);
 
-
-            FragmentManager fm = getParentFragmentManager();
-            Fragment mapFragment = new MapsFragment();
-            mapFragment.setArguments(bundle);
             if(isNetworkAvailable() && isGPSEnabled(this.getContext())){
-                fm.beginTransaction()
-                        .replace(R.id.fragment_container, mapFragment)
-                        .addToBackStack("maps_fragment")
-                        .commit();
+                mapsFragment.setArguments(bundle);
+                mapsFragment.runMap();
+                fm.beginTransaction().hide(this).show(mapsFragment).commit();
             }
             else if(!isGPSEnabled(this.getContext())){
-                FragmentActivity activity = requireActivity();
                 Toast.makeText(activity.getApplicationContext(), "Connect to GPS Signal to Post!", Toast.LENGTH_SHORT).show();
                 activity.getSupportFragmentManager().popBackStack();
             }
-            else {
-                FragmentActivity activity = requireActivity();
+            else if(!isNetworkAvailable()){
                 Toast.makeText(activity.getApplicationContext(), "Connect to the internet to post!", Toast.LENGTH_SHORT).show();
                 activity.getSupportFragmentManager().popBackStack();
             }
-
-
         }
     }
 
