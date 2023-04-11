@@ -8,9 +8,12 @@ import static androidx.test.espresso.action.ViewActions.replaceText;
 import static androidx.test.espresso.action.ViewActions.scrollTo;
 import static androidx.test.espresso.matcher.ViewMatchers.hasDescendant;
 import static androidx.test.espresso.matcher.ViewMatchers.isDisplayed;
+import static androidx.test.espresso.matcher.ViewMatchers.isRoot;
 import static androidx.test.espresso.matcher.ViewMatchers.withClassName;
 import static androidx.test.espresso.matcher.ViewMatchers.withContentDescription;
 import static androidx.test.espresso.matcher.ViewMatchers.withId;
+import static androidx.test.espresso.matcher.ViewMatchers.withParent;
+import static androidx.test.espresso.matcher.ViewMatchers.withParentIndex;
 import static androidx.test.espresso.matcher.ViewMatchers.withText;
 import static org.hamcrest.Matchers.allOf;
 import static org.hamcrest.Matchers.is;
@@ -19,6 +22,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewParent;
 
+import androidx.test.espresso.ViewAction;
 import androidx.test.espresso.ViewInteraction;
 import androidx.test.espresso.contrib.RecyclerViewActions;
 import androidx.test.espresso.matcher.ViewMatchers;
@@ -160,10 +164,17 @@ public class ShopListButtonTest {
 
         Thread.sleep(2000);
 
-        onView(ViewMatchers.withId(R.id.shoplist_recycler_view))
-                // scrollTo will fail the test if no item matches.
-                .perform(RecyclerViewActions.actionOnHolderItem(ViewMatchers.withId(R.id.list_item_shoplist), click()
-                ));
+
+        Matcher<View> firstIconMatcher = allOf(withId(R.id.about_button));
+        ViewInteraction materialButton5 = onView(
+                withIndex(firstIconMatcher , 0));
+        materialButton5.perform(click());
+
+//        ViewInteraction materialButton5 = onView(
+//                allOf(onView(withId(R.id.shoplist_recycler_view)).perform(
+//                        RecyclerViewActions.actionOnItemAtPosition(0, MyViewAction.clickChildViewWithId(R.id. bt_deliver)));
+//                        isDisplayed()));
+//        materialButton5.perform(click());
 
 
         Thread.sleep(2000);
@@ -194,6 +205,25 @@ public class ShopListButtonTest {
                 return parent instanceof ViewGroup && parentMatcher.matches(parent)
                         && view.equals(((ViewGroup) parent).getChildAt(position));
             }
+
         };
     }
+    public static Matcher<View> withIndex(final Matcher<View> matcher, final int index) {
+        return new TypeSafeMatcher<View>() {
+            int currentIndex = 0;
+
+            @Override
+            public void describeTo(Description description) {
+                description.appendText("with index: ");
+                description.appendValue(index);
+                matcher.describeTo(description);
+            }
+
+            @Override
+            public boolean matchesSafely(View view) {
+                return matcher.matches(view) && currentIndex++ == index;
+            }
+        };
+    }
+
 }
