@@ -1,6 +1,7 @@
 package com.example.coffeetrail.ui.fragment;
 
 import android.content.Context;
+import android.location.LocationManager;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
@@ -11,6 +12,8 @@ import androidx.fragment.app.FragmentActivity;
 import androidx.fragment.app.FragmentManager;
 import androidx.lifecycle.ViewModelProvider;
 
+import android.provider.Settings;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -70,6 +73,12 @@ public class MakePostFragment extends Fragment implements View.OnClickListener{
         return shopOrder;
     }
 
+    public boolean isGPSEnabled (Context mContext){
+        LocationManager locationManager = (LocationManager)
+                mContext.getSystemService(Context.LOCATION_SERVICE);
+        return locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER);
+    }
+
     @Override
     public void onClick(View v) {
         final int viewId = v.getId();
@@ -86,12 +95,18 @@ public class MakePostFragment extends Fragment implements View.OnClickListener{
             FragmentManager fm = getParentFragmentManager();
             Fragment mapFragment = new MapsFragment();
             mapFragment.setArguments(bundle);
-            if(isNetworkAvailable()){
+            if(isNetworkAvailable() && isGPSEnabled(this.getContext())){
                 fm.beginTransaction()
                         .replace(R.id.fragment_container, mapFragment)
                         .addToBackStack("maps_fragment")
                         .commit();
-            } else {
+            }
+            else if(!isGPSEnabled(this.getContext())){
+                FragmentActivity activity = requireActivity();
+                Toast.makeText(activity.getApplicationContext(), "Connect to GPS Signal to Post!", Toast.LENGTH_SHORT).show();
+                activity.getSupportFragmentManager().popBackStack();
+            }
+            else {
                 FragmentActivity activity = requireActivity();
                 Toast.makeText(activity.getApplicationContext(), "Connect to the internet to post!", Toast.LENGTH_SHORT).show();
                 activity.getSupportFragmentManager().popBackStack();

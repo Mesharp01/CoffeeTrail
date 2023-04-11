@@ -11,6 +11,7 @@ import android.content.pm.ConfigurationInfo;
 import android.content.pm.PackageManager;
 import android.graphics.Typeface;
 import android.location.Location;
+import android.location.LocationManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
@@ -237,8 +238,23 @@ public class ShopListFragment extends Fragment{
                                 adapter.submitList(shopsWithDistances);
                             });
                             //fillCoffeeShopTable();
-                            setProgress(currentUser.getName());
+                            //setProgress(currentUser.getName());
                         }
+                        else if(mLocation == null || !isGPSEnabled(this.getContext())){
+                            mShopViewModel = new ViewModelProvider(this).get(CoffeeShopViewModel.class);
+                            mShopOrderViewModel = new ViewModelProvider(this).get(ShopOrderViewModel.class);
+                            mShopOrderViewModel.getAllShopOrders();
+
+                            RecyclerView recyclerView = view.findViewById(R.id.recyclerview);
+                            final ShopListAdapter adapter = new ShopListAdapter(new ShopListAdapter.ShopListDiff(), currentUser, userLocation);//, currentStore, newPost);
+                            recyclerView.setAdapter(adapter);
+                            recyclerView.setLayoutManager(new LinearLayoutManager(activity));
+
+                            mShopViewModel.getAllCoffeeShops().observe(this, shops -> {
+                                adapter.submitList(shops);
+                            });
+                        }
+                        setProgress(currentUser.getName());
                     } else {
                         Log.d(TAG, "Current location is null. Using defaults.");
                         Log.e(TAG, "Exception: %s", task.getException());
@@ -250,6 +266,12 @@ public class ShopListFragment extends Fragment{
         } catch (SecurityException e){
             Log.e("Exception: %s", e.getMessage(), e);
         }
+    }
+
+    public boolean isGPSEnabled (Context mContext){
+        LocationManager locationManager = (LocationManager)
+                mContext.getSystemService(Context.LOCATION_SERVICE);
+        return locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER);
     }
     private List<CoffeeShop> calculateDistances(List<CoffeeShop> shops){
         List<CoffeeShop> newShops = new ArrayList<CoffeeShop>();
