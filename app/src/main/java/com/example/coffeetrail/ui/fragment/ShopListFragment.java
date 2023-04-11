@@ -37,6 +37,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 import androidx.core.content.res.ResourcesCompat;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentActivity;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -200,6 +202,9 @@ public class ShopListFragment extends Fragment{
 
     @SuppressLint("MissingPermission")
     private void findLocation(@NonNull View view) {
+        if(!isGPSEnabled(this.getContext())){
+            showGPSAlert(view);
+        }
         try {
             final Activity activity = requireActivity();
             LocationRequest locationRequest = LocationRequest.create();
@@ -237,24 +242,7 @@ public class ShopListFragment extends Fragment{
                                 // Update the cached copy of the words in the adapter.
                                 adapter.submitList(shopsWithDistances);
                             });
-                            //fillCoffeeShopTable();
-                            //setProgress(currentUser.getName());
                         }
-                        else if(mLocation == null || !isGPSEnabled(this.getContext())){
-                            mShopViewModel = new ViewModelProvider(this).get(CoffeeShopViewModel.class);
-                            mShopOrderViewModel = new ViewModelProvider(this).get(ShopOrderViewModel.class);
-                            mShopOrderViewModel.getAllShopOrders();
-
-                            RecyclerView recyclerView = view.findViewById(R.id.recyclerview);
-                            final ShopListAdapter adapter = new ShopListAdapter(new ShopListAdapter.ShopListDiff(), currentUser, userLocation);//, currentStore, newPost);
-                            recyclerView.setAdapter(adapter);
-                            recyclerView.setLayoutManager(new LinearLayoutManager(activity));
-
-                            mShopViewModel.getAllCoffeeShops().observe(this, shops -> {
-                                adapter.submitList(shops);
-                            });
-                        }
-                        setProgress(currentUser.getName());
                     } else {
                         Log.d(TAG, "Current location is null. Using defaults.");
                         Log.e(TAG, "Exception: %s", task.getException());
@@ -266,6 +254,26 @@ public class ShopListFragment extends Fragment{
         } catch (SecurityException e){
             Log.e("Exception: %s", e.getMessage(), e);
         }
+    }
+
+    public void showGPSAlert(View view){
+        Activity activity = requireActivity();
+        AlertDialog.Builder builder = new AlertDialog.Builder(activity);
+        builder.setMessage("Please connect to GPS signal to see list of coffee shops");
+        builder.setTitle("We can't find your location...");
+        builder.setCancelable(false);
+        builder.setNegativeButton("Try Again", (DialogInterface.OnClickListener) (dialog, which) -> {
+            dialog.cancel();
+            if(isGPSEnabled(this.getContext())){
+                //findLocation(view);
+                getActivity().recreate();
+            }
+            if(!isGPSEnabled(this.getContext())){
+                showGPSAlert(view);
+            }
+        });
+        AlertDialog alertDialog = builder.create();
+        alertDialog.show();
     }
 
     public boolean isGPSEnabled (Context mContext){
