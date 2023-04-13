@@ -53,6 +53,7 @@ import com.example.coffeetrail.model.CoffeeShopViewModel;
 import com.example.coffeetrail.model.ShopOrder;
 import com.example.coffeetrail.model.ShopOrderViewModel;
 import com.example.coffeetrail.model.UserAccount;
+import com.example.coffeetrail.ui.activity.AccountActivity;
 import com.example.coffeetrail.ui.activity.MainActivity;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationCallback;
@@ -273,7 +274,6 @@ public class ShopListFragment extends Fragment{
                 if (checkPermissions()) {
                     requestNewLocationData();
                 }
-                //getActivity().recreate();
             }
             if(!isGPSEnabled(this.getContext())){
                 showGPSAlert();
