@@ -51,6 +51,7 @@ import com.example.coffeetrail.model.CoffeeShopViewModel;
 import com.example.coffeetrail.model.ShopOrder;
 import com.example.coffeetrail.model.ShopOrderViewModel;
 import com.example.coffeetrail.model.UserAccount;
+import com.example.coffeetrail.ui.activity.AccountActivity;
 import com.example.coffeetrail.ui.activity.MainActivity;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationRequest;
@@ -265,7 +266,7 @@ public class ShopListFragment extends Fragment{
         builder.setNegativeButton("Try Again", (DialogInterface.OnClickListener) (dialog, which) -> {
             dialog.cancel();
             if(isGPSEnabled(this.getContext())){
-                //findLocation(view);
+                findLocation(view);
                 getActivity().recreate();
             }
             if(!isGPSEnabled(this.getContext())){
