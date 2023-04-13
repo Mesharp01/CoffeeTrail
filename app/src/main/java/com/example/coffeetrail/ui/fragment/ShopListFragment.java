@@ -15,6 +15,7 @@ import android.location.LocationManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Looper;
 import android.util.Log;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
@@ -34,6 +35,7 @@ import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.core.content.res.ResourcesCompat;
 import androidx.fragment.app.Fragment;
@@ -53,7 +55,9 @@ import com.example.coffeetrail.model.ShopOrderViewModel;
 import com.example.coffeetrail.model.UserAccount;
 import com.example.coffeetrail.ui.activity.MainActivity;
 import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationCallback;
 import com.google.android.gms.location.LocationRequest;
+import com.google.android.gms.location.LocationResult;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.model.LatLng;
@@ -78,6 +82,7 @@ public class ShopListFragment extends Fragment{
     private View gView;
     public LatLng userLocation;
     private static final String TAG = "ShopList:";
+
 
 
     private ActivityResultLauncher<String> requestPermissionLauncher =
@@ -203,7 +208,7 @@ public class ShopListFragment extends Fragment{
     @SuppressLint("MissingPermission")
     private void findLocation(@NonNull View view) {
         if(!isGPSEnabled(this.getContext())){
-            showGPSAlert(view);
+            showGPSAlert();
         }
         try {
             final Activity activity = requireActivity();
@@ -256,7 +261,7 @@ public class ShopListFragment extends Fragment{
         }
     }
 
-    public void showGPSAlert(View view){
+    public void showGPSAlert(){
         Activity activity = requireActivity();
         AlertDialog.Builder builder = new AlertDialog.Builder(activity);
         builder.setMessage("Please connect to GPS signal to see list of coffee shops");
@@ -265,15 +270,74 @@ public class ShopListFragment extends Fragment{
         builder.setNegativeButton("Try Again", (DialogInterface.OnClickListener) (dialog, which) -> {
             dialog.cancel();
             if(isGPSEnabled(this.getContext())){
-                //findLocation(view);
-                getActivity().recreate();
+                if (checkPermissions()) {
+                    requestNewLocationData();
+                }
+                //getActivity().recreate();
             }
             if(!isGPSEnabled(this.getContext())){
-                showGPSAlert(view);
+                showGPSAlert();
             }
         });
         AlertDialog alertDialog = builder.create();
         alertDialog.show();
+    }
+
+    @SuppressLint("MissingPermission")
+    private void requestNewLocationData() {
+        // Initializing LocationRequest
+        // object with appropriate methods
+        LocationRequest mLocationRequest = new LocationRequest();
+        mLocationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
+        mLocationRequest.setInterval(5);
+        mLocationRequest.setFastestInterval(0);
+        mLocationRequest.setNumUpdates(1);
+
+        // setting LocationRequest
+        // on FusedLocationClient
+        FusedLocationProviderClient mFusedLocationClient;
+        mFusedLocationClient = LocationServices.getFusedLocationProviderClient(this.getContext());
+        mFusedLocationClient.requestLocationUpdates(mLocationRequest, mLocationCallback, Looper.myLooper());
+    }
+
+    private LocationCallback mLocationCallback = new LocationCallback() {
+
+        @Override
+        public void onLocationResult(LocationResult locationResult) {
+            Location mLastLocation = locationResult.getLastLocation();
+            loadRecyclerView(mLastLocation);
+        }
+    };
+
+    // method to check for permissions
+    private boolean checkPermissions() {
+        return ActivityCompat.checkSelfPermission(this.getContext(), Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this.getContext(), Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED;
+    }
+
+    private void loadRecyclerView(Location mLocation){
+        final Activity activity = requireActivity();
+        userLocation = new LatLng(mLocation.getLatitude(), mLocation.getLongitude());
+        Log.d(TAG, userLocation.toString());
+        mShopViewModel = new ViewModelProvider(this).get(CoffeeShopViewModel.class);
+        mShopOrderViewModel = new ViewModelProvider(this).get(ShopOrderViewModel.class);
+        mShopOrderViewModel.getAllShopOrders();
+
+        RecyclerView recyclerView = gView.findViewById(R.id.recyclerview);
+        final ShopListAdapter adapter = new ShopListAdapter(new ShopListAdapter.ShopListDiff(), currentUser, userLocation);//, currentStore, newPost);
+        recyclerView.setAdapter(adapter);
+        recyclerView.setLayoutManager(new LinearLayoutManager(activity));
+
+        mShopViewModel.getAllCoffeeShops().observe(this, shops -> {
+            List<CoffeeShop> shopsWithDistances = calculateDistances(shops);
+            Collections.sort(shopsWithDistances, new Comparator<CoffeeShop>() {
+                @Override
+                public int compare(CoffeeShop lhs, CoffeeShop rhs) {
+                    return lhs.getDistance() < rhs.getDistance() ? -1 : (lhs.getDistance() > rhs.getDistance() ) ? 1 : 0;
+                }
+            });
+            // Update the cached copy of the words in the adapter.
+            adapter.submitList(shopsWithDistances);
+        });
     }
 
     public boolean isGPSEnabled (Context mContext){
