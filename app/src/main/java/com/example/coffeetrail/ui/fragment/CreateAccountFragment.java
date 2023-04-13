@@ -96,24 +96,28 @@ public class CreateAccountFragment extends Fragment implements View.OnClickListe
         final String username = mUsername.getText().toString();
         final String password = mPassword.getText().toString();
         FragmentActivity activity = requireActivity();
-        if(!TextUtils.isEmpty(username) && !TextUtils.isEmpty(password)) {
-            if (mPassword.getText().toString().equals(mConfirmP.getText().toString())){
-                String hash = hashPassword(password);
-                UserAccount newUser = new UserAccount(username, hash);
-                if(!mUserAccountList.contains(newUser)) {
-                    mUserAccountViewModel.insert(newUser);
-                }
-                Toast.makeText(activity.getApplicationContext(), "New UserAccount added", Toast.LENGTH_SHORT).show();
-                new Handler().postDelayed(() -> returnToLogin(), 500);
-            }
-            else{
-                Toast.makeText(activity.getApplicationContext(), "Passwords do not match", Toast.LENGTH_SHORT).show();
-            }
-        }
-        else{
-            Toast.makeText(activity.getApplicationContext(), "Complete all fields", Toast.LENGTH_SHORT).show();
 
+        if(!TextUtils.isEmpty(username) && !TextUtils.isEmpty(password)) {
+            if (UserAccount.isValidPassword(password)) {
+                if (mPassword.getText().toString().equals(mConfirmP.getText().toString())) {
+                    String hash = hashPassword(password);
+                    UserAccount newUser = new UserAccount(username, hash);
+                    if (!mUserAccountList.contains(newUser)) {
+                        mUserAccountViewModel.insert(newUser);
+                    }
+                    Toast.makeText(activity.getApplicationContext(), "New UserAccount added", Toast.LENGTH_SHORT).show();
+                    new Handler().postDelayed(() -> returnToLogin(), 500);
+                } else {
+                    Toast.makeText(activity.getApplicationContext(), "Passwords do not match", Toast.LENGTH_SHORT).show();
+                }
+            } else {
+                Toast.makeText(activity.getApplicationContext(), "Password is invalid", Toast.LENGTH_SHORT).show();
+            }
+        }else{
+            Toast.makeText(activity.getApplicationContext(), "Complete all fields", Toast.LENGTH_SHORT).show();
         }
+
+
     }
 
 
