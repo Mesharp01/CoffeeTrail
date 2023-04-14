@@ -7,7 +7,7 @@ import static org.junit.Assert.assertTrue;
 
 import com.example.coffeetrail.model.UserAccount;
 
-class ValidatePasswordTest {
+public class ValidatePasswordTest {
     @Test
     public void passwordValidator_PasswordSimple_ReturnsTrue() {
         assertTrue(UserAccount.isValidPassword("Hello123"));
@@ -24,7 +24,7 @@ class ValidatePasswordTest {
         assertFalse(UserAccount.isValidPassword("no"));
         assertFalse(UserAccount.isValidPassword("HI12345"));
         assertFalse(UserAccount.isValidPassword("Hello"));
-        assertFalse(UserAccount.isValidPassword("Hello123"));
+        assertFalse(UserAccount.isValidPassword("Hello12"));
 
 
     }
