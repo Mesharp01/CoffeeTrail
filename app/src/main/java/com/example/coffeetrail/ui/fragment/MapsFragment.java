@@ -186,7 +186,7 @@ public class MapsFragment extends Fragment
             new Handler().postDelayed(() -> returnToShopList(), 10000);
         } else{
             Toast.makeText(activity.getApplicationContext(), "Please get closer to the coffee shop", Toast.LENGTH_SHORT).show();
-            new Handler().postDelayed(() -> returnToPost(), 5000);
+            new Handler().postDelayed(() -> returnToShopList(), 5000);
         }
 
 
@@ -218,18 +218,7 @@ public class MapsFragment extends Fragment
     private boolean hasLocationPermission(){
         return !lacksLocationPermission();
     }
-
-    private void returnToPost(){
-        Bundle bundle = new Bundle();
-        bundle.putSerializable("user", currentUser);
-        bundle.putSerializable("shop", currentShop);
-
-        MakePostFragment postFragment = new MakePostFragment();
-        postFragment.setArguments(bundle);
-
-        FragmentManager fm = getParentFragmentManager();
-        fm.beginTransaction().replace(R.id.fragment_container, postFragment).addToBackStack(null).commit();
-    }
+    
     private void returnToShopList(){
         ShopListFragment listFragment = new ShopListFragment();
         Bundle bundle = new Bundle();
